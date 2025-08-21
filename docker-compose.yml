@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: compserve
+    restart: no
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: compserve_db
+      MYSQL_USER: compserve_user
+      MYSQL_PASSWORD: compserve_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    container_name: compserve-adminer
+    restart: no
+    ports:
+      - "8080:8080"
+
+volumes:
+  db_data:
