@@ -25,19 +25,26 @@ Route::prefix('freelancer')->middleware('auth')->name('freelancer.')->group(func
         return view('freelancer.dashboard');
     })->name('dashboard');
 
-    // Currently listed jobs and taken jobs of the freelancer
-    Route::get('/jobs', function () {
-        return view('freelancer.jobs');
-    })->name('jobs');
+    Route::get('/jobs/available', function () {
+        return view('freelancer.jobs.available-jobs');
+    })->name('jobs.available');
+
+    Route::get('/jobs/applied', function () {
+        return view('freelancer.jobs.applied-jobs');
+    })->name('jobs.applied');
+
+    Route::get('/jobs/current', function () {
+        return view('freelancer.jobs.current-jobs');
+    })->name('jobs.current');
+
+    Route::get('/jobs/finished', function () {
+        return view('freelancer.jobs.finished-jobs');
+    })->name('jobs.finished');
 
     // Profile of the freelancer
     Route::get('/profile', function () {
         return view('freelancer.profile');
     })->name('profile');
-
-    Route::get('/test', function () {
-        return view('freelancer.test');
-    })->name('test');
 });
 
 Route::get('client/dashboard', function () {

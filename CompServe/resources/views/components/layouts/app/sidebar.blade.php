@@ -11,18 +11,63 @@
                     <nav class="flex-1 overflow-y-auto custom-scrollbar py-4">
                         <ul class="space-y-1 px-2">
                             <!-- Dashboard -->
-                            <x-layouts.sidebar-link
+                            {{-- <x-layouts.sidebar-link
                                 href="{{ route('dashboard') }}"
                                 icon='fas-house'
-                                :active="request()->routeIs('dashboard*')">Dashboard</x-layouts.sidebar-link>
+                                :active="request()->routeIs('dashboard*')">Dashboard</x-layouts.sidebar-link> --}}
 
+                            {{-- Sidebar links for freelancers --}}
                             @if (Auth::user()->role === 'freelancer')
+                                {{-- Three sub categories for jobs: available jobs, current jobs, finished jobs --}}
                                 <x-layouts.sidebar-link
-                                    href="{{ route('freelancer.test') }}"
-                                    icon='fas-comment'
+                                    href="{{ route('freelancer.dashboard') }}"
+                                    icon='fas-house'
                                     :active="request()->routeIs(
-                                        'freelancer.test',
-                                    )">Test</x-layouts.sidebar-link>
+                                        'freelancer.dashboard',
+                                    )">Dashboard</x-layouts.sidebar-link>
+
+                                <x-layouts.sidebar-two-level-link-parent
+                                    title="Jobs"
+                                    icon='fas-pencil-alt'
+                                    :active="request()->routeIs(
+                                        'freelancer.jobs*',
+                                    )">
+                                    <x-layouts.sidebar-two-level-link
+                                        href="{{ route('freelancer.jobs.available') }}"
+                                        icon='far-folder-open'
+                                        :active="request()->routeIs(
+                                            'freelancer.jobs.available',
+                                        )">Available
+                                        Jobs</x-layouts.sidebar-two-level-link>
+                                    <x-layouts.sidebar-two-level-link
+                                        href="{{ route('freelancer.jobs.applied') }}"
+                                        icon='fas-envelope-open-text'
+                                        :active="request()->routeIs(
+                                            'freelancer.jobs.applied',
+                                        )">Applied
+                                        Jobs</x-layouts.sidebar-two-level-link>
+                                    <x-layouts.sidebar-two-level-link
+                                        href="{{ route('freelancer.jobs.current') }}"
+                                        icon='fas-pen'
+                                        :active="request()->routeIs(
+                                            'freelancer.jobs.current',
+                                        )">Current
+                                        Jobs</x-layouts.sidebar-two-level-link>
+                                    <x-layouts.sidebar-two-level-link
+                                        href="{{ route('freelancer.jobs.finished') }}"
+                                        icon='fas-check'
+                                        :active="request()->routeIs(
+                                            'freelancer.jobs.finished',
+                                        )">Finished
+                                        Jobs</x-layouts.sidebar-two-level-link>
+                                </x-layouts.sidebar-two-level-link-parent>
+
+                                <x-layouts.sidebar-link
+                                    href="{{ route('freelancer.profile') }}"
+                                    icon='fas-person'
+                                    :active="request()->routeIs(
+                                        'freelancer.profile',
+                                    )">Profile</x-layouts.sidebar-link>
                             @endif
 
                             <!-- Example two level -->
