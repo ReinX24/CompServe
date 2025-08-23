@@ -20,4 +20,28 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/appearance', [Settings\AppearanceController::class, 'edit'])->name('settings.appearance.edit');
 });
 
-require __DIR__.'/auth.php';
+Route::prefix('freelancer')->middleware('auth')->name('freelancer.')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('freelancer.dashboard');
+    })->name('dashboard');
+
+    // Currently listed jobs and taken jobs of the freelancer
+    Route::get('/jobs', function () {
+        return view('freelancer.jobs');
+    })->name('jobs');
+
+    // Profile of the freelancer
+    Route::get('/profile', function () {
+        return view('freelancer.profile');
+    })->name('profile');
+
+    Route::get('/test', function () {
+        return view('freelancer.test');
+    })->name('test');
+});
+
+Route::get('client/dashboard', function () {
+    return view('client.dashboard');
+})->middleware('auth')->name('client.dashboard');
+
+require __DIR__ . '/auth.php';

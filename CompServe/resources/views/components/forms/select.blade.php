@@ -26,5 +26,5 @@
 </select>
 
 @error($name)
-    <span class="text-red-500 text-sm">{{ $message }}</span>
+    <span class="text-red-500">{{ $message }}</span>
 @enderror

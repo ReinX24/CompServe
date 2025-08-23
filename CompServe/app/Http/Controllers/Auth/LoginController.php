@@ -52,7 +52,17 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // Go to the corresponding dashboard for each role
+        switch ($user->role) {
+            case "freelancer":
+                return redirect()->intended(route('freelancer.dashboard', absolute: false));
+                break;
+            case "client":
+                return redirect()->intended(route('client.dashboard', absolute: false));
+                break;
+            default:
+                return redirect()->intended(route('dashboard', absolute: false));
+        }
     }
 
     public function destroy(Request $request): RedirectResponse
