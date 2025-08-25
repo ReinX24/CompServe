@@ -60,6 +60,7 @@ class LoginController extends Controller
             case "client":
                 return redirect()->intended(route('client.dashboard', absolute: false));
                 break;
+            // Admin side
             default:
                 return redirect()->intended(route('dashboard', absolute: false));
         }

@@ -68,6 +68,13 @@
                                     :active="request()->routeIs(
                                         'freelancer.profile',
                                     )">Profile</x-layouts.sidebar-link>
+                            @elseif (Auth::user()->role === 'client')
+                                <x-layouts.sidebar-link
+                                    href="{{ route('client.dashboard') }}"
+                                    icon='fas-house'
+                                    :active="request()->routeIs(
+                                        'client.dashboard',
+                                    )">Dashboard</x-layouts.sidebar-link>
                             @endif
 
                             <!-- Example two level -->

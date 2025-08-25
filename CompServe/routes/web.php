@@ -47,6 +47,12 @@ Route::prefix('freelancer')->middleware('auth')->name('freelancer.')->group(func
     })->name('profile');
 });
 
+Route::prefix('client')->middleware('auth')->name('client.')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('client.dashboard');
+    })->name('dashboard');
+});
+
 Route::get('client/dashboard', function () {
     return view('client.dashboard');
 })->middleware('auth')->name('client.dashboard');

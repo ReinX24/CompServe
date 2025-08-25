@@ -34,6 +34,16 @@ class RegistrationController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // return redirect(route('dashboard', absolute: false));
+
+        // Go to the corresponding dashboard for each role
+        switch ($user->role) {
+            case "freelancer":
+                return redirect()->route('freelancer.dashboard');
+                break;
+            // Client side
+            default:
+                return redirect()->route('client.dashboard');
+        }
     }
 }
