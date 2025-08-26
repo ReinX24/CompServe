@@ -48,7 +48,7 @@
                 class="text-xl font-semibold text-gray-800 dark:text-gray-100 border-b pb-2 mb-4">
                 About Me</h2>
             <p class="text-gray-700 dark:text-gray-300">
-                {{ Auth::user()->about_me }}
+                {{ Auth::user()->about_me ?? 'N/A' }}
             </p>
         </div>
 
@@ -82,6 +82,30 @@
                         clients.</p>
                 </div>
             </div>
+        </div>
+
+        <!-- Certifications -->
+        <div class="mt-6">
+            <h2
+                class="text-xl font-semibold text-gray-800 dark:text-gray-100 border-b pb-2 mb-4">
+                Certifications</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="font-bold text-gray-800 dark:text-gray-100">
+                        Freelancer at {{ config('app.name') }}</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Joined
+                        {{ Auth::user()->created_at->format('F Y') }}</p>
+                    <p class="text-gray-700 dark:text-gray-300 mt-1">Worked on
+                        multiple projects delivering quality solutions for
+                        clients.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-6">
+            <x-button tag="a"
+                :href="route('freelancer.profile.edit')">Edit
+                Information</x-button>
         </div>
     </div>
 </x-layouts.app>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FreelancerProfileController;
 use App\Http\Controllers\Settings;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +46,9 @@ Route::prefix('freelancer')->middleware('auth')->name('freelancer.')->group(func
     Route::get('/profile', function () {
         return view('freelancer.profile');
     })->name('profile');
+
+    Route::get('/freelancer/profile/edit', [FreelancerProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/freelancer/profile/update', [FreelancerProfileController::class, 'update'])->name('profile.update');
 });
 
 Route::prefix('client')->middleware('auth')->name('client.')->group(function () {
