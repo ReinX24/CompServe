@@ -11,27 +11,28 @@
 
     <div
         class="max-w-3xl mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8">
-
         <!-- Form -->
         <form action="{{ route('freelancer.profile.update') }}"
             method="POST">
             @csrf
             @method('PUT')
 
-            <!-- Contact Number -->
-            <x-forms.input label="Contact Number"
-                name="contact_number"
-                type="text"
-                placeholder="Enter your contact number"
-                value="{{ old('contact_number', Auth::user()->contact_number) }}" />
+            <div class="mb-3">
+                <!-- Contact Number -->
+                <x-forms.input label="Contact Number"
+                    name="contact_number"
+                    type="text"
+                    placeholder="Enter your contact number"
+                    value="{{ old('contact_number', $freelancerInfo->contact_number ?? '') }}" />
+            </div>
 
-            <!-- About Me -->
-            <x-forms.input label="About Me"
-                name="about_me"
-                type="text"
-                placeholder="Write something about yourself"
-                value="{{ old('about_me', Auth::user()->about_me) }}"
-                class="h-24" />
+            <div>
+                <!-- About Me -->
+                <x-forms.textarea label="About Me"
+                    name="about_me"
+                    placeholder="Write something about yourself"
+                    class="h-24">{{ old('about_me', $freelancerInfo->about_me ?? '') }}</x-forms.textarea>
+            </div>
 
             <!-- Submit Button -->
             <button type="submit"

@@ -2,13 +2,22 @@
 
 use App\Http\Controllers\FreelancerProfileController;
 use App\Http\Controllers\Settings;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::view('dashboard', 'dashboard')
+Route::get('/dashboard', function () {
+    if (Auth::user()->role === "freelancer") {
+        return view('freelancer.dashboard');
+    } elseif (Auth::user()->role === "client") {
+        return view('client.dashboard');
+    } else {
+        return view('dashboard');
+    }
+})
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
@@ -43,10 +52,7 @@ Route::prefix('freelancer')->middleware('auth')->name('freelancer.')->group(func
     })->name('jobs.finished');
 
     // Profile of the freelancer
-    Route::get('/profile', function () {
-        return view('freelancer.profile');
-    })->name('profile');
-
+    Route::get('/freelancer/profile', [FreelancerProfileController::class, 'show'])->name('profile.show');
     Route::get('/freelancer/profile/edit', [FreelancerProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/freelancer/profile/update', [FreelancerProfileController::class, 'update'])->name('profile.update');
 });

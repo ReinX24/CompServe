@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\FreelancerInformation;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -31,6 +32,14 @@ class RegistrationController extends Controller
         $validated['password'] = Hash::make($validated['password']);
 
         event(new Registered(($user = User::create($validated))));
+
+        if ($user->role === 'freelancer') {
+            FreelancerInformation::create([
+                'user_id' => $user->id,
+                'about_me' => null,
+                'contact_info' => null,
+            ]);
+        }
 
         Auth::login($user);
 

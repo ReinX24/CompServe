@@ -63,10 +63,10 @@
                                 </x-layouts.sidebar-two-level-link-parent>
 
                                 <x-layouts.sidebar-link
-                                    href="{{ route('freelancer.profile') }}"
+                                    href="{{ route('freelancer.profile.show') }}"
                                     icon='fas-person'
                                     :active="request()->routeIs(
-                                        'freelancer.profile',
+                                        'freelancer.profile.show',
                                     )">Profile</x-layouts.sidebar-link>
                             @elseif (Auth::user()->role === 'client')
                                 <x-layouts.sidebar-link

@@ -23,8 +23,6 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'contact_number',
-        'about_me'
     ];
 
     /**
@@ -59,5 +57,10 @@ class User extends Authenticatable
             ->explode(' ')
             ->map(fn(string $name) => Str::of($name)->substr(0, 1))
             ->implode('');
+    }
+
+    public function freelancerInformation()
+    {
+        return $this->hasOne(FreelancerInformation::class);
     }
 }
