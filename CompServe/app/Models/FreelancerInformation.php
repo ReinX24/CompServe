@@ -3,21 +3,26 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FreelancerInformation extends Model
 {
     protected $fillable = [
-        'user_id',
         'contact_number',
-        'about_me'
+        'about_me',
+        'skills',
     ];
 
-    // TODO: add skills
+    protected $casts = [
+        'skills' => 'array',
+    ];
+
+    // DONE: add skills
     // TODO: add experience
     // TODO: add education
     // TODO: add certifications (TO BE VERIFIED BY ADMIN)
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

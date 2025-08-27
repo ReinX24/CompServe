@@ -34,7 +34,7 @@
                     class="font-semibold">Email:</span> {{ $user->email }}</p>
             <p class="text-gray-700 dark:text-gray-300"><span
                     class="font-semibold">Number:</span>
-                {{ $freelancerInfo->contact_number ?? 'Not set' }}
+                {{ $freelancerInfo->contact_number ?? 'N/A' }}
             </p>
             <p class="text-gray-700 dark:text-gray-300"><span
                     class="font-semibold">Last Updated:</span>
@@ -55,13 +55,17 @@
         <div class="mt-6">
             <h2
                 class="text-xl font-semibold text-gray-800 dark:text-gray-100 border-b pb-2 mb-4">
-                Skills</h2>
+                Skills
+            </h2>
             <ul
                 class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-1">
-                <li>Problem Solving</li>
-                <li>Web Development</li>
-                <li>Team Collaboration</li>
-                <li>Adaptability</li>
+                @if (!empty($freelancerInfo->skills))
+                    @foreach (explode(',', $freelancerInfo->skills) as $skill)
+                        <li>{{ trim($skill) }}</li>
+                    @endforeach
+                @else
+                    <li>No skills added yet.</li>
+                @endif
             </ul>
         </div>
 

@@ -32,11 +32,26 @@ class FreelancerProfileController extends Controller
 
         // Validate form inputs
         $validated = $request->validate([
-            'contact_number' => ['nullable', 'string', 'max:20'],  // make sure column name matches migration
+            'name' => ['required', 'string', 'max:255'],
+            'contact_number' => ['nullable', 'string', 'max:20'],
             'about_me' => ['nullable', 'string', 'max:1000'],
+            'skills' => ['nullable', 'string', 'max:1000'],
         ]);
 
-        $user->freelancerInformation()->update($validated);
+        // Update the user's own table (users.name)
+        $user->update([
+            'name' => $validated['name'],
+        ]);
+
+        // Remove 'name' before updating freelancerInformation
+        $freelancerData = collect($validated)->except('name')->toArray();
+
+        // Ensure freelancerInformation exists, create if not
+        if ($user->freelancerInformation) {
+            $user->freelancerInformation->update($freelancerData);
+        } else {
+            $user->freelancerInformation()->create($freelancerData);
+        }
 
         return redirect()->route('freelancer.profile.show')
             ->with('success', 'Profile updated successfully.');

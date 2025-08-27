@@ -33,14 +33,6 @@ class RegistrationController extends Controller
 
         event(new Registered(($user = User::create($validated))));
 
-        if ($user->role === 'freelancer') {
-            FreelancerInformation::create([
-                'user_id' => $user->id,
-                'about_me' => null,
-                'contact_info' => null,
-            ]);
-        }
-
         Auth::login($user);
 
         // return redirect(route('dashboard', absolute: false));
@@ -50,7 +42,7 @@ class RegistrationController extends Controller
             case "freelancer":
                 return redirect()->route('freelancer.dashboard');
                 break;
-            // Client side
+            // Client side, not registration for admins allowed
             default:
                 return redirect()->route('client.dashboard');
         }

@@ -52,9 +52,11 @@ Route::prefix('freelancer')->middleware('auth')->name('freelancer.')->group(func
     })->name('jobs.finished');
 
     // Profile of the freelancer
-    Route::get('/freelancer/profile', [FreelancerProfileController::class, 'show'])->name('profile.show');
-    Route::get('/freelancer/profile/edit', [FreelancerProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/freelancer/profile/update', [FreelancerProfileController::class, 'update'])->name('profile.update');
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [FreelancerProfileController::class, 'show'])->name('profile.show');
+        Route::get('/edit', [FreelancerProfileController::class, 'edit'])->name('profile.edit');
+        Route::put('/update', [FreelancerProfileController::class, 'update'])->name('profile.update');
+    });
 });
 
 Route::prefix('client')->middleware('auth')->name('client.')->group(function () {
