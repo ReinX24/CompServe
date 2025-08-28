@@ -90,60 +90,88 @@
                     Experiences
                 </h2>
 
-                <!-- Experience Inputs -->
-                <div x-data="{
-                    experiences: @json(old('experiences', $freelancer->experiences ?? []))
-                }">
-                    <template x-for="(exp, index) in experiences"
-                        :key="index">
-                        <div
-                            class="p-4 mb-4 border rounded-lg bg-gray-50 dark:bg-gray-800">
-                            {{-- Job Title --}}
-                            <x-forms.input label="Job Title"
-                                name="experiences[][job_title]"
-                                x-model="exp.job_title"
-                                placeholder="e.g. Software Engineer" />
+                <template x-for="(exp, index) in experiences"
+                    :key="index">
+                    <div
+                        class="p-4 mb-4 border rounded-lg bg-gray-50 dark:bg-gray-800">
+                        <!-- Job Title -->
+                        <label
+                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Job Title
+                        </label>
+                        <input type="text"
+                            x-model="exp.job_title"
+                            :name="`experiences[${index}][job_title]`"
+                            placeholder="e.g. Software Engineer"
+                            class="w-full px-4 py-1.5 rounded-lg text-gray-700 dark:text-gray-300
+                                   bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
+                                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
 
-                            {{-- Company --}}
-                            <x-forms.input label="Company"
-                                name="experiences[][company]"
-                                x-model="exp.company"
-                                placeholder="e.g. Google" />
+                        <!-- Company -->
+                        <label
+                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Company
+                        </label>
+                        <input type="text"
+                            x-model="exp.company"
+                            :name="`experiences[${index}][company]`"
+                            placeholder="e.g. Google"
+                            class="w-full px-4 py-1.5 rounded-lg text-gray-700 dark:text-gray-300
+                                   bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
+                                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
 
-                            {{-- Start Date --}}
-                            <x-forms.input label="Start Date"
-                                name="experiences[][start_date]"
-                                type="date"
-                                x-model="exp.start_date" />
+                        <!-- Start Date -->
+                        <label
+                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Start Date
+                        </label>
+                        <input type="date"
+                            x-model="exp.start_date"
+                            :name="`experiences[${index}][start_date]`"
+                            class="w-full px-4 py-1.5 rounded-lg text-gray-700 dark:text-gray-300
+                                   bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
+                                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
 
-                            {{-- End Date --}}
-                            <x-forms.input label="End Date"
-                                name="experiences[][end_date]"
-                                type="date"
-                                x-model="exp.end_date" />
+                        <!-- End Date -->
+                        <label
+                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            End Date
+                        </label>
+                        <input type="date"
+                            x-model="exp.end_date"
+                            :name="`experiences[${index}][end_date]`"
+                            class="w-full px-4 py-1.5 rounded-lg text-gray-700 dark:text-gray-300
+                                   bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
+                                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
 
-                            {{-- Description --}}
-                            <x-forms.input label="Description"
-                                name="experiences[][description]"
-                                x-model="exp.description"
-                                placeholder="Brief description of role" />
+                        <!-- Description -->
+                        <label
+                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Description
+                        </label>
+                        <textarea x-model="exp.description"
+                            :name="`experiences[${index}][description]`"
+                            placeholder="Brief description of role"
+                            class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
+                                   bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
+                                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </textarea>
 
-                            {{-- Remove Button --}}
-                            <button type="button"
-                                @click="experiences.splice(index, 1)"
-                                class="mt-2 px-3 py-1 text-red-600 bg-red-100 rounded-lg hover:bg-red-200">
-                                Remove
-                            </button>
-                        </div>
-                    </template>
+                        <!-- Remove Button -->
+                        <button type="button"
+                            @click="removeExperience(index)"
+                            class="mt-2 px-3 py-1 text-red-600 bg-red-100 rounded-lg hover:bg-red-200">
+                            Remove
+                        </button>
+                    </div>
+                </template>
 
-                    {{-- Add Experience --}}
-                    <button type="button"
-                        @click="experiences.push({ job_title: '', company: '', start_date: '', end_date: '', description: '' })"
-                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                        + Add Experience
-                    </button>
-                </div>
+                <!-- Add Experience -->
+                <button type="button"
+                    @click="addExperience"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                    + Add Experience
+                </button>
             </div>
 
             <!-- Submit -->
@@ -192,10 +220,10 @@
                 experiences: initialExperiences.length ? initialExperiences : [],
                 addExperience() {
                     this.experiences.push({
-                        title: "",
+                        job_title: "",
                         company: "",
-                        start_year: "",
-                        end_year: "",
+                        start_date: "",
+                        end_date: "",
                         description: ""
                     });
                 },
@@ -205,5 +233,4 @@
             }
         }
     </script>
-
 </x-layouts.app>

@@ -69,6 +69,47 @@
             </ul>
         </div>
 
+        <!-- Experiences -->
+        <div class="mt-6">
+            <h2
+                class="text-xl font-semibold text-gray-800 dark:text-gray-100 border-b pb-2 mb-4">
+                Experiences
+            </h2>
+            @php
+                $experiences = !empty($freelancerInfo->experiences)
+                    ? $freelancerInfo->experiences
+                    : [];
+            @endphp
+
+            @if (!empty($experiences))
+                <ul class="space-y-4">
+                    @foreach ($experiences as $exp)
+                        <li class="border rounded-lg p-4 dark:border-gray-700">
+                            <h3
+                                class="font-semibold text-gray-800 dark:text-gray-100">
+                                {{ $exp['job_title'] ?? 'N/A' }}
+                            </h3>
+                            <p class="text-gray-700 dark:text-gray-300">
+                                <span class="font-medium">Company:</span>
+                                {{ $exp['company'] ?? 'N/A' }}
+                            </p>
+                            <p class="text-gray-700 dark:text-gray-300">
+                                <span class="font-medium">Duration:</span>
+                                {{ $exp['start_date'] ?? 'N/A' }} -
+                                {{ $exp['end_date'] ?? 'Present' }}
+                            </p>
+                            <p class="text-gray-700 dark:text-gray-300">
+                                <span class="font-medium">Description:</span>
+                                {{ $exp['description'] ?? 'N/A' }}
+                            </p>
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+                <p class="text-gray-700 dark:text-gray-300">N/A</p>
+            @endif
+        </div>
+
         <div class="mt-6">
             <x-button tag="a"
                 :href="route('freelancer.profile.edit')">Edit Information</x-button>

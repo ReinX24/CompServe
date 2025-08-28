@@ -11,16 +11,16 @@ class FreelancerInformation extends Model
         'contact_number',
         'about_me',
         'skills',
-        'experience'
+        'experiences'
     ];
 
     protected $casts = [
         'skills' => 'array',
-        'experience' => 'array'
+        'experiences' => 'array'
     ];
 
     // DONE: add skills
-    // TODO: add experience
+    // DONE: add experience
     // TODO: add education
     // TODO: add certifications (TO BE VERIFIED BY ADMIN)
 
