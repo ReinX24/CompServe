@@ -11,10 +11,12 @@ class FreelancerInformation extends Model
         'contact_number',
         'about_me',
         'skills',
+        'experience'
     ];
 
     protected $casts = [
         'skills' => 'array',
+        'experience' => 'array'
     ];
 
     // DONE: add skills

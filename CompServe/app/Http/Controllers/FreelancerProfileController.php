@@ -30,6 +30,9 @@ class FreelancerProfileController extends Controller
     {
         $user = Auth::user(); // Current logged-in freelancer
 
+        // 👀 Dump the experiences only
+        dd($request->input('experiences'));
+
         // Validate form inputs
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
