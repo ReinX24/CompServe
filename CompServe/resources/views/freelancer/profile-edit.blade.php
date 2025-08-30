@@ -174,6 +174,116 @@
                 </button>
             </div>
 
+            <!-- Education Section -->
+            <div class="mb-3"
+                x-data="educationInput({{ json_encode(old('education', $freelancerInfo->education ?? [])) }})">
+
+                <h2
+                    class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">
+                    Education
+                </h2>
+
+                <!-- Education Inputs -->
+                <template x-for="(edu, index) in education"
+                    :key="index">
+                    <div
+                        class="p-4 mb-4 border rounded-lg bg-gray-50 dark:bg-gray-800">
+
+                        <!-- School -->
+                        <label
+                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            School / University
+                        </label>
+                        <input type="text"
+                            x-model="edu.school"
+                            :name="`education[${index}][school]`"
+                            placeholder="e.g. Harvard University"
+                            class="w-full px-4 py-1.5 rounded-lg text-gray-700 dark:text-gray-300
+                          bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
+                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+
+                        <!-- Degree -->
+                        <label
+                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Degree / Qualification
+                        </label>
+                        <input type="text"
+                            x-model="edu.degree"
+                            :name="`education[${index}][degree]`"
+                            placeholder="e.g. Bachelor of Science"
+                            class="w-full px-4 py-1.5 rounded-lg text-gray-700 dark:text-gray-300
+                          bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
+                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+
+                        <!-- Field of Study -->
+                        <label
+                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Field of Study
+                        </label>
+                        <input type="text"
+                            x-model="edu.field_of_study"
+                            :name="`education[${index}][field_of_study]`"
+                            placeholder="e.g. Computer Science"
+                            class="w-full px-4 py-1.5 rounded-lg text-gray-700 dark:text-gray-300
+                          bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
+                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+
+                        <!-- Start Year -->
+                        <label
+                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Start Year
+                        </label>
+                        <input type="number"
+                            x-model="edu.start_year"
+                            :name="`education[${index}][start_year]`"
+                            placeholder="e.g. 2018"
+                            class="w-full px-4 py-1.5 rounded-lg text-gray-700 dark:text-gray-300
+                          bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
+                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+
+                        <!-- End Year -->
+                        <label
+                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            End Year
+                        </label>
+                        <input type="number"
+                            x-model="edu.end_year"
+                            :name="`education[${index}][end_year]`"
+                            placeholder="e.g. 2022"
+                            class="w-full px-4 py-1.5 rounded-lg text-gray-700 dark:text-gray-300
+                          bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
+                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+
+                        <!-- Awards -->
+                        <label
+                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Awards
+                        </label>
+                        <textarea x-model="edu.awards"
+                            :name="`education[${index}][awards]`"
+                            placeholder="Additional achievements, awards, honors, etc."
+                            class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
+                             bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
+                             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            </textarea>
+
+                        <!-- Remove Button -->
+                        <button type="button"
+                            @click="removeEducation(index)"
+                            class="mt-2 px-3 py-1 text-red-600 bg-red-100 rounded-lg hover:bg-red-200">
+                            Remove
+                        </button>
+                    </div>
+                </template>
+
+                <!-- Add Education -->
+                <button type="button"
+                    @click="addEducation"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                    + Add Education
+                </button>
+            </div>
+
             <!-- Submit -->
             <div class="mb-3">
                 <x-button type="primary"
@@ -229,6 +339,25 @@
                 },
                 removeExperience(index) {
                     this.experiences.splice(index, 1);
+                }
+            }
+        }
+
+        function educationInput(initialEducation = []) {
+            return {
+                education: initialEducation.length ? initialEducation : [],
+                addEducation() {
+                    this.education.push({
+                        school: "",
+                        degree: "",
+                        field_of_study: "",
+                        start_year: "",
+                        end_year: "",
+                        description: ""
+                    });
+                },
+                removeEducation(index) {
+                    this.education.splice(index, 1);
                 }
             }
         }

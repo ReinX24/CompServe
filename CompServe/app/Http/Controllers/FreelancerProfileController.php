@@ -44,6 +44,15 @@ class FreelancerProfileController extends Controller
             'experiences.*.start_date' => ['nullable', 'date'],
             'experiences.*.end_date' => ['nullable', 'date', 'after_or_equal:experiences.*.start_date'],
             'experiences.*.description' => ['nullable', 'string', 'max:1000'],
+
+            // Validate education array
+            'education' => ['nullable', 'array'],
+            'education.*.school' => ['nullable', 'string', 'max:255'],
+            'education.*.degree' => ['nullable', 'string', 'max:255'],
+            'education.*.field_of_study' => ['nullable', 'string', 'max:255'],
+            'education.*.start_year' => ['nullable', 'integer', 'digits:4'],
+            'education.*.end_year' => ['nullable', 'integer', 'digits:4', 'gte:education.*.start_year'],
+            'education.*.awards' => ['nullable', 'string', 'max:1000'],
         ]);
 
         // Update the user's own table (users.name)
@@ -57,7 +66,11 @@ class FreelancerProfileController extends Controller
         // Ensure experiences is stored as JSON
         if (isset($freelancerData['experiences'])) {
             $freelancerData['experiences'] = array_values($freelancerData['experiences']);
-            // reindex to 0,1,2 to avoid gaps when removing items
+        }
+
+        // Ensure education is stored as JSON
+        if (isset($freelancerData['education'])) {
+            $freelancerData['education'] = array_values($freelancerData['education']);
         }
 
         // Ensure freelancerInformation exists, create if not

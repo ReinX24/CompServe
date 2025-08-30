@@ -110,6 +110,53 @@
             @endif
         </div>
 
+        <!-- Education -->
+        <div class="mt-6">
+            <h2
+                class="text-xl font-semibold text-gray-800 dark:text-gray-100 border-b pb-2 mb-4">
+                Education
+            </h2>
+            @php
+                $education = !empty($freelancerInfo->education)
+                    ? $freelancerInfo->education
+                    : [];
+            @endphp
+
+            @if (!empty($education))
+                <ul class="space-y-4">
+                    @foreach ($education as $edu)
+                        <li class="border rounded-lg p-4 dark:border-gray-700">
+                            <h3
+                                class="font-semibold text-gray-800 dark:text-gray-100">
+                                {{ $edu['degree'] ?? 'N/A' }}
+                            </h3>
+                            <p class="text-gray-700 dark:text-gray-300">
+                                <span class="font-medium">School:</span>
+                                {{ $edu['school'] ?? 'N/A' }}
+                            </p>
+                            <p class="text-gray-700 dark:text-gray-300">
+                                <span class="font-medium">Field of Study:</span>
+                                {{ $edu['field_of_study'] ?? 'N/A' }}
+                            </p>
+                            <p class="text-gray-700 dark:text-gray-300">
+                                <span class="font-medium">Years:</span>
+                                {{ $edu['start_year'] ?? 'N/A' }} -
+                                {{ $edu['end_year'] ?? 'Present' }}
+                            </p>
+                            @if (!empty($edu['awards']))
+                                <p class="text-gray-700 dark:text-gray-300">
+                                    <span class="font-medium">Awards:</span>
+                                    {{ $edu['awards'] }}
+                                </p>
+                            @endif
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+                <p class="text-gray-700 dark:text-gray-300">N/A</p>
+            @endif
+        </div>
+
         <div class="mt-6">
             <x-button tag="a"
                 :href="route('freelancer.profile.edit')">Edit Information</x-button>
