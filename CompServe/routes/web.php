@@ -10,6 +10,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/dashboard', function () {
+    // Redirect the user to the appropriate dashboard
     if (Auth::user()->role === "freelancer") {
         return view('freelancer.dashboard');
     } elseif (Auth::user()->role === "client") {
@@ -30,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/appearance', [Settings\AppearanceController::class, 'edit'])->name('settings.appearance.edit');
 });
 
+// Freelancer routes
 Route::prefix('freelancer')->middleware('auth')->name('freelancer.')->group(function () {
     Route::get('/dashboard', function () {
         return view('freelancer.dashboard');
@@ -59,14 +61,27 @@ Route::prefix('freelancer')->middleware('auth')->name('freelancer.')->group(func
     });
 });
 
+// Client routes
 Route::prefix('client')->middleware('auth')->name('client.')->group(function () {
     Route::get('/dashboard', function () {
         return view('client.dashboard');
     })->name('dashboard');
+
+    Route::prefix('jobs')->group(function () {
+        Route::get('/jobs/posts', function () {
+            return view("client.jobs.posted-jobs");
+        })->name('jobs.posts');
+
+        Route::get('/jobs/pending', function () {
+            return view("client.jobs.pending-jobs");
+        })->name('jobs.pending');
+
+        Route::get('/jobs/finished', function () {
+            return view("client.jobs.finished");
+        })->name('jobs.finished');
+    });
 });
 
-Route::get('client/dashboard', function () {
-    return view('client.dashboard');
-})->middleware('auth')->name('client.dashboard');
+// TODO: admin routes
 
 require __DIR__ . '/auth.php';

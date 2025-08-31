@@ -75,6 +75,35 @@
                                     :active="request()->routeIs(
                                         'client.dashboard',
                                     )">Dashboard</x-layouts.sidebar-link>
+
+                                <x-layouts.sidebar-two-level-link-parent
+                                    title="Jobs"
+                                    icon='fas-pencil-alt'
+                                    :active="request()->routeIs(
+                                        'client.jobs*',
+                                    )">
+                                    <x-layouts.sidebar-two-level-link
+                                        href="{{ route('client.jobs.posts') }}"
+                                        icon='far-folder-open'
+                                        :active="request()->routeIs(
+                                            'client.jobs.posts',
+                                        )">Posted
+                                        Jobs</x-layouts.sidebar-two-level-link>
+                                    <x-layouts.sidebar-two-level-link
+                                        href="{{ route('client.jobs.pending') }}"
+                                        icon='fas-envelope-open-text'
+                                        :active="request()->routeIs(
+                                            'client.jobs.pending',
+                                        )">Pending
+                                        Jobs</x-layouts.sidebar-two-level-link>
+                                    <x-layouts.sidebar-two-level-link
+                                        href="{{ route('client.jobs.current') }}"
+                                        icon='fas-pen'
+                                        :active="request()->routeIs(
+                                            'client.jobs.current',
+                                        )">Finished
+                                        Jobs</x-layouts.sidebar-two-level-link>
+                                </x-layouts.sidebar-two-level-link-parent>
                             @endif
 
                             <!-- Example two level -->
