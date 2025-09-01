@@ -97,10 +97,10 @@
                                         )">Pending
                                         Jobs</x-layouts.sidebar-two-level-link>
                                     <x-layouts.sidebar-two-level-link
-                                        href="{{ route('client.jobs.current') }}"
+                                        href="{{ route('client.jobs.finished') }}"
                                         icon='fas-pen'
                                         :active="request()->routeIs(
-                                            'client.jobs.current',
+                                            'client.jobs.finished',
                                         )">Finished
                                         Jobs</x-layouts.sidebar-two-level-link>
                                 </x-layouts.sidebar-two-level-link-parent>

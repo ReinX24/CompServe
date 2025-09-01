@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\FreelancerProfileController;
+use App\Http\Controllers\JobListingController;
 use App\Http\Controllers\Settings;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    return view('landing');
 })->name('home');
 
 Route::get('/dashboard', function () {
@@ -68,16 +70,18 @@ Route::prefix('client')->middleware('auth')->name('client.')->group(function () 
     })->name('dashboard');
 
     Route::prefix('jobs')->group(function () {
-        Route::get('/jobs/posts', function () {
-            return view("client.jobs.posted-jobs");
-        })->name('jobs.posts');
+        Route::get('/jobs/posts', [JobListingController::class, 'postedJobs'])->name('jobs.posts');
+
+        Route::get('/jobs/posts/create', [JobListingController::class, 'create'])->name('jobs.create');
+        Route::post('/jobs/posts', [JobListingController::class, 'store'])->name('jobs.store');
+
 
         Route::get('/jobs/pending', function () {
             return view("client.jobs.pending-jobs");
         })->name('jobs.pending');
 
         Route::get('/jobs/finished', function () {
-            return view("client.jobs.finished");
+            return view("client.jobs.finished-jobs");
         })->name('jobs.finished');
     });
 });
