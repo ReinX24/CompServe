@@ -84,7 +84,6 @@
                 @enderror
             </div>
 
-
             <!-- Skills Required -->
             <div x-data="{ skills: ['{{ old('skills_required.0') }}'].filter(s => s) }"
                 class="space-y-2">
@@ -107,8 +106,8 @@
 
                         <button type="button"
                             @click="skills.splice(index, 1)"
-                            class="px-4 bg-red-500 text-white rounded-lg hover:bg-red-600 flex items-center">
-                            Remove
+                            class="px-3 bg-red-500 text-white rounded-lg hover:bg-red-600 flex items-center justify-center">
+                            ✕
                         </button>
                     </div>
                 </template>
@@ -125,53 +124,45 @@
                 @enderror
             </div>
 
-            <!-- Alpine.js for reactivity -->
-            <script src="//unpkg.com/alpinejs"
-                defer></script>
-
-
             <!-- Budget Type -->
-            <div>
-                <label for="budget_type"
-                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    {{ __('Budget Type') }}
-                </label>
-                <select name="budget_type"
-                    id="budget_type"
-                    required
-                    class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
-                           bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                           focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                    <option value="fixed"
-                        {{ old('budget_type') == 'fixed' ? 'selected' : '' }}>
-                        Fixed</option>
-                    <option value="hourly"
-                        {{ old('budget_type') == 'hourly' ? 'selected' : '' }}>
-                        Hourly</option>
-                </select>
-                @error('budget_type')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <!-- Budget Type -->
+                <div>
+                    <label for="budget_type"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        {{ __('Budget Type') }}
+                    </label>
+                    <select name="budget_type"
+                        id="budget_type"
+                        required
+                        class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
+                   bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
+                   focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        <option value="fixed"
+                            {{ old('budget_type') == 'fixed' ? 'selected' : '' }}>
+                            Fixed</option>
+                        <option value="hourly"
+                            {{ old('budget_type') == 'hourly' ? 'selected' : '' }}>
+                            Hourly</option>
+                    </select>
+                </div>
 
-            <!-- Budget -->
-            <div>
-                <label for="budget"
-                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    {{ __('Budget (₱)') }}
-                </label>
-                <input type="number"
-                    step="0.01"
-                    name="budget"
-                    id="budget"
-                    value="{{ old('budget') }}"
-                    placeholder="e.g. 150.00"
-                    class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
-                           bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                           focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                @error('budget')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
+                <!-- Budget -->
+                <div>
+                    <label for="budget"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        {{ __('Budget (₱)') }}
+                    </label>
+                    <input type="number"
+                        step="0.01"
+                        name="budget"
+                        id="budget"
+                        value="{{ old('budget') }}"
+                        placeholder="e.g. 150.00"
+                        class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
+                   bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
+                   focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                </div>
             </div>
 
             <!-- Location -->

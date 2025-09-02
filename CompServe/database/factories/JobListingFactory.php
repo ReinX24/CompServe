@@ -21,10 +21,10 @@ class JobListingFactory extends Factory
             'title' => $this->faker->jobTitle(),
             'description' => $this->faker->paragraph(5),
             'category' => $this->faker->randomElement(['Web Development', 'Design', 'Writing', 'Marketing']),
-            'skills_required' => json_encode($this->faker->randomElements(
+            'skills_required' => $this->faker->randomElements(
                 ['PHP', 'Laravel', 'React', 'Vue', 'Node.js', 'Figma', 'SEO', 'Content Writing'],
                 3
-            )),
+            ),
             'budget_type' => $this->faker->randomElement(['fixed', 'hourly']),
             'budget' => $this->faker->randomFloat(2, 100, 5000),
             'location' => $this->faker->city(),

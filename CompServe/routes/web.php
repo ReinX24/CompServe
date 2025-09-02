@@ -70,19 +70,19 @@ Route::prefix('client')->middleware('auth')->name('client.')->group(function () 
     })->name('dashboard');
 
     Route::prefix('jobs')->group(function () {
-        Route::get('/jobs/posts', [JobListingController::class, 'postedJobs'])->name('jobs.posts');
+        Route::get('/', [JobListingController::class, 'postedJobs'])->name('jobs.posts');
 
-        Route::get('/jobs/posts/create', [JobListingController::class, 'create'])->name('jobs.create');
-        Route::post('/jobs/posts', [JobListingController::class, 'store'])->name('jobs.store');
+        Route::get('/create', [JobListingController::class, 'create'])->name('jobs.create');
+        Route::post('/', [JobListingController::class, 'store'])->name('jobs.store');
+
+        Route::get('/in_progress', [JobListingController::class, 'inProgressJobs'])->name('jobs.in_progress');
+
+        Route::get('/finished', [JobListingController::class, 'completedJobs'])->name('jobs.completed');
+
+        Route::get('/{jobListing}/', [JobListingController::class, 'show'])->name('jobs.show');
+        Route::get('/{jobListing}/edit', [JobListingController::class, 'edit'])->name('jobs.edit');
 
 
-        Route::get('/jobs/pending', function () {
-            return view("client.jobs.pending-jobs");
-        })->name('jobs.pending');
-
-        Route::get('/jobs/finished', function () {
-            return view("client.jobs.finished-jobs");
-        })->name('jobs.finished');
     });
 });
 

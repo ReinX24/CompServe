@@ -10,9 +10,23 @@ class JobListingController extends Controller
 {
     public function postedJobs()
     {
-        $jobs = Auth::user()->jobListings;
+        $jobs = Auth::user()->jobListings()->where("status", "=", "open")->get();
 
         return view('client.jobs.posted-jobs', compact('jobs'));
+    }
+
+    public function inProgressJobs()
+    {
+        $jobs = Auth::user()->jobListings()->where("status", "=", "in_progress")->get();
+
+        return view('client.jobs.in-progress-jobs', compact('jobs'));
+    }
+
+    public function completedJobs()
+    {
+        $jobs = Auth::user()->jobListings()->where("status", "=", "completed")->get();
+
+        return view('client.jobs.completed-jobs', compact('jobs'));
     }
 
     /**
@@ -28,7 +42,7 @@ class JobListingController extends Controller
      */
     public function create()
     {
-        return view("client.jobs.create-jobs");
+        return view("client.jobs.create-job");
     }
 
     /**
@@ -36,9 +50,39 @@ class JobListingController extends Controller
      */
     public function store(Request $request)
     {
-        // TODO: debug storing job listing
-        dd($request);
-        return "STORE JOB";
+        // Validate input
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'category' => 'required|string|max:100',
+            'skills_required' => 'nullable|array', // multiple skills
+            'skills_required.*' => 'nullable|string|max:100',
+            'budget_type' => 'required|in:fixed,hourly',
+            'budget' => 'required|numeric|min:0',
+            'location' => 'nullable|string|max:255',
+            'deadline' => 'nullable|date|after:today',
+            'status' => 'nullable|in:open,closed',
+        ]);
+
+        // Create job listing
+        $job = new JobListing();
+        $job->client_id = Auth::user()->id;
+        $job->title = $validated['title'];
+        $job->description = $validated['description'];
+        $job->category = $validated['category'];
+        $job->skills_required = $validated['skills_required'] ?? []; // store as JSON
+        $job->budget_type = $validated['budget_type'];
+        $job->budget = $validated['budget'];
+        $job->location = $validated['location'] ?? null;
+        $job->deadline = $validated['deadline'] ?? null;
+        $job->status = $validated['status'] ?? 'open';
+
+        $job->save();
+
+        // Redirect with success message
+        return redirect()
+            ->route('client.jobs.posts')
+            ->with('success', 'Job listing created successfully!');
     }
 
     /**
@@ -46,7 +90,7 @@ class JobListingController extends Controller
      */
     public function show(JobListing $jobListing)
     {
-        //
+        return view('client.jobs.show-job', compact('jobListing'));
     }
 
     /**
@@ -54,7 +98,8 @@ class JobListingController extends Controller
      */
     public function edit(JobListing $jobListing)
     {
-        //
+        // dd($jobListing);
+        return view('client.jobs.edit-job', compact('jobListing'));
     }
 
     /**

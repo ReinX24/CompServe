@@ -90,34 +90,34 @@
                                         )">Posted
                                         Jobs</x-layouts.sidebar-two-level-link>
                                     <x-layouts.sidebar-two-level-link
-                                        href="{{ route('client.jobs.pending') }}"
+                                        href="{{ route('client.jobs.in_progress') }}"
                                         icon='fas-envelope-open-text'
                                         :active="request()->routeIs(
-                                            'client.jobs.pending',
-                                        )">Pending
+                                            'client.jobs.in_progress',
+                                        )">In Progress
                                         Jobs</x-layouts.sidebar-two-level-link>
                                     <x-layouts.sidebar-two-level-link
-                                        href="{{ route('client.jobs.finished') }}"
+                                        href="{{ route('client.jobs.completed') }}"
                                         icon='fas-pen'
                                         :active="request()->routeIs(
-                                            'client.jobs.finished',
-                                        )">Finished
+                                            'client.jobs.completed',
+                                        )">Completed
                                         Jobs</x-layouts.sidebar-two-level-link>
                                 </x-layouts.sidebar-two-level-link-parent>
                             @endif
 
                             <!-- Example two level -->
-                            <x-layouts.sidebar-two-level-link-parent
+                            {{-- <x-layouts.sidebar-two-level-link-parent
                                 title="Example two level"
                                 icon="fas-house"
                                 :active="request()->routeIs('two-level*')">
                                 <x-layouts.sidebar-two-level-link href="#"
                                     icon='fas-house'
                                     :active="request()->routeIs('two-level*')">Child</x-layouts.sidebar-two-level-link>
-                            </x-layouts.sidebar-two-level-link-parent>
+                            </x-layouts.sidebar-two-level-link-parent> --}}
 
                             <!-- Example three level -->
-                            <x-layouts.sidebar-two-level-link-parent
+                            {{-- <x-layouts.sidebar-two-level-link-parent
                                 title="Example three level"
                                 icon="fas-house"
                                 :active="request()->routeIs('three-level*')">
@@ -142,7 +142,7 @@
                                         Third Level Link
                                     </x-layouts.sidebar-three-level-link>
                                 </x-layouts.sidebar-three-level-parent>
-                            </x-layouts.sidebar-two-level-link-parent>
+                            </x-layouts.sidebar-two-level-link-parent> --}}
                         </ul>
                     </nav>
                 </div>
