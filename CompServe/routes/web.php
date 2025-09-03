@@ -70,19 +70,20 @@ Route::prefix('client')->middleware('auth')->name('client.')->group(function () 
     })->name('dashboard');
 
     Route::prefix('jobs')->group(function () {
-        Route::get('/', [JobListingController::class, 'postedJobs'])->name('jobs.posts');
+        Route::get('/', [JobListingController::class, 'index'])->name('jobs.index');
 
         Route::get('/create', [JobListingController::class, 'create'])->name('jobs.create');
         Route::post('/', [JobListingController::class, 'store'])->name('jobs.store');
 
+        Route::get('/posted', [JobListingController::class, 'postedJobs'])->name('jobs.posts');
         Route::get('/in_progress', [JobListingController::class, 'inProgressJobs'])->name('jobs.in_progress');
 
         Route::get('/finished', [JobListingController::class, 'completedJobs'])->name('jobs.completed');
 
         Route::get('/{jobListing}/', [JobListingController::class, 'show'])->name('jobs.show');
         Route::get('/{jobListing}/edit', [JobListingController::class, 'edit'])->name('jobs.edit');
-
-
+        Route::put('/{jobListing}/update', [JobListingController::class, 'update'])->name('jobs.update');
+        Route::delete('/{jobListing}/destroy', [JobListingController::class, 'destroy'])->name('jobs.destroy');
     });
 });
 

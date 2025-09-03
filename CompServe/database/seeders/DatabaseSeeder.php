@@ -23,5 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
 
         $this->call(JobListingSeeder::class);
+
+        $this->call(FreelancerInformationSeeder::class);
     }
 }

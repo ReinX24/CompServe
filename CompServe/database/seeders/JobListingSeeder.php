@@ -18,11 +18,28 @@ class JobListingSeeder extends Seeder
         $clients = User::where('role', 'client')->get();
 
         foreach ($clients as $client) {
-            // Create 5 jobs for each client
+            // 10 open jobs
             JobListing::factory()
-                ->count(5)
+                ->count(10)
                 ->create([
                     'client_id' => $client->id,
+                    'status' => 'open',
+                ]);
+
+            // 10 in_progress jobs
+            JobListing::factory()
+                ->count(10)
+                ->create([
+                    'client_id' => $client->id,
+                    'status' => 'in_progress',
+                ]);
+
+            // 10 completed jobs
+            JobListing::factory()
+                ->count(10)
+                ->create([
+                    'client_id' => $client->id,
+                    'status' => 'completed',
                 ]);
         }
     }

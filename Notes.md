@@ -18,7 +18,6 @@ Docker Container: localhost:8080
 
 - Client Side Pages
 - Client middleware
-- Job creation on freelancer side
 
 #### Admin Side
 
@@ -27,3 +26,4 @@ Docker Container: localhost:8080
 #### Others
 
 - Add separate pages for freelancer and client login and register
+- Make arrays into json instead of directly uploading as arrays

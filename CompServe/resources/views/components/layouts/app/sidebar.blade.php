@@ -83,6 +83,13 @@
                                         'client.jobs*',
                                     )">
                                     <x-layouts.sidebar-two-level-link
+                                        href="{{ route('client.jobs.index') }}"
+                                        icon='fas-border-all'
+                                        :active="request()->routeIs(
+                                            'client.jobs.index',
+                                        )">All
+                                        Jobs</x-layouts.sidebar-two-level-link>
+                                    <x-layouts.sidebar-two-level-link
                                         href="{{ route('client.jobs.posts') }}"
                                         icon='far-folder-open'
                                         :active="request()->routeIs(

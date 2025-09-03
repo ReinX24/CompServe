@@ -8,6 +8,17 @@ use Illuminate\Support\Facades\Auth;
 
 class JobListingController extends Controller
 {
+    // TODO: implement pagination for showing data
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $jobs = Auth::user()->jobListings;
+
+        return view('client.jobs.all-jobs', compact('jobs'));
+    }
+
     public function postedJobs()
     {
         $jobs = Auth::user()->jobListings()->where("status", "=", "open")->get();
@@ -27,14 +38,6 @@ class JobListingController extends Controller
         $jobs = Auth::user()->jobListings()->where("status", "=", "completed")->get();
 
         return view('client.jobs.completed-jobs', compact('jobs'));
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
     }
 
     /**
@@ -98,7 +101,6 @@ class JobListingController extends Controller
      */
     public function edit(JobListing $jobListing)
     {
-        // dd($jobListing);
         return view('client.jobs.edit-job', compact('jobListing'));
     }
 
@@ -107,7 +109,32 @@ class JobListingController extends Controller
      */
     public function update(Request $request, JobListing $jobListing)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'category' => 'required|string|in:Hardware,Software,Networking',
+            'skills_required' => 'nullable|array',
+            'skills_required.*' => 'nullable|string|max:255',
+            'budget_type' => 'required|string|in:fixed,hourly',
+            'budget' => 'nullable|numeric|min:0',
+            'location' => 'nullable|string|max:255',
+            'deadline' => 'nullable|date|after:today',
+        ]);
+
+        $jobListing->update([
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'category' => $validated['category'],
+            'skills_required' => $validated['skills_required'] ?? [],
+            'budget_type' => $validated['budget_type'],
+            'budget' => $validated['budget'] ?? null,
+            'location' => $validated['location'] ?? null,
+            'deadline' => $validated['deadline'] ?? null,
+        ]);
+
+        return redirect()
+            ->route('client.jobs.show', compact('jobListing'))
+            ->with('success', 'Job listing updated successfully!');
     }
 
     /**
@@ -115,6 +142,10 @@ class JobListingController extends Controller
      */
     public function destroy(JobListing $jobListing)
     {
-        //
+        $jobListing->delete();
+
+        return redirect()
+            ->route('client.jobs.posts')
+            ->with('success', 'Job listing deleted successfully!');
     }
 }
