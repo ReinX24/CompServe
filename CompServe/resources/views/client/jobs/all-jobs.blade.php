@@ -12,7 +12,7 @@
 
         <div class="mt-2 md:mt-0">
             <a href="{{ route('client.jobs.create') }}"
-                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 w-full md:w-auto text-center block">
+                class="btn btn-neutral">
                 + {{ __('Add Job') }}
             </a>
         </div>

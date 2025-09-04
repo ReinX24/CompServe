@@ -72,7 +72,11 @@
 
             <!-- Main Content -->
             <main
-                class="flex-1 overflow-auto bg-gray-100 dark:bg-gray-900 content-transition">
+                :class="{
+                    'lg:ml-64': sidebarOpen, // shift when sidebar is open on desktop
+                    'lg:ml-0': !sidebarOpen // collapsed (if you add a mini mode later)
+                }"
+                class="flex-1 overflow-auto bg-gray-100 dark:bg-gray-900 content-transition pt-16">
                 <div class="p-6">
                     <!-- Success Message -->
                     @session('status')
