@@ -39,7 +39,7 @@
                             </a>
                         </h3>
                         <p class="text-gray-600 dark:text-gray-400 mb-2">
-                            {{ Str::limit($job->description, 120) }}</p>
+                            {{ Str::limit($job->description, 100) }}</p>
                         <p class="text-gray-700 dark:text-gray-300"><span
                                 class="font-medium">Budget:</span>
                             ${{ number_format($job->budget, 2) }}</p>
@@ -86,7 +86,7 @@
                             </a>
                         </h3>
                         <p class="text-gray-600 dark:text-gray-400 mb-2">
-                            {{ Str::limit($job->description, 120) }}</p>
+                            {{ Str::limit($job->description, 100) }}</p>
                         <p class="text-gray-700 dark:text-gray-300"><span
                                 class="font-medium">Budget:</span>
                             ${{ number_format($job->budget, 2) }}</p>
@@ -133,7 +133,7 @@
                             </a>
                         </h3>
                         <p class="text-gray-600 dark:text-gray-400 mb-2">
-                            {{ Str::limit($job->description, 120) }}</p>
+                            {{ Str::limit($job->description, 100) }}</p>
                         <p class="text-gray-700 dark:text-gray-300"><span
                                 class="font-medium">Budget:</span>
                             ${{ number_format($job->budget, 2) }}</p>

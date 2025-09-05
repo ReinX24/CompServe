@@ -21,21 +21,21 @@ class JobListingController extends Controller
 
     public function postedJobs()
     {
-        $jobs = Auth::user()->jobListings()->where("status", "=", "open")->get();
+        $jobs = Auth::user()->jobListings()->where("status", "open")->paginate(6);
 
         return view('client.jobs.posted-jobs', compact('jobs'));
     }
 
     public function inProgressJobs()
     {
-        $jobs = Auth::user()->jobListings()->where("status", "=", "in_progress")->get();
+        $jobs = Auth::user()->jobListings()->where("status", "in_progress")->paginate(6);
 
         return view('client.jobs.in-progress-jobs', compact('jobs'));
     }
 
     public function completedJobs()
     {
-        $jobs = Auth::user()->jobListings()->where("status", "=", "completed")->get();
+        $jobs = Auth::user()->jobListings()->where("status", "completed")->paginate(6);
 
         return view('client.jobs.completed-jobs', compact('jobs'));
     }
