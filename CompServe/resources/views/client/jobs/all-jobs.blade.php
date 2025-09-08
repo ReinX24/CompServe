@@ -12,7 +12,7 @@
 
         <div class="mt-2 md:mt-0">
             <a href="{{ route('client.jobs.create') }}"
-                class="btn btn-neutral">
+                class="btn btn-primary">
                 + {{ __('Add Job') }}
             </a>
         </div>

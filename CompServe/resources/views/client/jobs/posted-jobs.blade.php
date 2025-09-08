@@ -9,10 +9,12 @@
             </p>
         </div>
 
-        <a href="{{ route('client.jobs.create') }}"
-            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
-            + {{ __('Add Job') }}
-        </a>
+        <div class="mt-2 md:mt-0">
+            <a href="{{ route('client.jobs.create') }}"
+                class="btn btn-primary">
+                + {{ __('Add Job') }}
+            </a>
+        </div>
     </div>
 
 

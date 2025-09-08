@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\FreelancerProfileController;
+use App\Http\Controllers\ClientInformationController;
+use App\Http\Controllers\FreelancerInformationController;
 use App\Http\Controllers\JobListingController;
 use App\Http\Controllers\Settings;
 use Illuminate\Support\Facades\Auth;
@@ -57,9 +58,9 @@ Route::prefix('freelancer')->middleware('auth')->name('freelancer.')->group(func
 
     // Profile of the freelancer
     Route::prefix('profile')->group(function () {
-        Route::get('/', [FreelancerProfileController::class, 'show'])->name('profile.show');
-        Route::get('/edit', [FreelancerProfileController::class, 'edit'])->name('profile.edit');
-        Route::put('/update', [FreelancerProfileController::class, 'update'])->name('profile.update');
+        Route::get('/', [FreelancerInformationController::class, 'show'])->name('profile.show');
+        Route::get('/edit', [FreelancerInformationController::class, 'edit'])->name('profile.edit');
+        Route::put('/update', [FreelancerInformationController::class, 'update'])->name('profile.update');
     });
 });
 
@@ -84,6 +85,13 @@ Route::prefix('client')->middleware('auth')->name('client.')->group(function () 
         Route::get('/{jobListing}/edit', [JobListingController::class, 'edit'])->name('jobs.edit');
         Route::put('/{jobListing}/update', [JobListingController::class, 'update'])->name('jobs.update');
         Route::delete('/{jobListing}/destroy', [JobListingController::class, 'destroy'])->name('jobs.destroy');
+    });
+
+    // Profile of the client
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [ClientInformationController::class, 'show'])->name('profile.show');
+        Route::get('/edit', [ClientInformationController::class, 'edit'])->name('profile.edit');
+        Route::put('/update', [ClientInformationController::class, 'update'])->name('profile.update');
     });
 });
 

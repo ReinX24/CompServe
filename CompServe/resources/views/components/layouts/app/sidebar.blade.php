@@ -67,15 +67,12 @@
                         Profile
                     </x-layouts.sidebar-link>
                 @elseif (Auth::user()->role === 'client')
-                    {{-- TODO: close sidebar when on mobile screen --}}
-                    {{-- <div @click="toggleSidebar"> --}}
                     <x-layouts.sidebar-link
                         href="{{ route('client.dashboard') }}"
                         icon='fas-house'
                         :active="request()->routeIs('client.dashboard')">
                         Dashboard
                     </x-layouts.sidebar-link>
-                    {{-- </div> --}}
 
                     <x-layouts.sidebar-two-level-link-parent title="Jobs"
                         icon='fas-pencil-alt'
@@ -109,6 +106,15 @@
                             Completed Jobs
                         </x-layouts.sidebar-two-level-link>
                     </x-layouts.sidebar-two-level-link-parent>
+
+                    <x-layouts.sidebar-link
+                        href="{{ route('client.profile.show') }}"
+                        icon='fas-person'
+                        :active="request()->routeIs(
+                            'client.profile.show',
+                        )">
+                        Profile
+                    </x-layouts.sidebar-link>
                 @endif
             </ul>
         </nav>
