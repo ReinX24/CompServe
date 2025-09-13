@@ -1,11 +1,18 @@
 <x-layouts.app>
+    <div class="breadcrumbs text-sm">
+        <ul>
+            <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li>Completed Jobs</li>
+        </ul>
+    </div>
+
     <div class="flex justify-between items-center mb-4">
         <div class="mb-6">
             <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
-                {{ __('Pending Jobs') }}
+                {{ __('Completed Jobs') }}
             </h1>
             <p class="text-gray-600 dark:text-gray-400 mt-1">
-                {{ __('Jobs currently in progress by freelancers.') }}
+                {{ __('Jobs completed by freelancers.') }}
             </p>
         </div>
 
@@ -28,7 +35,7 @@
                             class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">
                             <a href="{{ route('client.jobs.show', $job->id) }}"
                                 class="hover:underline text-blue-600 dark:text-blue-400">
-                                {{ $job->title }}
+                            {{ Str::limit($job->title, 40) }}
                             </a>
                         </h2>
 

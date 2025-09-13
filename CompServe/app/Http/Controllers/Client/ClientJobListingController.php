@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Client;
 
+use App\Http\Controllers\Controller;
 use App\Models\JobListing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class JobListingController extends Controller
+class ClientJobListingController extends Controller
 {
-    // TODO: implement pagination for showing data
     /**
      * Display a listing of the resource.
      */

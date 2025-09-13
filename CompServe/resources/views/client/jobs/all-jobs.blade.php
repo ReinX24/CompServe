@@ -1,4 +1,11 @@
 <x-layouts.app>
+    <div class="breadcrumbs text-sm">
+        <ul>
+            <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li>All Jobs</li>
+        </ul>
+    </div>
+
     <div
         class="flex flex-col md:flex-row md:justify-between md:items-center mb-6">
         <div class="mb-4 md:mb-0">

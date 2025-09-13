@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\ClientInformationController;
-use App\Http\Controllers\FreelancerInformationController;
-use App\Http\Controllers\JobListingController;
+use App\Http\Controllers\Freelancer\FreelancerInformationController;
+use App\Http\Controllers\Client\ClientInformationController;
+use App\Http\Controllers\Client\ClientJobListingController;
+use App\Http\Controllers\Freelancer\FreelancerJobListingController;
 use App\Http\Controllers\Settings;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -40,21 +41,10 @@ Route::prefix('freelancer')->middleware('auth')->name('freelancer.')->group(func
         return view('freelancer.dashboard');
     })->name('dashboard');
 
-    Route::get('/jobs/available', function () {
-        return view('freelancer.jobs.available-jobs');
-    })->name('jobs.available');
-
-    Route::get('/jobs/applied', function () {
-        return view('freelancer.jobs.applied-jobs');
-    })->name('jobs.applied');
-
-    Route::get('/jobs/current', function () {
-        return view('freelancer.jobs.current-jobs');
-    })->name('jobs.current');
-
-    Route::get('/jobs/finished', function () {
-        return view('freelancer.jobs.finished-jobs');
-    })->name('jobs.finished');
+    Route::get('/jobs/available', [FreelancerJobListingController::class, 'availableJobs'])->name('jobs.available');
+    Route::get('/jobs/applied', [FreelancerJobListingController::class, 'appliedJobs'])->name('jobs.applied');
+    Route::get('/jobs/current', [FreelancerJobListingController::class, 'currentJobs'])->name('jobs.current');
+    Route::get('/jobs/finished', [FreelancerJobListingController::class, 'completedJobs'])->name('jobs.finished');
 
     // Profile of the freelancer
     Route::prefix('profile')->group(function () {
@@ -71,20 +61,19 @@ Route::prefix('client')->middleware('auth')->name('client.')->group(function () 
     })->name('dashboard');
 
     Route::prefix('jobs')->group(function () {
-        Route::get('/', [JobListingController::class, 'index'])->name('jobs.index');
+        Route::get('/', [ClientJobListingController::class, 'index'])->name('jobs.index');
 
-        Route::get('/create', [JobListingController::class, 'create'])->name('jobs.create');
-        Route::post('/', [JobListingController::class, 'store'])->name('jobs.store');
+        Route::get('/create', [ClientJobListingController::class, 'create'])->name('jobs.create');
+        Route::post('/', [ClientJobListingController::class, 'store'])->name('jobs.store');
 
-        Route::get('/posted', [JobListingController::class, 'postedJobs'])->name('jobs.posts');
-        Route::get('/in_progress', [JobListingController::class, 'inProgressJobs'])->name('jobs.in_progress');
+        Route::get('/posted', [ClientJobListingController::class, 'postedJobs'])->name('jobs.posts');
+        Route::get('/in_progress', [ClientJobListingController::class, 'inProgressJobs'])->name('jobs.in_progress');
+        Route::get('/finished', [ClientJobListingController::class, 'completedJobs'])->name('jobs.completed');
 
-        Route::get('/finished', [JobListingController::class, 'completedJobs'])->name('jobs.completed');
-
-        Route::get('/{jobListing}/', [JobListingController::class, 'show'])->name('jobs.show');
-        Route::get('/{jobListing}/edit', [JobListingController::class, 'edit'])->name('jobs.edit');
-        Route::put('/{jobListing}/update', [JobListingController::class, 'update'])->name('jobs.update');
-        Route::delete('/{jobListing}/destroy', [JobListingController::class, 'destroy'])->name('jobs.destroy');
+        Route::get('/{jobListing}/', [ClientJobListingController::class, 'show'])->name('jobs.show');
+        Route::get('/{jobListing}/edit', [ClientJobListingController::class, 'edit'])->name('jobs.edit');
+        Route::put('/{jobListing}/update', [ClientJobListingController::class, 'update'])->name('jobs.update');
+        Route::delete('/{jobListing}/destroy', [ClientJobListingController::class, 'destroy'])->name('jobs.destroy');
     });
 
     // Profile of the client

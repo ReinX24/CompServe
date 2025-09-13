@@ -29,7 +29,7 @@ class LoginController extends Controller
 
         $this->ensureIsNotRateLimited($request);
 
-        if (! Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+        if (!Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey($request));
 
             throw ValidationException::withMessages([
@@ -56,10 +56,8 @@ class LoginController extends Controller
         switch ($user->role) {
             case "freelancer":
                 return redirect()->intended(route('freelancer.dashboard', absolute: false));
-                break;
             case "client":
                 return redirect()->intended(route('client.dashboard', absolute: false));
-                break;
             // Admin side
             default:
                 return redirect()->intended(route('dashboard', absolute: false));
@@ -79,7 +77,7 @@ class LoginController extends Controller
 
     protected function ensureIsNotRateLimited(Request $request): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey($request), 5)) {
+        if (!RateLimiter::tooManyAttempts($this->throttleKey($request), 5)) {
             return;
         }
 

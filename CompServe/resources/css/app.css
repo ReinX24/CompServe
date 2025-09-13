@@ -129,6 +129,8 @@
     background: #4b5563;
 }
 
+/* @plugin "daisyui"; */
+
 @plugin "daisyui" {
     themes:
         light --default,
