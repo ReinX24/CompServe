@@ -30,6 +30,7 @@
                     class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
                            bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
                            focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+
                 @error('title')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror

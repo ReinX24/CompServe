@@ -66,7 +66,7 @@
         <header
             class="flex justify-between items-center px-6 py-4 bg-white dark:bg-gray-800 shadow-md">
             <h1 class="text-2xl font-bold text-blue-600">CompServe</h1>
-            <nav class="space-x-4">
+            <nav class="space-x-3">
                 @if (Route::has('login'))
                     @auth
                         <a href="{{ url('/dashboard') }}"
@@ -75,11 +75,11 @@
                         </a>
                     @else
                         <a href="{{ route('login') }}"
-                            class="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600">
+                            class="btn btn-primary">
                             Login
                         </a>
                         <a href="{{ route('register') }}"
-                            class="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700">
+                            class="btn btn-secondary">
                             Register
                         </a>
                     @endauth
@@ -103,13 +103,13 @@
                 in need.
             </p>
 
-            <div class="flex space-x-4">
+            <div class="flex space-x-3">
                 <a href="{{ route('register') }}"
-                    class="px-6 py-3 rounded-lg bg-blue-600 text-white text-lg font-medium hover:bg-blue-700">
+                    class="px-6 py-3 btn btn-accent">
                     Get Started
                 </a>
                 <a href="{{ route('login') }}"
-                    class="px-6 py-3 rounded-lg bg-gray-200 text-gray-800 text-lg font-medium hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600">
+                    class="px-6 py-3 btn btn-primary">
                     Login
                 </a>
             </div>

@@ -1,4 +1,5 @@
 <x-layouts.auth :title="__('Login')">
+
     <!-- Login Card -->
     <div
         class="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden">
@@ -57,8 +58,8 @@
                 </div>
 
                 <!-- Login Button -->
-                <x-button type="primary"
-                    class="w-full">{{ __('Sign In') }}</x-button>
+                <button
+                    class="w-full btn btn-primary">{{ __('Sign In') }}</button>
             </form>
 
             @if (Route::has('register'))

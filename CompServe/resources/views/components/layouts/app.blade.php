@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"
-    data-theme="light">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -8,13 +7,18 @@
         content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name') }}</title>
     <script>
+        let htmlTag = document.documentElement;
+
         window.setAppearance = function(appearance) {
             let setDark = () => {
                 document.documentElement.classList.add('dark');
+                htmlTag.setAttribute('data-theme',
+                    'dark');
             }
             let setLight = () => {
                 document.documentElement.classList.remove(
                     'dark');
+                htmlTag.setAttribute('data-theme', 'light');
             }
             let setButtons = (appearance) => {
                 document.querySelectorAll(

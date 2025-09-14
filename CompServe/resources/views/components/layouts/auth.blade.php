@@ -8,10 +8,19 @@
     <title>Login - {{ config('app.name') }}</title>
     @vite('resources/css/app.css')
     <script>
+        let htmlTag = document.documentElement;
+
         window.setAppearance = function(appearance) {
-            let setDark = () => document.documentElement.classList.add('dark')
-            let setLight = () => document.documentElement.classList.remove(
-                'dark')
+            let setDark = () => {
+                document.documentElement.classList.add('dark');
+                htmlTag.setAttribute('data-theme',
+                    'dark');
+            }
+            let setLight = () => {
+                document.documentElement.classList.remove(
+                    'dark');
+                htmlTag.setAttribute('data-theme', 'light');
+            }
             let setButtons = (appearance) => {
                 document.querySelectorAll(
                     'button[onclick^="setAppearance"]').forEach((
