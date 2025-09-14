@@ -34,8 +34,8 @@ class JobListing extends Model
     }
 
     // TODO: add JobApplications
-    // public function applications()
-    // {
-    //     return $this->hasMany(JobApplication::class);
-    // }
+    public function applications()
+    {
+        return $this->hasMany(JobApplication::class, 'job_id');
+    }
 }

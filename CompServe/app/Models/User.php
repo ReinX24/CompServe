@@ -70,4 +70,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(JobListing::class, 'client_id');
     }
+
+    // If the user is a freelancer
+    public function jobApplications()
+    {
+        return $this->hasMany(JobApplication::class, 'freelancer_id');
+    }
 }

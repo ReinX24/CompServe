@@ -41,10 +41,14 @@ Route::prefix('freelancer')->middleware('auth')->name('freelancer.')->group(func
         return view('freelancer.dashboard');
     })->name('dashboard');
 
-    Route::get('/jobs/available', [FreelancerJobListingController::class, 'availableJobs'])->name('jobs.available');
-    Route::get('/jobs/applied', [FreelancerJobListingController::class, 'appliedJobs'])->name('jobs.applied');
-    Route::get('/jobs/current', [FreelancerJobListingController::class, 'currentJobs'])->name('jobs.current');
-    Route::get('/jobs/finished', [FreelancerJobListingController::class, 'completedJobs'])->name('jobs.finished');
+    Route::prefix('jobs')->group(function () {
+        Route::get('/', [FreelancerJobListingController::class, 'index'])->name('jobs.index');
+        Route::post('/', [FreelancerJobListingController::class, 'store'])->name('jobs.store');
+        Route::get('/available', [FreelancerJobListingController::class, 'availableJobs'])->name('jobs.available');
+        Route::get('/applied', [FreelancerJobListingController::class, 'appliedJobs'])->name('jobs.applied');
+        Route::get('/current', [FreelancerJobListingController::class, 'currentJobs'])->name('jobs.current');
+        Route::get('/finished', [FreelancerJobListingController::class, 'completedJobs'])->name('jobs.finished');
+    });
 
     // Profile of the freelancer
     Route::prefix('profile')->group(function () {

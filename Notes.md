@@ -12,12 +12,14 @@ Docker Container: localhost:8080
 
 - Freelancer Side Pages
 - Freelancer middleware
-- Freelancer information factory and seeder
+- Freelancer job application
 
 #### Client Side
 
 - Client Side Pages
 - Client middleware
+- Accept job application from freelancer
+- Mark job as complete
 
 #### Admin Side
 
@@ -27,3 +29,4 @@ Docker Container: localhost:8080
 
 - Add separate pages for freelancer and client login and register
 - Make arrays into json instead of directly uploading as arrays
+- Change job into 2 versions, gig (short term, small job) or contract (long term, big job)

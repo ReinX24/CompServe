@@ -14,9 +14,12 @@
                 Status:
                 @php
                     $statusColors = [
-                        'open' => 'badge badge-success',
-                        'in_progress' => 'badge badge-warning',
-                        'completed' => 'badge badge-accent',
+                        'open' =>
+                            'badge badge-success',
+                        'in_progress' =>
+                            'badge badge-warning',
+                        'completed' =>
+                            'badge badge-accent',
                     ];
                 @endphp
 
@@ -135,43 +138,8 @@
 
 
         {{-- Section that shows preview of applicants --}}
-        <div class="mt-6">
-            <h2 class="text-lg font-semibold mb-3">Applicants Preview</h2>
-
-            @if ($applicants->isEmpty())
-                <p class="text-gray-500">No applicants yet.</p>
-            @else
-                <ul class="space-y-3">
-                    @foreach ($applicants as $applicant)
-                        <li
-                            class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-between">
-                            <div>
-                                <p
-                                    class="font-medium text-gray-900 dark:text-gray-100">
-                                    {{ $applicant->freelancer->name }}
-                                </p>
-                                <p
-                                    class="text-sm text-gray-500 dark:text-gray-400">
-                                    Applied on
-                                    {{ $applicant->created_at->format('M d, Y') }}
-                                </p>
-                            </div>
-                            {{-- <a href="{{ route('freelancer.profile', $applicant->freelancer_id) }}"
-                                class="btn btn-sm btn-primary">
-                                View Profile
-                            </a> --}}
-                        </li>
-                    @endforeach
-                </ul>
-            @endif
-
-            {{-- Link to see all applicants --}}
-            <div class="mt-3">
-                {{-- <a href="{{ route('client.jobs.applicants', $jobListing) }}"
-                    class="btn btn-sm btn-outline">
-                    View All Applicants
-                </a> --}}
-            </div>
+        <div>
+            Test
         </div>
     </div>
 </x-layouts.app>

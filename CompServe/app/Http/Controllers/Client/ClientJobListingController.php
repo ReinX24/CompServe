@@ -23,7 +23,7 @@ class ClientJobListingController extends Controller
     {
         $jobs = Auth::user()->jobListings()->where("status", "open")->paginate(6);
 
-        return view('client.jobs.posted-jobs', compact('jobs'));
+        return view('freelancer.jobs.available-jobs', compact('jobs'));
     }
 
     public function inProgressJobs()
@@ -93,7 +93,14 @@ class ClientJobListingController extends Controller
      */
     public function show(JobListing $jobListing)
     {
-        return view('client.jobs.show-job', compact('jobListing'));
+        // eager load applicants + freelancer relationship
+        $applicants = $jobListing->applications()
+            ->with('freelancer')
+            ->latest()
+            ->take(3)
+            ->get();
+
+        return view('client.jobs.show-job', compact('jobListing', 'applicants'));
     }
 
     /**

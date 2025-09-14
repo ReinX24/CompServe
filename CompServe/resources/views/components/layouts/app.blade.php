@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+    data-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -8,9 +9,13 @@
     <title>{{ config('app.name') }}</title>
     <script>
         window.setAppearance = function(appearance) {
-            let setDark = () => document.documentElement.classList.add('dark')
-            let setLight = () => document.documentElement.classList.remove(
-                'dark')
+            let setDark = () => {
+                document.documentElement.classList.add('dark');
+            }
+            let setLight = () => {
+                document.documentElement.classList.remove(
+                    'dark');
+            }
             let setButtons = (appearance) => {
                 document.querySelectorAll(
                     'button[onclick^="setAppearance"]').forEach((

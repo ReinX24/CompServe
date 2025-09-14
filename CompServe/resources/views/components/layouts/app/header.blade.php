@@ -39,8 +39,7 @@
                     }
                 }
             }"
-                x-init="// Apply system preference if theme is set to system
-                if (theme === 'system') {
+                x-init="if (theme === 'system') {
                     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
                         document.documentElement.classList.add('dark');
                     } else {
