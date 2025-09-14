@@ -21,7 +21,7 @@ return new class extends Migration {
             // Extra info
             // TODO: cover letter must be a file
             $table->text('cover_letter')->nullable();
-            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
+            $table->enum('status', ['pending', 'accepted', 'rejected', 'completed'])->default('pending');
 
             $table->timestamps();
 

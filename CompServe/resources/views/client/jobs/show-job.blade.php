@@ -135,43 +135,80 @@
 
 
         {{-- Section that shows preview of applicants --}}
-        <div class="mt-6">
-            <h2 class="text-lg font-semibold mb-3">Applicants Preview</h2>
+        @if ($jobListing->status === 'open')
+            <div class="mt-6">
+                <h2 class="text-lg font-semibold mb-3">Applicants Preview</h2>
 
-            @if ($applicants->isEmpty())
-                <p class="text-gray-500">No applicants yet.</p>
-            @else
-                <ul class="space-y-3">
-                    @foreach ($applicants as $applicant)
-                        <li
-                            class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-between">
-                            <div>
-                                <p
-                                    class="font-medium text-gray-900 dark:text-gray-100">
-                                    {{ $applicant->freelancer->name }}
-                                </p>
-                                <p
-                                    class="text-sm text-gray-500 dark:text-gray-400">
-                                    Applied on
-                                    {{ $applicant->created_at->format('M d, Y') }}
-                                </p>
-                            </div>
-                            {{-- <a href="{{ route('freelancer.profile', $applicant->freelancer_id) }}"
-                                class="btn btn-sm btn-primary">
-                                View Profile
-                            </a> --}}
-                        </li>
-                    @endforeach
-                </ul>
-            @endif
+                @if ($applicants->isEmpty())
+                    <p class="text-gray-500">No applicants yet.</p>
+                @else
+                    <ul class="space-y-3">
+                        @foreach ($applicants as $applicant)
+                            <li
+                                class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-between">
+                                <div>
+                                    <p
+                                        class="font-medium text-gray-900 dark:text-gray-100">
+                                        {{ $applicant->freelancer->name }}
+                                    </p>
+                                    <p
+                                        class="text-sm text-gray-500 dark:text-gray-400">
+                                        Applied on
+                                        {{ $applicant->created_at->format('M d, Y') }}
+                                    </p>
+                                </div>
+                                <a href="{{ route('client.jobs.applicant', [$jobListing, $applicant->freelancer_id]) }}"
+                                    class="btn btn-outline btn-info">
+                                    View Profile
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
 
-            {{-- Link to see all applicants --}}
-            <div class="mt-3">
-                {{-- <a href="{{ route('client.jobs.applicants', $jobListing) }}"
-                    class="btn btn-sm btn-outline">
-                    View All Applicants
-                </a> --}}
+                {{-- Link to see all applicants --}}
+                <div class="mt-3">
+                    <a href="{{ route('client.jobs.applicants', $jobListing) }}"
+                        class="btn btn-neutral">
+                        View All Applicants
+                    </a>
+                </div>
             </div>
-        </div>
+        @elseif ($jobListing->status === 'in_progress')
+            <div class="mt-6">
+                <div class="mb-3">
+                    Accepted Applicant:
+                    <a href="{{ route('client.jobs.applicant', [$jobListing, $user]) }}"
+                        class="link link-primary">
+                        {{ $user->name }}
+                    </a>
+                </div>
+
+                <div class="mb-3">
+                    <div class="flex space-x-3">
+                        <form
+                            action="{{ route('client.jobs.complete', $jobListing) }}"
+                            method="POST">
+                            @csrf
+                            @method('PUT')
+
+                            <button type="submit"
+                                class="btn btn-success">Mark as
+                                Complete</button>
+                        </form>
+
+                        <form
+                            action="{{ route('client.jobs.cancel', $jobListing) }}"
+                            method="POST">
+                            @csrf
+                            @method('PUT')
+
+                            <button type="submit"
+                                class="btn btn-error">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 </x-layouts.app>

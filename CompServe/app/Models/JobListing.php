@@ -33,7 +33,6 @@ class JobListing extends Model
         return $this->belongsTo(User::class, 'client_id');
     }
 
-    // TODO: add JobApplications
     public function applications()
     {
         return $this->hasMany(JobApplication::class, 'job_id');

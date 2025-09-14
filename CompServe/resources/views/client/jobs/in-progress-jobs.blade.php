@@ -31,13 +31,19 @@
                     <div
                         class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
 
-                        <h2
-                            class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">
-                            <a href="{{ route('client.jobs.show', $job->id) }}"
-                                class="hover:underline text-blue-600 dark:text-blue-400">
-                                {{ Str::limit($job->title, 40) }}
-                            </a>
-                        </h2>
+                        <div class="flex gap-2 justify-between items-center">
+                            <h2
+                                class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">
+                                <a href="{{ route('client.jobs.show', $job->id) }}"
+                                    class="hover:underline text-blue-600 dark:text-blue-400">
+                                    {{ Str::limit($job->title, 40) }}
+                                </a>
+                            </h2>
+
+                            <div
+                                class="badge badge-warning badge-outline p-3 text-sm">
+                                In-progress</div>
+                        </div>
 
                         <p class="text-gray-600 dark:text-gray-400 mb-2">
                             {{ Str::limit($job->description, 100) }}

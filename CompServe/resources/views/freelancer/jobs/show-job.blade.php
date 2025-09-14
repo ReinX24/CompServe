@@ -14,12 +14,9 @@
                 Status:
                 @php
                     $statusColors = [
-                        'open' =>
-                            'badge badge-success',
-                        'in_progress' =>
-                            'badge badge-warning',
-                        'completed' =>
-                            'badge badge-accent',
+                        'open' => 'badge badge-success',
+                        'in_progress' => 'badge badge-warning',
+                        'completed' => 'badge badge-accent',
                     ];
                 @endphp
 
@@ -133,13 +130,6 @@
                     Edit Job
                 </a>
             @endif
-
-        </div>
-
-
-        {{-- Section that shows preview of applicants --}}
-        <div>
-            Test
         </div>
     </div>
 </x-layouts.app>

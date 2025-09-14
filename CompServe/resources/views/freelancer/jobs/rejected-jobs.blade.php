@@ -2,26 +2,26 @@
     <div class="breadcrumbs text-sm">
         <ul>
             <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li>Current Jobs</li>
+            <li>Rejected Jobs</li>
         </ul>
     </div>
 
     <div class="flex justify-between items-center mb-4">
         <div class="mb-6">
             <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
-                {{ __('Accepted Jobs') }}
+                {{ __('Rejected Jobs') }}
             </h1>
             <p class="text-gray-600 dark:text-gray-400 mt-1">
-                {{ __('Your current accepted or in-progress jobs.') }}
+                {{ __('Rejected job applications.') }}
             </p>
         </div>
     </div>
 
 
-    @if ($currentJobs->count())
+    @if ($rejectedJobs->count())
         <div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach ($currentJobs as $application)
+                @foreach ($rejectedJobs as $application)
                     <div
                         class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
 
@@ -36,16 +36,16 @@
 
                             {{-- Freelancer applying for a job --}}
                             @php
-                                $accepted = \App\Models\JobApplication::where([
+                                $rejected = \App\Models\JobApplication::where([
                                     ['job_id', '=', $application->job->id],
                                     ['freelancer_id', '=', Auth::user()->id],
                                 ])->exists();
                             @endphp
 
-                            @if ($accepted)
+                            @if ($rejected)
                                 <div
-                                    class="badge badge-success badge-outline p-3 text-sm">
-                                    Accepted</div>
+                                    class="badge badge-error badge-outline p-3 text-sm">
+                                    Rejected</div>
                             @endif
                         </div>
 
@@ -81,7 +81,7 @@
             </div>
 
             <div class="mt-4">
-                {{ $currentJobs->links() }}
+                {{ $rejectedJobs->links() }}
             </div>
         </div>
     @else

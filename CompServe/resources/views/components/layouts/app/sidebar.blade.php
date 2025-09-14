@@ -46,7 +46,15 @@
                             :active="request()->routeIs(
                                 'freelancer.jobs.current',
                             )">
-                            Current Jobs
+                            Accepted Jobs
+                        </x-layouts.sidebar-two-level-link>
+                        <x-layouts.sidebar-two-level-link
+                            href="{{ route('freelancer.jobs.rejected') }}"
+                            icon='far-circle-xmark'
+                            :active="request()->routeIs(
+                                'freelancer.jobs.rejected',
+                            )">
+                            Rejected Jobs
                         </x-layouts.sidebar-two-level-link>
                         <x-layouts.sidebar-two-level-link
                             href="{{ route('freelancer.jobs.finished') }}"
@@ -110,9 +118,7 @@
                     <x-layouts.sidebar-link
                         href="{{ route('client.profile.show') }}"
                         icon='fas-person'
-                        :active="request()->routeIs(
-                            'client.profile.show',
-                        )">
+                        :active="request()->routeIs('client.profile.show')">
                         Profile
                     </x-layouts.sidebar-link>
                 @endif

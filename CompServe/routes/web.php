@@ -47,11 +47,15 @@ Route::prefix('freelancer')->middleware('auth')->name('freelancer.')->group(func
         Route::get('/available', [FreelancerJobListingController::class, 'availableJobs'])->name('jobs.available');
         Route::get('/applied', [FreelancerJobListingController::class, 'appliedJobs'])->name('jobs.applied');
         Route::get('/current', [FreelancerJobListingController::class, 'currentJobs'])->name('jobs.current');
+        Route::get('/rejected', [FreelancerJobListingController::class, 'rejectedJobs'])->name('jobs.rejected');
         Route::get('/finished', [FreelancerJobListingController::class, 'completedJobs'])->name('jobs.finished');
+
+        Route::get('/{jobListing}', [FreelancerJobListingController::class, 'show'])->name('jobs.show');
     });
 
     // Profile of the freelancer
     Route::prefix('profile')->group(function () {
+        // Show current profile
         Route::get('/', [FreelancerInformationController::class, 'show'])->name('profile.show');
         Route::get('/edit', [FreelancerInformationController::class, 'edit'])->name('profile.edit');
         Route::put('/update', [FreelancerInformationController::class, 'update'])->name('profile.update');
@@ -78,6 +82,13 @@ Route::prefix('client')->middleware('auth')->name('client.')->group(function () 
         Route::get('/{jobListing}/edit', [ClientJobListingController::class, 'edit'])->name('jobs.edit');
         Route::put('/{jobListing}/update', [ClientJobListingController::class, 'update'])->name('jobs.update');
         Route::delete('/{jobListing}/destroy', [ClientJobListingController::class, 'destroy'])->name('jobs.destroy');
+
+        Route::get('/{jobListing}/applicants', [ClientJobListingController::class, 'allApplicants'])->name('jobs.applicants');
+        Route::get('/{jobListing}/applicant/{user}', [ClientJobListingController::class, 'showApplicant'])->name('jobs.applicant');
+
+        Route::put('/{application}/accept', [ClientJobListingController::class, 'acceptApplicant'])->name('jobs.applicant.accept');
+        Route::put('/{jobListing}/complete', [ClientJobListingController::class, 'markJobAsComplete'])->name('jobs.complete');
+        Route::put('/{jobListing}/cancel', [ClientJobListingController::class, 'markJobAsCancelled'])->name('jobs.cancel');
     });
 
     // Profile of the client

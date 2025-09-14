@@ -16,6 +16,11 @@ class FreelancerJobListingController extends Controller
         dd("Index show all jobs");
     }
 
+    public function show(JobListing $jobListing)
+    {
+        return view('freelancer.jobs.show-job', compact('jobListing'));
+    }
+
     public function store(Request $request)
     {
         // TODO: email the freelancer that they have successfully applied for the job
@@ -84,7 +89,10 @@ class FreelancerJobListingController extends Controller
         $freelancerId = Auth::id();
 
         $appliedJobs = JobApplication::with('job') // eager load job relationship
-            ->where('freelancer_id', $freelancerId)
+            ->where([
+                ['freelancer_id', $freelancerId],
+                ['status', 'pending']
+            ])
             ->latest()
             ->paginate(6);
 
@@ -93,11 +101,41 @@ class FreelancerJobListingController extends Controller
 
     public function currentJobs()
     {
-        return view('freelancer.jobs.current-jobs');
+        $freelancerId = Auth::id();
+
+        $currentJobs = JobApplication::with('job')
+            ->where('freelancer_id', $freelancerId)
+            ->where('status', 'accepted')
+            ->latest()
+            ->paginate(6);
+
+        return view('freelancer.jobs.current-jobs', compact('currentJobs'));
     }
 
     public function completedJobs()
     {
-        return view('freelancer.jobs.completed-jobs');
+        $freelancerId = Auth::id();
+
+        $completedJobs = JobApplication::with('job')
+            ->where('freelancer_id', $freelancerId)
+            ->where('status', 'completed')
+            ->latest()
+            ->paginate(6);
+
+
+        return view('freelancer.jobs.completed-jobs', compact('completedJobs'));
+    }
+
+    public function rejectedJobs()
+    {
+        $freelancerId = Auth::id();
+
+        $rejectedJobs = JobApplication::with('job')
+            ->where('freelancer_id', $freelancerId)
+            ->where('status', 'rejected')
+            ->latest()
+            ->paginate(6);
+
+        return view('freelancer.jobs.rejected-jobs', compact('rejectedJobs'));
     }
 }
