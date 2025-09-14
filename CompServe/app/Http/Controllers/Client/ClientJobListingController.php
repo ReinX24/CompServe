@@ -104,8 +104,17 @@ class ClientJobListingController extends Controller
                 ->take(3)
                 ->get();
             return view('client.jobs.show-job', compact('jobListing', 'applicants'));
-        } elseif ($jobListing->status === "in_progress" || $jobListing->status === "completed") {
+        } elseif ($jobListing->status === "in_progress") {
+            // Get the accepted applicant
+            $applicant = $jobListing->applications()->where('status', 'accepted')->first();
+            // Getting the applicant that has been accepted for the job
+            $user = User::findOrFail($applicant->freelancer_id);
+
+            return view('client.jobs.show-job', compact('jobListing', 'applicant', 'user'));
+        } elseif ($jobListing->status === "completed") {
+            // Get the completed applicant
             $applicant = $jobListing->applications()->where('status', 'completed')->first();
+
             // Getting the applicant that has been accepted for the job
             $user = User::findOrFail($applicant->freelancer_id);
 

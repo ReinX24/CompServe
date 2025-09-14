@@ -20,6 +20,13 @@
                         type="email"
                         placeholder="your@email.com"
                         value="{{ old('email') }}" />
+
+                    {{-- <label for="email">Email</label>
+                    <input name="email"
+                        type="email"
+                        placeholder="your@email.com"
+                        class="input input-primary w-full"
+                        value="{{ old('email') }}" /> --}}
                 </div>
 
                 <!-- Role Selector -->
@@ -36,6 +43,19 @@
                             {{ old('role') == 'admin' ? 'selected' : '' }}>Admin
                         </option>
                     </x-forms.select>
+
+                    {{-- <label for="role">Role</label>
+                    <select name="role" class="select select-primary w-full">
+                        <option value="freelancer"
+                            {{ old('role') == 'freelancer' ? 'selected' : '' }}>
+                            Freelancer</option>
+                        <option value="client"
+                            {{ old('role') == 'client' ? 'selected' : '' }}>
+                            Client</option>
+                        <option value="admin"
+                            {{ old('role') == 'admin' ? 'selected' : '' }}>Admin
+                        </option>
+                    </select> --}}
                 </div>
 
                 <!-- Password Input -->
@@ -44,6 +64,13 @@
                         name="password"
                         type="password"
                         placeholder="••••••••" />
+
+                    {{-- <label for="password">Password</label>
+                    <input label="Password"
+                        name="password"
+                        type="password"
+                        class="input input-primary w-full"
+                        placeholder="••••••••" /> --}}
 
                     <!-- Remember me & password reset -->
                     <div class="flex items-center justify-between mt-2">

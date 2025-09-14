@@ -31,3 +31,4 @@ Docker Container: localhost:8080
 - Make arrays into json instead of directly uploading as arrays
 - Change job into 2 versions, gig (short term, small job) or contract (long term, big job)
 - Client can request freelancer to take a job
+- Login and register page errors

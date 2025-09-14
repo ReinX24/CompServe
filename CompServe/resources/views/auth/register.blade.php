@@ -54,8 +54,8 @@
                 </div>
 
                 <!-- Register Button -->
-                <x-button type="primary"
-                    class="w-full">{{ __('Create Account') }}</x-button>
+                <button
+                    class="w-full btn btn-primary">{{ __('Create Account') }}</button>
             </form>
 
             <!-- Login Link -->
