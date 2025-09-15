@@ -42,7 +42,7 @@ class RegistrationController extends Controller
             case "freelancer":
                 return redirect()->route('freelancer.dashboard');
                 break;
-            // Client side, not registration for admins allowed
+            // Client side, no registration for admins allowed
             default:
                 return redirect()->route('client.dashboard');
         }

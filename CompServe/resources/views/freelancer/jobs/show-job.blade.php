@@ -110,7 +110,7 @@
                     <button class="btn btn-success"
                         disabled="disabled">Applied</button>
                 @else
-                    <form action="{{ route('freelancer.jobs.store') }}"
+                    <form action="{{ route('freelancer.jobs.apply') }}"
                         method="POST">
                         @csrf
                         <input type="hidden"

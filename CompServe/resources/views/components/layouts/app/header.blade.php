@@ -126,7 +126,7 @@
                     @click.away="open = false"
                     :class="{ 'block': open, 'hidden': !open }"
                     class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-50 border border-gray-200 dark:border-gray-700">
-                    <a href="{{ route('settings.profile.edit') }}"
+                    {{-- <a href="{{ route('settings.profile.edit') }}"
                         class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
                         <div class="flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -145,9 +145,9 @@
                             </svg>
                             Settings
                         </div>
-                    </a>
-                    <div class="border-t border-gray-200 dark:border-gray-700">
-                    </div>
+                    </a> --}}
+                    {{-- <div class="border-t border-gray-200 dark:border-gray-700">
+                    </div> --}}
                     <form method="POST"
                         action="{{ route('logout') }}"
                         class="w-full">

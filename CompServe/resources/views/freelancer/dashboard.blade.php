@@ -14,10 +14,11 @@
                 <div>
                     <p
                         class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        {{ __('Total Users') }}</p>
+                        {{ __('Available Jobs') }}</p>
                     <p
                         class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
-                        --</p>
+                        {{ $availableJobsCount }}
+                    </p>
                     <p class="text-xs text-gray-500 flex items-center mt-1">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-4 w-4 mr-1"
@@ -54,10 +55,10 @@
                 <div>
                     <p
                         class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        {{ __('Total Revenue') }}</p>
+                        {{ __('Applied Jobs') }}</p>
                     <p
                         class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
-                        --</p>
+                        {{ $appliedJobsCount }}</p>
                     <p class="text-xs text-gray-500 flex items-center mt-1">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-4 w-4 mr-1"
@@ -94,10 +95,10 @@
                 <div>
                     <p
                         class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        {{ __('Total Orders') }}</p>
+                        {{ __('Current Jobs') }}</p>
                     <p
                         class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
-                        --</p>
+                        {{ $currentJobsCount }}</p>
                     <p class="text-xs text-gray-500 flex items-center mt-1">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-4 w-4 mr-1"
@@ -134,10 +135,10 @@
                 <div>
                     <p
                         class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        {{ __('Total Visitors') }}</p>
+                        {{ __('Completed Jobs') }}</p>
                     <p
                         class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
-                        --</p>
+                        {{ $completedJobsCount }}</p>
                     <p class="text-xs text-gray-500 flex items-center mt-1">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-4 w-4 mr-1"

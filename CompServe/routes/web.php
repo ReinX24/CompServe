@@ -5,6 +5,8 @@ use App\Http\Controllers\Client\ClientInformationController;
 use App\Http\Controllers\Client\ClientJobListingController;
 use App\Http\Controllers\Freelancer\FreelancerJobListingController;
 use App\Http\Controllers\Settings;
+use App\Models\JobApplication;
+use App\Models\JobListing;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -42,12 +44,29 @@ Route::middleware(['auth'])->group(function () {
 // Freelancer routes
 Route::prefix('freelancer')->middleware('auth')->name('freelancer.')->group(function () {
     Route::get('/dashboard', function () {
-        return view('freelancer.dashboard');
+        $availableJobsCount = JobListing::where('status', 'open')->count();
+
+        $appliedJobsCount = JobApplication::with('job') // eager load job relationship
+            ->where([
+                ['freelancer_id', Auth::user()->id],
+                ['status', 'pending']
+            ])->count();
+
+        $currentJobsCount = JobApplication::with('job')
+            ->where('freelancer_id', Auth::user()->id)
+            ->where('status', 'accepted')->count();
+
+        $completedJobsCount = JobApplication::with('job')
+            ->where('freelancer_id', Auth::user()->id)
+            ->where('status', 'completed')
+            ->count();
+
+        return view('freelancer.dashboard', compact('availableJobsCount', 'appliedJobsCount', 'currentJobsCount', 'completedJobsCount'));
     })->name('dashboard');
 
     Route::prefix('jobs')->group(function () {
         Route::get('/', [FreelancerJobListingController::class, 'index'])->name('jobs.index');
-        Route::post('/', [FreelancerJobListingController::class, 'store'])->name('jobs.store');
+        Route::post('/', [FreelancerJobListingController::class, 'applyForJob'])->name('jobs.apply');
         Route::get('/available', [FreelancerJobListingController::class, 'availableJobs'])->name('jobs.available');
         Route::get('/applied', [FreelancerJobListingController::class, 'appliedJobs'])->name('jobs.applied');
         Route::get('/current', [FreelancerJobListingController::class, 'currentJobs'])->name('jobs.current');
@@ -69,7 +88,12 @@ Route::prefix('freelancer')->middleware('auth')->name('freelancer.')->group(func
 // Client routes
 Route::prefix('client')->middleware('auth')->name('client.')->group(function () {
     Route::get('/dashboard', function () {
-        return view('client.dashboard');
+        // TODO: show posted jobs count, in progress jobs, and completed jobs
+        $postedCount = JobListing::where([['client_id', Auth::user()->id], ['status', 'open']])->count();
+        $inProgressCount = JobListing::where([['client_id', Auth::user()->id], ['status', 'in_progress']])->count();
+        $completedCount = JobListing::where([['client_id', Auth::user()->id], ['status', 'completed']])->count();
+
+        return view('client.dashboard', compact('postedCount', 'inProgressCount', 'completedCount'));
     })->name('dashboard');
 
     Route::prefix('jobs')->group(function () {

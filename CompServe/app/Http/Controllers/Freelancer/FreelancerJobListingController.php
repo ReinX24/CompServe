@@ -21,7 +21,7 @@ class FreelancerJobListingController extends Controller
         return view('freelancer.jobs.show-job', compact('jobListing'));
     }
 
-    public function store(Request $request)
+    public function applyForJob(Request $request)
     {
         // TODO: email the freelancer that they have successfully applied for the job
         // TODO: implement uploading of cover letter functionality
@@ -58,7 +58,8 @@ class FreelancerJobListingController extends Controller
 
         // Redirect with success
         return redirect()
-            ->route('freelancer.jobs.available')
+            // ->route('freelancer.jobs.available')
+            ->route('freelancer.jobs.show', $job)
             ->with('success', 'Applied for job successfully!');
     }
 

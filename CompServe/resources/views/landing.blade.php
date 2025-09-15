@@ -70,7 +70,7 @@
                 @if (Route::has('login'))
                     @auth
                         <a href="{{ url('/dashboard') }}"
-                            class="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700">
+                            class="btn btn-primary">
                             Dashboard
                         </a>
                     @else
@@ -97,8 +97,8 @@
                 class="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mb-8">
                 CompServe is your trusted online platform for freelancers
                 specializing in
-                <span class="font-medium">hardware</span> and
-                <span class="font-medium">software maintenance</span>.
+                <span class="font-medium">hardware maintenance</span>.
+                {{-- <span class="font-medium">software maintenance</span>. --}}
                 Connect with skilled experts or offer your services to clients
                 in need.
             </p>
