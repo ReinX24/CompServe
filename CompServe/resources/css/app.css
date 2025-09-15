@@ -92,11 +92,11 @@
 }
 
 /* Custom file input */
-/* .custom-file-input::-webkit-file-upload-button {
+.custom-file-input::-webkit-file-upload-button {
     visibility: hidden;
-} */
+}
 
-/* .custom-file-input::before {
+.custom-file-input::before {
     content: 'Select files';
     display: inline-block;
     background: #f9fafb;
@@ -109,25 +109,25 @@
     font-size: 0.875rem;
     font-weight: 500;
     color: #374151;
-} */
+}
 
-/* .dark .custom-file-input::before {
+.dark .custom-file-input::before {
     background: #374151;
     border-color: #4b5563;
     color: #e5e7eb;
-} */
+}
 
-/* .custom-file-input:hover::before {
+.custom-file-input:hover::before {
     border-color: #9ca3af;
-} */
+}
 
-/* .custom-file-input:active::before {
+.custom-file-input:active::before {
     background: #e5e7eb;
-} */
+}
 
-/* .dark .custom-file-input:active::before {
+.dark .custom-file-input:active::before {
     background: #4b5563;
-} */
+}
 
 /* @plugin "daisyui"; */
 

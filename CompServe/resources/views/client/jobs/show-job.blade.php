@@ -1,6 +1,26 @@
 <x-layouts.app>
     <div
         class="max-w-4xl mx-auto bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+
+        @session('success')
+            <div class="mb-4">
+                {{-- Success message --}}
+                <div role="alert"
+                    class="alert alert-success alert-soft text-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="h-6 w-6 shrink-0 stroke-current"
+                        fill="none"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>{{ session('success') }}</span>
+                </div>
+            </div>
+        @endsession
+
         <!-- Title & Basic Info -->
         <div class="mb-6 flex flex-col gap-3">
             <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
@@ -14,9 +34,10 @@
                 Status:
                 @php
                     $statusColors = [
-                        'open' => 'badge badge-success',
-                        'in_progress' => 'badge badge-warning',
-                        'completed' => 'badge badge-accent',
+                        'open' => 'badge badge-success badge-outline',
+                        'in_progress' => 'badge badge-warning badge-outline',
+                        'completed' => 'badge badge-accent badge-outline',
+                        'cancelled' => 'badge badge-error badge-outline',
                     ];
                 @endphp
 
@@ -91,7 +112,7 @@
         <div class="flex space-x-3">
             <a href="{{ url()->previous() }}"
                 class="px-3 py-2 btn btn-secondary">
-                Back to Listings
+                Back
             </a>
             @if (Auth::user()->role === 'freelancer')
 
@@ -204,7 +225,7 @@
                             @method('PUT')
 
                             <button type="submit"
-                                class="btn btn-error">Cancel</button>
+                                class="btn btn-error">Cancel Job</button>
                         </form>
                     </div>
                 </div>

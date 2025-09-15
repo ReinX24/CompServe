@@ -17,7 +17,7 @@
                         {{ __('Available Jobs') }}</p>
                     <p
                         class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
-                        {{ $availableJobsCount }}
+                        {{ $availableJobsCount ?? '--' }}
                     </p>
                     <p class="text-xs text-gray-500 flex items-center mt-1">
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +58,7 @@
                         {{ __('Applied Jobs') }}</p>
                     <p
                         class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
-                        {{ $appliedJobsCount }}</p>
+                        {{ $appliedJobsCount ?? '--' }}</p>
                     <p class="text-xs text-gray-500 flex items-center mt-1">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-4 w-4 mr-1"
@@ -98,7 +98,7 @@
                         {{ __('Current Jobs') }}</p>
                     <p
                         class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
-                        {{ $currentJobsCount }}</p>
+                        {{ $currentJobsCount ?? '--' }}</p>
                     <p class="text-xs text-gray-500 flex items-center mt-1">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-4 w-4 mr-1"
@@ -138,7 +138,7 @@
                         {{ __('Completed Jobs') }}</p>
                     <p
                         class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
-                        {{ $completedJobsCount }}</p>
+                        {{ $completedJobsCount ?? '--' }}</p>
                     <p class="text-xs text-gray-500 flex items-center mt-1">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-4 w-4 mr-1"

@@ -4,8 +4,10 @@
     <a href="{{ $href }}"
         @class([
             'flex items-center px-3 py-2 text-sm rounded-md transition-colors duration-200',
-            'bg-sidebar-accent text-sidebar-accent-foreground font-medium' => $active,
-            'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground' => !$active,
+            // 'bg-sidebar-accent text-sidebar-accent-foreground font-medium' => $active,
+            'bg-primary dark:text-base-content text-sidebar-accent-foreground font-medium' => $active,
+            // 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground' => !$active,
+            'hover:bg-primary hover:bg-primary/20 text-sidebar-foreground' => !$active,
         ])>
 
         @svg($icon, $active ? 'w-5 h-5 text-white dark:text-gray-800' : 'w-5 h-5 text-gray-500')

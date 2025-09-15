@@ -36,6 +36,13 @@ class ClientJobListingController extends Controller
         return view('client.jobs.in-progress-jobs', compact('jobs'));
     }
 
+    public function cancelledJobs()
+    {
+        $jobs = Auth::user()->jobListings()->where("status", "cancelled")->paginate(6);
+
+        return view('client.jobs.cancelled-jobs', compact('jobs'));
+    }
+
     public function completedJobs()
     {
         $jobs = Auth::user()->jobListings()->where("status", "completed")->paginate(6);
@@ -71,24 +78,24 @@ class ClientJobListingController extends Controller
         ]);
 
         // Create job listing
-        $job = new JobListing();
-        $job->client_id = Auth::user()->id;
-        $job->title = $validated['title'];
-        $job->description = $validated['description'];
-        $job->category = $validated['category'];
-        $job->skills_required = $validated['skills_required'] ?? []; // store as JSON
-        $job->budget_type = $validated['budget_type'];
-        $job->budget = $validated['budget'];
-        $job->location = $validated['location'] ?? null;
-        $job->deadline = $validated['deadline'] ?? null;
-        $job->status = $validated['status'] ?? 'open';
+        $jobListing = new JobListing();
+        $jobListing->client_id = Auth::user()->id;
+        $jobListing->title = $validated['title'];
+        $jobListing->description = $validated['description'];
+        $jobListing->category = $validated['category'];
+        $jobListing->skills_required = $validated['skills_required'] ?? []; // store as JSON
+        $jobListing->budget_type = $validated['budget_type'];
+        $jobListing->budget = $validated['budget'];
+        $jobListing->location = $validated['location'] ?? null;
+        $jobListing->deadline = $validated['deadline'] ?? null;
+        $jobListing->status = $validated['status'] ?? 'open';
 
-        $job->save();
+        $jobListing->save();
 
         // Redirect with success message
         return redirect()
-            ->route('client.jobs.posts')
-            ->with('success', 'Job listing created successfully!');
+            ->route('client.jobs.show', compact('jobListing'))
+            ->with('success', 'Job listing added successfully!');
     }
 
     /**
@@ -121,6 +128,13 @@ class ClientJobListingController extends Controller
             return view('client.jobs.show-job', compact('jobListing', 'applicant', 'user'));
         } else {
             // TODO: add cancelled jobs here
+            // Get the accepted applicant
+            $applicant = $jobListing->applications()->where('status', 'accepted')->first();
+
+            // Getting the applicant that has been accepted for the job
+            $user = User::findOrFail($applicant->freelancer_id);
+
+            return view('client.jobs.show-job', compact('jobListing', 'applicant', 'user'));
         }
     }
 

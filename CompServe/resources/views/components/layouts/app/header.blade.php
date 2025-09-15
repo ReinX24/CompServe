@@ -17,8 +17,7 @@
                         d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
-            <div
-                class="ml-4 font-semibold text-xl text-blue-600 dark:text-blue-400">
+            <div class="ml-4 font-semibold text-xl text-primary">
                 {{ config('app.name') }}</div>
         </div>
 

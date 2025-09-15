@@ -22,9 +22,11 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     // Redirect the user to the appropriate dashboard
     if (Auth::user()->role === "freelancer") {
-        return view('freelancer.dashboard');
+        // return view('freelancer.dashboard');
+        return redirect()->route("freelancer.dashboard");
     } elseif (Auth::user()->role === "client") {
-        return view('client.dashboard');
+        // return view('client.dashboard');
+        return redirect()->route("freelancer.client");
     } else {
         return view('dashboard');
     }
@@ -88,12 +90,25 @@ Route::prefix('freelancer')->middleware('auth')->name('freelancer.')->group(func
 // Client routes
 Route::prefix('client')->middleware('auth')->name('client.')->group(function () {
     Route::get('/dashboard', function () {
-        // TODO: show posted jobs count, in progress jobs, and completed jobs
-        $postedCount = JobListing::where([['client_id', Auth::user()->id], ['status', 'open']])->count();
-        $inProgressCount = JobListing::where([['client_id', Auth::user()->id], ['status', 'in_progress']])->count();
-        $completedCount = JobListing::where([['client_id', Auth::user()->id], ['status', 'completed']])->count();
+        $postedCount = JobListing::where(
+            [['client_id', Auth::user()->id], ['status', 'open']]
+        )->count() ?? 0;
 
-        return view('client.dashboard', compact('postedCount', 'inProgressCount', 'completedCount'));
+        $inProgressCount = JobListing::where(
+            [['client_id', Auth::user()->id], ['status', 'in_progress']]
+        )->count() ?? 0;
+
+        $completedCount = JobListing::where(
+            [['client_id', Auth::user()->id], ['status', 'completed']]
+        )->count() ?? 0;
+
+        // Amount of applications that the current client has
+        $applicationCount = JobApplication::where(
+            'client_id',
+            Auth::user()->id
+        )->count();
+
+        return view('client.dashboard', compact('postedCount', 'inProgressCount', 'completedCount', 'applicationCount'));
     })->name('dashboard');
 
     Route::prefix('jobs')->group(function () {
@@ -104,6 +119,7 @@ Route::prefix('client')->middleware('auth')->name('client.')->group(function () 
 
         Route::get('/posted', [ClientJobListingController::class, 'postedJobs'])->name('jobs.posts');
         Route::get('/in_progress', [ClientJobListingController::class, 'inProgressJobs'])->name('jobs.in_progress');
+        Route::get('/cancelled', [ClientJobListingController::class, 'cancelledJobs'])->name('jobs.cancelled');
         Route::get('/finished', [ClientJobListingController::class, 'completedJobs'])->name('jobs.completed');
 
         Route::get('/{jobListing}/', [ClientJobListingController::class, 'show'])->name('jobs.show');

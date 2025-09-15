@@ -97,8 +97,8 @@
                 class="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mb-8">
                 CompServe is your trusted online platform for freelancers
                 specializing in
-                <span class="font-medium">hardware maintenance</span>.
-                {{-- <span class="font-medium">software maintenance</span>. --}}
+                <span class="font-medium">hardware maintenance</span> and other
+                services.
                 Connect with skilled experts or offer your services to clients
                 in need.
             </p>

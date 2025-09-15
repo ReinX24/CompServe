@@ -2,17 +2,17 @@
     <div class="breadcrumbs text-sm">
         <ul>
             <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li>Posted Jobs</li>
+            <li>Cancelled Jobs</li>
         </ul>
     </div>
 
     <div class="flex justify-between items-center mb-4">
         <div class="mb-6">
             <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
-                {{ __('Posted Jobs') }}
+                {{ __('Cancelled Jobs') }}
             </h1>
             <p class="text-gray-600 dark:text-gray-400 mt-1">
-                {{ __('Your current posted jobs.') }}
+                {{ __('Jobs completed by freelancers.') }}
             </p>
         </div>
 
@@ -31,7 +31,6 @@
                     <div
                         class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
 
-
                         <div class="flex gap-2 justify-between items-center">
                             <h2
                                 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">
@@ -42,8 +41,8 @@
                             </h2>
 
                             <div
-                                class="badge badge-primary badge-outline p-3 text-sm">
-                                Open</div>
+                                class="badge badge-error badge-outline p-3 text-sm">
+                                Cancelled</div>
                         </div>
 
                         <p class="text-gray-600 dark:text-gray-400 mb-2">
@@ -75,12 +74,12 @@
                         </div>
                     </div>
                 @endforeach
-
             </div>
 
             <div class="mt-4">
                 {{ $jobs->links() }}
             </div>
+
         </div>
     @else
         <p class="text-gray-700 dark:text-gray-300">

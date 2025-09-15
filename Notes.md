@@ -12,7 +12,6 @@ Docker Container: localhost:8080
 
 - Freelancer Side Pages
 - Freelancer middleware
-- Freelancer job application
 - Flash message when a new job is made
 
 #### Client Side

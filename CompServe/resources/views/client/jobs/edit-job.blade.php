@@ -103,10 +103,10 @@
                             class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
                bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
                focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-
                         <button type="button"
                             @click="skills.splice(index, 1)"
-                            class="px-3 bg-red-500 text-white rounded-lg hover:bg-red-600 flex items-center justify-center">
+                            {{-- class="px-3 bg-red-500 text-white rounded-lg hover:bg-red-600 flex items-center justify-center"> --}}
+                            class="px-3 btn btn-error flex items-center justify-center">
                             ✕
                         </button>
                     </div>
@@ -115,7 +115,7 @@
                 <!-- Add Skill Button -->
                 <button type="button"
                     @click="skills.push('')"
-                    class="mt-2 px-4 py-2 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600">
+                    class="mt-2 px-4 py-2 btn btn-success">
                     + Add Skill
                 </button>
 
@@ -204,18 +204,24 @@
 
             <!-- Submit + Cancel -->
             <div class="flex items-center justify-between space-x-4">
-                <x-button type="primary"
+                {{-- <x-button type="primary"
                     buttonType="submit"
                     class="flex-1">
                     {{ __('Update Job') }}
-                </x-button>
+                </x-button> --}}
 
-                <x-button type="secondary"
+                <button type="submit"
+                    class="flex-1 btn btn-primary">{{ __('Update Job') }}</button>
+
+                {{-- <x-button type="secondary"
                     buttonType="button"
                     class="flex-1"
                     onclick="window.history.back()">
                     {{ __('Cancel') }}
-                </x-button>
+                </x-button> --}}
+
+                <button class="flex-1 btn btn-secondary"
+                    onclick="window.history.back()">{{ __('Cancel') }}</button>
             </div>
         </form>
 
@@ -227,7 +233,7 @@
             @method('DELETE')
             <button type="submit"
                 onclick="return confirm('Are you sure you want to delete this job? This action cannot be undone.')"
-                class="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                class="w-full px-4 py-2 btn btn-error">
                 {{ __('Delete Job') }}
             </button>
         </form>

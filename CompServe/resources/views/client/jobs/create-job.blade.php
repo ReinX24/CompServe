@@ -70,12 +70,18 @@
                     <option value=""
                         disabled
                         selected>Select a category</option>
-                    <option value="Hardware"
-                        {{ old('category') == 'Hardware' ? 'selected' : '' }}>
-                        Hardware</option>
-                    <option value="Software"
-                        {{ old('category') == 'Software' ? 'selected' : '' }}>
-                        Software</option>
+                    <option value="DesktopComputers"
+                        {{ old('category') == 'DesktopComputers' ? 'selected' : '' }}>
+                        Desktop Computers</option>
+                    <option value="Laptop Computers"
+                        {{ old('category') == 'Laptop Computer' ? 'selected' : '' }}>
+                        Laptop Computers</option>
+                    <option value="MobilePhones"
+                        {{ old('category') == 'MobilePhones' ? 'selected' : '' }}>
+                        Mobile Phones</option>
+                    <option value="Accessories"
+                        {{ old('category') == 'Accessories' ? 'selected' : '' }}>
+                        Computer Accessories</option>
                     <option value="Networking"
                         {{ old('category') == 'Networking' ? 'selected' : '' }}>
                         Networking</option>
@@ -107,7 +113,8 @@
 
                         <button type="button"
                             @click="skills.splice(index, 1)"
-                            class="px-3 bg-red-500 text-white rounded-lg hover:bg-red-600 flex items-center justify-center">
+                            {{-- class="px-3 bg-red-500 text-white rounded-lg hover:bg-red-600 flex items-center justify-center"> --}}
+                            class="px-3 btn btn-error flex items-center justify-center">
                             ✕
                         </button>
                     </div>
@@ -116,7 +123,7 @@
                 <!-- Add Skill Button -->
                 <button type="button"
                     @click="skills.push('')"
-                    class="mt-2 px-4 py-2 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600">
+                    class="mt-2 px-4 py-2 btn btn-success">
                     + Add Skill
                 </button>
 
@@ -205,18 +212,25 @@
 
             <!-- Submit + Cancel -->
             <div class="flex items-center justify-between space-x-4">
-                <x-button type="primary"
+                {{-- <x-button type="primary"
                     buttonType="submit"
-                    class="flex-1">
+                    class="flex-1 btn">
                     {{ __('Post Job') }}
-                </x-button>
+                </x-button> --}}
 
-                <x-button type="secondary"
+                <button type="submit"
+                    class="flex-1 btn btn-primary">{{ __('Post Job') }}</button>
+
+                {{-- <x-button type="secondary"
                     buttonType="button"
-                    class="flex-1"
+                    class="flex-1 btn btn-secondary"
                     onclick="window.history.back()">
                     {{ __('Cancel') }}
-                </x-button>
+                </x-button> --}}
+
+                <button class="flex-1 btn btn-secondary"
+                    onclick="window.history.back()">{{ __('Cancel') }}
+                </button>
             </div>
         </form>
     </div>

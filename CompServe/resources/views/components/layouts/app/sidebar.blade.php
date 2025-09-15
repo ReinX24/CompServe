@@ -106,6 +106,14 @@
                             In Progress Jobs
                         </x-layouts.sidebar-two-level-link>
                         <x-layouts.sidebar-two-level-link
+                            href="{{ route('client.jobs.cancelled') }}"
+                            icon='far-circle-xmark'
+                            :active="request()->routeIs(
+                                'client.jobs.cancelled',
+                            )">
+                            Cancelled Jobs
+                        </x-layouts.sidebar-two-level-link>
+                        <x-layouts.sidebar-two-level-link
                             href="{{ route('client.jobs.completed') }}"
                             icon='fas-pen'
                             :active="request()->routeIs(
