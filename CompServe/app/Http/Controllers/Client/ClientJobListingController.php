@@ -21,10 +21,36 @@ class ClientJobListingController extends Controller
         return view('client.jobs.all-jobs', compact('jobs'));
     }
 
-    public function postedJobs()
+    public function postedJobs(Request $request)
     {
         // dd("posted jobs");
-        $jobs = Auth::user()->jobListings()->where("status", "open")->paginate(6);
+        $search = $request->input('search');
+        $category = $request->input('category');
+        $client = $request->input('client');
+
+        $jobs = Auth::user()->jobListings()->where(
+            "status",
+            "open"
+        )
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', '%' . $search . '%')
+                        ->orWhere('description', 'like', '%' . $search . '%');
+                });
+            })
+            ->when($category, function ($query, $category) {
+                $query->where('category', $category);
+            })
+            ->when(
+                $client,
+                fn($q) =>
+                $q->whereHas(
+                    'client',
+                    fn($q2) =>
+                    $q2->where('name', 'like', "%$client%")
+                )
+            )->
+            paginate(6);
 
         return view('client.jobs.available-jobs', compact('jobs'));
     }

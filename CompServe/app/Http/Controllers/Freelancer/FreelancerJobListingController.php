@@ -95,6 +95,7 @@ class FreelancerJobListingController extends Controller
 
     }
 
+    // TODO: Test search functionalities
     public function availableJobs(Request $request)
     {
         $search = $request->input('search');
@@ -130,7 +131,7 @@ class FreelancerJobListingController extends Controller
     {
         $freelancerId = Auth::id();
 
-        $query = JobApplication::with(['job', 'client']) // eager load job
+        $query = JobApplication::with(['job', 'job.client']) // eager load job
             ->where('freelancer_id', $freelancerId)
             ->where('status', 'pending');
 
@@ -141,10 +142,10 @@ class FreelancerJobListingController extends Controller
         $query->whereHas('job', function ($q) use ($search, $category, $client) {
             $q->where('title', 'like', "%{$search}%")
                 ->where('description', 'like', "%{$search}%")
-                ->where('category', 'like', "%{$category}%");
-            // ->where('client', function ($cq) use ($client) {
-            //     $cq->where('name', 'like', "%{$client}%");
-            // });
+                ->where('category', 'like', "%{$category}%")
+                ->whereHas('client', function ($cq) use ($client) {
+                    $cq->where('name', 'like', "%{$client}%");
+                });
         });
 
         $appliedJobs = $query->latest()->paginate(6);
