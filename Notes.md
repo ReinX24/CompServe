@@ -34,3 +34,26 @@ Docker Container: localhost:8080
 - Login and register page errors
 - Implement soft deletes and cancelled status instead of outright deleting a record
 - Dashboard should compare the statistics from last week to current week
+- Make docker also run the laravel application rather than it running separately
+
+#### Alpha Test Requirements
+
+[x] System Prototype is deployed and accessible (local server, staging, or hosted).
+
+[x] Project Proposal/Documentation Draft (Problem statement, objectives, methodology).
+
+[x] ERD/Database Schema is finalized and implemented.
+
+[x] Basic Features (core functions of the system) are working.
+
+[x] GitHub Repository is properly set up (public/private with access given to panel).
+
+[x] README File includes installation/setup instructions.
+
+[?] Project Folder Structure is organized.
+
+[?] Coding Best Practices followed (PSR/Laravel/PHP standards, comments, naming).
+
+[x] Version Control Best Practices (meaningful commits, branches if applicable).
+
+[x] Initial Test Cases (basic user test done with screenshots/logs).

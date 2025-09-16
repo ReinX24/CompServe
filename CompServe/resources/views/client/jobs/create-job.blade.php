@@ -70,11 +70,14 @@
                     <option value=""
                         disabled
                         selected>Select a category</option>
+                    <option value="Hardware"
+                        {{ old('category') == 'Hardware' ? 'selected' : '' }}>
+                        Hardware</option>
                     <option value="DesktopComputers"
                         {{ old('category') == 'DesktopComputers' ? 'selected' : '' }}>
                         Desktop Computers</option>
                     <option value="Laptop Computers"
-                        {{ old('category') == 'Laptop Computer' ? 'selected' : '' }}>
+                        {{ old('category') == 'LaptopComputers' ? 'selected' : '' }}>
                         Laptop Computers</option>
                     <option value="MobilePhones"
                         {{ old('category') == 'MobilePhones' ? 'selected' : '' }}>

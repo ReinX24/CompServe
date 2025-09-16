@@ -36,10 +36,24 @@ class UserSeeder extends Seeder
             'role' => 'freelancer',
         ]);
 
+        User::factory()->create([
+            'name' => 'Freelancer2',
+            'email' => 'freelancer2@example.com',
+            'password' => 'password',
+            'role' => 'freelancer',
+        ]);
+
         // Client account for testing
         User::factory()->create([
             'name' => 'Client1',
             'email' => 'client1@example.com',
+            'password' => 'password',
+            'role' => 'client',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Client2',
+            'email' => 'client2@example.com',
             'password' => 'password',
             'role' => 'client',
         ]);

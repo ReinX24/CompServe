@@ -89,12 +89,11 @@
 
         <!-- Action buttons -->
         <div class="flex space-x-3">
-            <a href="{{ url()->previous() }}"
+            {{-- <a href="{{ url()->previous() }}"
                 class="px-3 py-2 btn btn-secondary">
-                Back to Listings
-            </a>
+                Back
+            </a> --}}
             @if (Auth::user()->role === 'freelancer')
-
                 {{-- Freelancer applying for a job --}}
                 @php
                     $alreadyApplied = \App\Models\JobApplication::where(
@@ -106,9 +105,21 @@
                 @endphp
 
                 @if ($alreadyApplied)
-                    {{-- TODO: when the user clicks the applied, ask if they want to remove application --}}
                     <button class="btn btn-success"
                         disabled="disabled">Applied</button>
+                    {{-- Cancel application button --}}
+                    <form
+                        action="{{ route('freelancer.jobs.removeApplication', $jobListing) }}"
+                        method="POST"
+                        onsubmit="return confirm('Are you sure you want to remove your application for this job?');">
+                        @csrf
+                        @method('DELETE')
+
+                        <button class="btn btn-error"
+                            type="submit">
+                            Remove Application
+                        </button>
+                    </form>
                 @else
                     <form action="{{ route('freelancer.jobs.apply') }}"
                         method="POST">

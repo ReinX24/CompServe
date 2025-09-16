@@ -20,7 +20,7 @@ class JobListingFactory extends Factory
             // client_id will be assigned in seeder so it always belongs to a client user
             'title' => $this->faker->jobTitle(),
             'description' => $this->faker->paragraph(5),
-            'category' => $this->faker->randomElement(['Web Development', 'Design', 'Writing', 'Marketing']),
+            'category' => $this->faker->randomElement(['Hardware', 'DesktopComputers', 'LaptopComputers', 'MobilePhones', 'Accessories', 'Networking']),
             'skills_required' => $this->faker->randomElements(
                 ['PHP', 'Laravel', 'React', 'Vue', 'Node.js', 'Figma', 'SEO', 'Content Writing'],
                 3

@@ -41,7 +41,6 @@ class RegistrationController extends Controller
         switch ($user->role) {
             case "freelancer":
                 return redirect()->route('freelancer.dashboard');
-                break;
             // Client side, no registration for admins allowed
             default:
                 return redirect()->route('client.dashboard');

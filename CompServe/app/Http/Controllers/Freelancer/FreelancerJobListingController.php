@@ -6,6 +6,7 @@ use App\Http\Controllers\Client\ClientJobListingController;
 use App\Http\Controllers\Controller;
 use App\Models\JobApplication;
 use App\Models\JobListing;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -63,6 +64,22 @@ class FreelancerJobListingController extends Controller
             ->with('success', 'Applied for job successfully!');
     }
 
+    public function deleteJobApplication(JobListing $jobListing)
+    {
+        // Get the job application with the current user's id and job_listing id
+        $jobApplication = JobApplication::where([
+            ['freelancer_id', Auth::user()->id],
+            ['job_id', $jobListing->id],
+        ])->first();
+
+        $jobApplication->delete();
+
+        return redirect()->route(
+            'freelancer.jobs.show',
+            $jobListing
+        )->with('success', 'Removed application successfully.');
+    }
+
     public function edit()
     {
 
@@ -78,26 +95,64 @@ class FreelancerJobListingController extends Controller
 
     }
 
-    public function availableJobs()
+    public function availableJobs(Request $request)
     {
-        $jobs = JobListing::where('status', 'open')->paginate(6);
+        $search = $request->input('search');
+        $category = $request->input('category');
+        $client = $request->input('client');
 
-        return view('freelancer.jobs.available-jobs', compact('jobs'));
+        $jobs = JobListing::where('status', 'open')
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', '%' . $search . '%')
+                        ->orWhere('description', 'like', '%' . $search . '%');
+                });
+            })
+            ->when($category, function ($query, $category) {
+                $query->where('category', $category);
+            })
+            ->when(
+                $client,
+                fn($q) =>
+                $q->whereHas(
+                    'client',
+                    fn($q2) =>
+                    $q2->where('name', 'like', "%$client%")
+                )
+            )
+            ->paginate(6)
+            ->withQueryString();
+
+        return view('freelancer.jobs.available-jobs', compact('jobs', 'search', 'category'));
     }
 
-    public function appliedJobs()
+    public function appliedJobs(Request $request)
     {
         $freelancerId = Auth::id();
 
-        $appliedJobs = JobApplication::with('job') // eager load job relationship
-            ->where([
-                ['freelancer_id', $freelancerId],
-                ['status', 'pending']
-            ])
-            ->latest()
-            ->paginate(6);
+        $query = JobApplication::with(['job', 'client']) // eager load job
+            ->where('freelancer_id', $freelancerId)
+            ->where('status', 'pending');
 
-        return view('freelancer.jobs.applied-jobs', compact('appliedJobs'));
+        $search = $request->input('search');
+        $category = $request->input('category');
+        $client = $request->input('client');
+
+        $query->whereHas('job', function ($q) use ($search, $category, $client) {
+            $q->where('title', 'like', "%{$search}%")
+                ->where('description', 'like', "%{$search}%")
+                ->where('category', 'like', "%{$category}%");
+            // ->where('client', function ($cq) use ($client) {
+            //     $cq->where('name', 'like', "%{$client}%");
+            // });
+        });
+
+        $appliedJobs = $query->latest()->paginate(6);
+
+        return view('freelancer.jobs.applied-jobs', [
+            'appliedJobs' => $appliedJobs,
+            'search' => $request->input('search') // keep old search value
+        ]);
     }
 
     public function currentJobs()
