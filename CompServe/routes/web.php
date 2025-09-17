@@ -26,7 +26,7 @@ Route::get('/dashboard', function () {
         return redirect()->route("freelancer.dashboard");
     } elseif (Auth::user()->role === "client") {
         // return view('client.dashboard');
-        return redirect()->route("freelancer.client");
+        return redirect()->route("client.dashboard");
     } else {
         return view('dashboard');
     }
