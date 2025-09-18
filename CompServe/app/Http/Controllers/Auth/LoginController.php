@@ -19,6 +19,16 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
+    public function loginClient()
+    {
+        return view('auth.client.login');
+    }
+
+    public function loginFreelancer()
+    {
+        return view('auth.freelancer.login');
+    }
+
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
@@ -30,6 +40,7 @@ class LoginController extends Controller
         $this->ensureIsNotRateLimited($request);
 
         if (!Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+            dd("ERROR!");
             RateLimiter::hit($this->throttleKey($request));
 
             throw ValidationException::withMessages([

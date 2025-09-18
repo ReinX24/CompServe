@@ -37,7 +37,7 @@ Docker Container: localhost:8080
 - Dashboard should compare the statistics from last week to current week
 - Make docker also run the laravel application rather than it running separately
 
-#### Alpha Test Requirements
+#### Alpha Test Requirements (DONE)
 
 [x] System Prototype is deployed and accessible (local server, staging, or hosted).
 
@@ -51,9 +51,9 @@ Docker Container: localhost:8080
 
 [x] README File includes installation/setup instructions.
 
-[?] Project Folder Structure is organized.
+[x] Project Folder Structure is organized.
 
-[?] Coding Best Practices followed (PSR/Laravel/PHP standards, comments, naming).
+[x] Coding Best Practices followed (PSR/Laravel/PHP standards, comments, naming).
 
 [x] Version Control Best Practices (meaningful commits, branches if applicable).
 

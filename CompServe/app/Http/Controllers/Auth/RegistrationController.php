@@ -20,6 +20,16 @@ class RegistrationController extends Controller
         return view('auth.register');
     }
 
+    public function registerClient()
+    {
+        dd("REGISTER CLIENT");
+    }
+
+    public function registerFreelancer()
+    {
+        dd("REGISTER FREELANCER");
+    }
+
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([

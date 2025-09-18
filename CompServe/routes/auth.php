@@ -15,6 +15,12 @@ Route::middleware('guest')->group(function () {
     Route::get('login', [LoginController::class, 'create'])->name('login');
     Route::post('login', [LoginController::class, 'store']);
 
+    Route::get('/login/freelancer', [LoginController::class, 'loginFreelancer'])->name('login.freelancer');
+    Route::get('/login/client', [LoginController::class, 'loginClient'])->name('login.client');
+
+    Route::get('/register/freelancer', [RegistrationController::class, 'registerFreelancer'])->name('register.freelancer');
+    Route::get('/register/client', [RegistrationController::class, 'registerClient'])->name('register.client');
+
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
 

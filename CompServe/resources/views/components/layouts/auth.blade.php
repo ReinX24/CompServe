@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
-    <title>Login - {{ config('app.name') }}</title>
+    <title>{{ config('app.name') }} - {{ $title }}</title>
     @vite('resources/css/app.css')
     <script>
         let htmlTag = document.documentElement;
