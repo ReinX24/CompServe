@@ -78,6 +78,12 @@
                     </div>
                 </div>
 
+                <div>
+                    <input type="hidden"
+                        name="role"
+                        value="client">
+                </div>
+
                 <!-- Login Button -->
                 <button
                     class="w-full btn btn-primary">{{ __('Sign In') }}</button>
