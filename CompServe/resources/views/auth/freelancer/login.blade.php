@@ -15,56 +15,55 @@
                 @csrf
                 <!-- Email Input -->
                 <div>
-                    <x-forms.input label="Email"
+                    {{-- <x-forms.input label="Email"
                         name="email"
                         type="email"
                         placeholder="your@email.com"
-                        value="{{ old('email') }}" />
-
-                    {{-- <label for="email">Email</label>
-                    <input name="email"
-                        type="email"
-                        placeholder="your@email.com"
-                        class="input input-primary w-full"
                         value="{{ old('email') }}" /> --}}
-                </div>
 
-                <!-- Role Selector -->
-                <div>
-                    <x-forms.select label="Role"
-                        name="role">
-                        <option value="freelancer"
-                            selected>
-                            Freelancer</option>
-                    </x-forms.select>
-
-                    {{-- <label for="role">Role</label>
-                    <select name="role" class="select select-primary w-full">
-                        <option value="freelancer"
-                            {{ old('role') == 'freelancer' ? 'selected' : '' }}>
-                            Freelancer</option>
-                        <option value="client"
-                            {{ old('role') == 'client' ? 'selected' : '' }}>
-                            Client</option>
-                        <option value="admin"
-                            {{ old('role') == 'admin' ? 'selected' : '' }}>Admin
-                        </option>
-                    </select> --}}
+                    {{-- Email input --}}
+                    <label class="input input-primary w-full">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="size-6">
+                            <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                        </svg>
+                        <input type="text"
+                            name="email"
+                            class="grow"
+                            placeholder="email@example.com"
+                            value="{{ old('email') }}" />
+                    </label>
                 </div>
 
                 <!-- Password Input -->
                 <div>
-                    <x-forms.input label="Password"
+                    {{-- <x-forms.input label="Password"
                         name="password"
                         type="password"
-                        placeholder="••••••••" />
-
-                    {{-- <label for="password">Password</label>
-                    <input label="Password"
-                        name="password"
-                        type="password"
-                        class="input input-primary w-full"
                         placeholder="••••••••" /> --}}
+
+                    <label class="input input-primary w-full">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="size-6">
+                            <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                        </svg>
+                        <input type="password"
+                            name="password"
+                            class="grow"
+                            placeholder="••••••••" />
+                    </label>
 
                     <!-- Remember me & password reset -->
                     <div class="flex items-center justify-between mt-2">
@@ -81,7 +80,7 @@
                 <div>
                     <input type="hidden"
                         name="role"
-                        value="client">
+                        value="freelancer">
                 </div>
 
                 <!-- Login Button -->
