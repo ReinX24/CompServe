@@ -66,6 +66,7 @@
                     </div>
                 </div>
 
+                {{-- Client role for logging in --}}
                 <div>
                     <input type="hidden"
                         name="role"

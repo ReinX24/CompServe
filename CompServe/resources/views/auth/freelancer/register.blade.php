@@ -1,0 +1,3 @@
+<div>
+    Freelancer register
+</div>

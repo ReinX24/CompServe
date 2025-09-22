@@ -22,12 +22,12 @@ class RegistrationController extends Controller
 
     public function registerClient()
     {
-        dd("REGISTER CLIENT");
+        return view('auth.client.register');
     }
 
     public function registerFreelancer()
     {
-        dd("REGISTER FREELANCER");
+        return view('auth.freelancer.register');
     }
 
     public function store(Request $request): RedirectResponse
