@@ -113,6 +113,23 @@
                     Login
                 </a>
             </div>
+
+            {{-- Freelancer and Client --}}
+            <div>
+                <div>
+                    <p>Freelancer</p>
+
+                    <a href="{{ route('login.freelancer') }}">Login</a>
+                    <a href="{{ route('register.freelancer') }}">Register</a>
+                </div>
+
+                <div>
+                    Client
+
+                    <a href="{{ route('login.freelancer') }}">Login</a>
+                    <a href="{{ route('register.freelancer') }}">Register</a>
+                </div>
+            </div>
         </main>
     </div>
 </body>

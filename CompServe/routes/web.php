@@ -47,7 +47,6 @@ require __DIR__ . '/freelancer.php';
 
 require __DIR__ . '/client.php';
 
-
 // TODO: admin routes
 
 require __DIR__ . '/auth.php';
