@@ -6,7 +6,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name') }} - {{ $title ?? 'Login / Register' }}</title>
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
         let htmlTag = document.documentElement;
 
@@ -65,6 +65,9 @@
     <div class="min-h-screen flex flex-col">
         <!-- Main Content -->
         <main class="flex-1 flex items-center justify-center p-6">
+            {{-- Navbar --}}
+            <x-layouts.app.guest-header />
+
             <div class="w-full max-w-md">
                 {{ $slot }}
             </div>
