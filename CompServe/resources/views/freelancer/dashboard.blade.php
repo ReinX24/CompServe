@@ -8,45 +8,48 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-        <div
-            class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p
-                        class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        {{ __('Available Jobs') }}</p>
-                    <p
-                        class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
-                        {{ $availableJobsCount ?? '--' }}
-                    </p>
-                    <p class="text-xs text-gray-500 flex items-center mt-1">
+        <a href="{{ route('freelancer.jobs.available') }}"
+            class="border">
+            <div
+                class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p
+                            class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            {{ __('Available Jobs') }}</p>
+                        <p
+                            class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
+                            {{ $availableJobsCount ?? '--' }}
+                        </p>
+                        <p class="text-xs text-gray-500 flex items-center mt-1">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="h-4 w-4 mr-1"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                            </svg>
+                            {{ __('No data') }}
+                        </p>
+                    </div>
+                    <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-full">
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            class="h-4 w-4 mr-1"
+                            class="h-6 w-6 text-blue-500 dark:text-blue-300"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round"
                                 stroke-linejoin="round"
                                 stroke-width="2"
-                                d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                         </svg>
-                        {{ __('No data') }}
-                    </p>
-                </div>
-                <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6 text-blue-500 dark:text-blue-300"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
 
         <!-- Revenue Card -->
         <div
