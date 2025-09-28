@@ -14,9 +14,10 @@ use Illuminate\View\View;
 
 class LoginController extends Controller
 {
-    public function create(): View
+    public function create()
     {
-        return view('auth.login');
+        // return view('auth.login');
+        return redirect('/');
     }
 
     public function loginClient()

@@ -17,8 +17,10 @@
                         d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
-            <div class="ml-4 font-semibold text-xl text-primary">
-                {{ config('app.name') }}</div>
+            <a href="/">
+                <div class="ml-4 font-semibold text-xl text-primary">
+                    {{ config('app.name') }}</div>
+            </a>
         </div>
 
         <!-- Right side: Search, notifications, profile -->

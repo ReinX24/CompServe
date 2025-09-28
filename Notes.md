@@ -36,6 +36,7 @@ Docker Container: localhost:8080
 - Implement soft deletes and cancelled status instead of outright deleting a record
 - Dashboard should compare the statistics from last week to current week
 - Make docker also run the laravel application rather than it running separately
+- Make a custom guest middleware
 
 #### Alpha Test Requirements (DONE)
 

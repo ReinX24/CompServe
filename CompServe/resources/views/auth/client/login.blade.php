@@ -27,7 +27,8 @@
 
                 {{-- Email input --}}
                 <div>
-                    <label class="input input-primary w-full">
+                    <label
+                        class="input w-full {{ $errors->has('email') ? 'input-error' : 'input-primary' }}">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -44,11 +45,19 @@
                             placeholder="email@example.com"
                             value="{{ old('email') }}" />
                     </label>
+
+                    @error('email')
+                        <div role="alert"
+                            class="alert alert-error alert-soft mt-3">
+                            <span>{{ $message }}</span>
+                        </div>
+                    @enderror
                 </div>
 
                 {{-- Password input --}}
                 <div>
-                    <label class="input input-primary w-full">
+                    <label
+                        class="input w-full {{ $errors->has('password') ? 'input-error' : 'input-primary' }}">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -65,15 +74,28 @@
                             placeholder="••••••••" />
                     </label>
 
-                    <!-- Remember me & password reset -->
+                    @error('password')
+                        <div role="alert"
+                            class="alert alert-error alert-soft mt-3">
+                            <span>{{ $message }}</span>
+                        </div>
+                    @enderror
+
+                    {{-- Remember me & password reset --}}
                     <div class="flex items-center justify-between mt-2">
                         @if (Route::has('password.request'))
                             <a href="{{ route('password.request') }}"
-                                class="text-xs text-blue-600 dark:text-blue-400 hover:underline">{{ __('Forgot password?') }}</a>
+                                class="link link-primary text-sm">{{ __('Forgot password?') }}</a>
                         @endif
-                        <x-forms.checkbox label="Remember me"
-                            name="remember"
-                            {{ old('remember') ? 'checked' : '' }} />
+
+                        {{-- Remember Me --}}
+                        <label class="flex items-center text-sm text-primary">
+                            <input type="checkbox"
+                                name="remember"
+                                class="checkbox checkbox-primary mr-2"
+                                {{ old('remember') ? 'checked' : '' }}>
+                            {{ __('Remember me') }}
+                        </label>
                     </div>
                 </div>
 
