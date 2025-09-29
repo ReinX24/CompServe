@@ -1,12 +1,5 @@
 <?php
 
-// use App\Http\Controllers\Freelancer\FreelancerInformationController;
-// use App\Http\Controllers\Client\ClientInformationController;
-// use App\Http\Controllers\Client\ClientJobListingController;
-// use App\Http\Controllers\Freelancer\FreelancerJobListingController;
-// use App\Http\Controllers\Settings;
-// use App\Models\JobApplication;
-// use App\Models\JobListing;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 

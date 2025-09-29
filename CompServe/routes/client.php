@@ -9,6 +9,7 @@ use App\Models\JobListing;
 Route::prefix('client')
     ->middleware('auth')->name('client.')
     ->group(function () {
+
         Route::get('/dashboard', function () {
             $postedCount = JobListing::where(
                 [['client_id', Auth::user()->id], ['status', 'open']]
