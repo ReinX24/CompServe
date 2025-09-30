@@ -7,7 +7,9 @@ use App\Models\JobListing;
 
 // Client routes
 Route::prefix('client')
-    ->middleware('auth')->name('client.')
+    // client middleware checks if the user is logged in and an admin account
+    ->middleware('client')
+    ->name('client.')
     ->group(function () {
 
         Route::get('/dashboard', function () {
@@ -29,7 +31,12 @@ Route::prefix('client')
                 Auth::user()->id
             )->count();
 
-            return view('client.dashboard', compact('postedCount', 'inProgressCount', 'completedCount', 'applicationCount'));
+            return view('client.dashboard', compact(
+                'postedCount',
+                'inProgressCount',
+                'completedCount',
+                'applicationCount'
+            ));
         })->name('dashboard');
 
         Route::prefix('jobs')->group(function () {
