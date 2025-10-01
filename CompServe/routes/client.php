@@ -29,7 +29,7 @@ Route::prefix('client')
             $applicationCount = JobApplication::where(
                 'client_id',
                 Auth::user()->id
-            )->count();
+            )->count() ?? 0;
 
             return view('client.dashboard', compact(
                 'postedCount',
