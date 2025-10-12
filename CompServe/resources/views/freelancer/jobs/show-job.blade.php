@@ -14,9 +14,10 @@
                 Status:
                 @php
                     $statusColors = [
-                        'open' => 'badge badge-success',
-                        'in_progress' => 'badge badge-warning',
-                        'completed' => 'badge badge-accent',
+                        'open' => 'badge badge-success badge-outline',
+                        'in_progress' => 'badge badge-warning badge-outline',
+                        'cancelled' => 'badge badge-error badge-outline',
+                        'completed' => 'badge badge-accent badge-outline',
                     ];
                 @endphp
 
@@ -121,6 +122,7 @@
                         </button>
                     </form>
                 @else
+                    {{-- <div>Job in progress.</div> --}}
                     <form action="{{ route('freelancer.jobs.apply') }}"
                         method="POST">
                         @csrf

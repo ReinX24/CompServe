@@ -216,6 +216,13 @@
                     </x-layouts.sidebar-two-level-link-parent>
 
                     <x-layouts.sidebar-link
+                        href="{{ route('client.reviews') }}"
+                        icon='fas-star'
+                        :active="request()->routeIs('client.reviews')">
+                        Reviews
+                    </x-layouts.sidebar-link>
+
+                    <x-layouts.sidebar-link
                         href="{{ route('client.profile.show') }}"
                         icon='fas-person'
                         :active="request()->routeIs('client.profile.show')">

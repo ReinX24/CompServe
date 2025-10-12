@@ -69,4 +69,7 @@ Route::prefix('client')
             Route::get('/edit', [ClientInformationController::class, 'edit'])->name('profile.edit');
             Route::put('/update', [ClientInformationController::class, 'update'])->name('profile.update');
         });
+
+        // Routes for reviews
+        Route::get('/reviews', [ClientInformationController::class, 'reviews'])->name('reviews');
     });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\JobApplication;
 use App\Models\JobListing;
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -265,8 +266,19 @@ class ClientJobListingController extends Controller
         return redirect()->route('client.jobs.show', $jobListing);
     }
 
-    public function markJobAsComplete(JobListing $jobListing)
+    public function markJobAsComplete(Request $request, JobListing $jobListing)
     {
+        // Before marking, set review for the freelancer and the job
+        if ($request->filled('rating')) {
+            Review::create([
+                'client_id' => Auth::id(),
+                'freelancer_id' => $request->user_id,
+                'job_listing_id' => $jobListing->id,
+                'rating' => $request->rating,
+                'review_text' => $request->review,
+            ]);
+        }
+
         // Setting job_listing as complete
         $jobListing->status = "completed";
 

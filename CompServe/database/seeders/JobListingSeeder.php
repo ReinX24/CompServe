@@ -27,20 +27,20 @@ class JobListingSeeder extends Seeder
                 ]);
 
             // 10 in_progress jobs
-            JobListing::factory()
-                ->count(10)
-                ->create([
-                    'client_id' => $client->id,
-                    'status' => 'in_progress',
-                ]);
+            // JobListing::factory()
+            //     ->count(10)
+            //     ->create([
+            //         'client_id' => $client->id,
+            //         'status' => 'in_progress',
+            //     ]);
 
             // 10 completed jobs
-            JobListing::factory()
-                ->count(10)
-                ->create([
-                    'client_id' => $client->id,
-                    'status' => 'completed',
-                ]);
+            // JobListing::factory()
+            //     ->count(10)
+            //     ->create([
+            //         'client_id' => $client->id,
+            //         'status' => 'completed',
+            //     ]);
         }
     }
 }

@@ -14,19 +14,19 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // 10 Admins
-        User::factory()->count(10)->create([
-            'role' => 'admin',
-        ]);
+        // User::factory()->count(10)->create([
+        //     'role' => 'admin',
+        // ]);
 
         // 10 Freelancers
-        User::factory()->count(10)->create([
-            'role' => 'freelancer',
-        ]);
+        // User::factory()->count(10)->create([
+        //     'role' => 'freelancer',
+        // ]);
 
         // 10 Clients
-        User::factory()->count(10)->create([
-            'role' => 'client',
-        ]);
+        // User::factory()->count(10)->create([
+        //     'role' => 'client',
+        // ]);
 
         // Freelancer account for testing
         User::factory()->create([
