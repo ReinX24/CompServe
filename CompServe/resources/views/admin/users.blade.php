@@ -23,7 +23,7 @@
                 <tbody>
                     @foreach ($users as $user)
                         <tr class="hover">
-                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $user->id }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>

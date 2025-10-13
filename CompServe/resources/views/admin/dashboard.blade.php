@@ -17,7 +17,7 @@
                         {{ __('Total Users') }}</p>
                     <p
                         class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
-                        {{ $usersCount }}</p>
+                        {{ $usersCount ?? '--' }}</p>
                     <p class="text-xs text-gray-500 flex items-center mt-1">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-4 w-4 mr-1"
@@ -54,10 +54,10 @@
                 <div>
                     <p
                         class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        {{ __('Total Revenue') }}</p>
+                        {{ __('Total Jobs') }}</p>
                     <p
                         class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
-                        --</p>
+                        {{ $jobsCount ?? '--' }}</p>
                     <p class="text-xs text-gray-500 flex items-center mt-1">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-4 w-4 mr-1"
@@ -94,10 +94,10 @@
                 <div>
                     <p
                         class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        {{ __('Total Orders') }}</p>
+                        {{ __('Total Reviews') }}</p>
                     <p
                         class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
-                        --</p>
+                        {{ $reviewsCount ?? '--' }}</p>
                     <p class="text-xs text-gray-500 flex items-center mt-1">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-4 w-4 mr-1"

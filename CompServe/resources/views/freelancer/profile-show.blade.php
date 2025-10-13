@@ -151,8 +151,13 @@
                     @endif
                 </div>
 
-                <!-- Edit Button -->
-                <div class="mt-8 flex justify-end">
+                {{-- Change Password and Edit Button --}}
+                <div class="mt-8 flex justify-end gap-3">
+                    <label for="change-password-modal"
+                        class="btn btn-secondary">
+                        Change Password
+                    </label>
+
                     <a href="{{ route('freelancer.profile.edit') }}"
                         class="btn btn-primary">
                         Edit Information
@@ -160,5 +165,76 @@
                 </div>
             </div>
         </div>
-    </div>
+
+        {{-- Change password modal --}}
+        <input type="checkbox"
+            id="change-password-modal"
+            class="modal-toggle" />
+        <div class="modal">
+            <div class="modal-box relative">
+                <label for="change-password-modal"
+                    class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+                <h3 class="text-lg font-bold mb-4">Change Password</h3>
+
+                @if ($errors->any())
+                    <div class="alert alert-error mb-4">
+                        <ul class="list-disc list-inside text-sm">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                @if (session('success'))
+                    <div class="alert alert-success mb-4">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                <form method="POST"
+                    action="{{ route('freelancer.profile.changePassword') }}">
+                    @csrf
+
+                    <div class="form-control mb-3">
+                        <label class="label">
+                            <span class="label-text">Current Password</span>
+                        </label>
+                        <input type="password"
+                            name="current_password"
+                            class="input input-bordered w-full"
+                            required>
+                    </div>
+
+                    <div class="form-control mb-3">
+                        <label class="label">
+                            <span class="label-text">New Password</span>
+                        </label>
+                        <input type="password"
+                            name="new_password"
+                            class="input input-bordered w-full"
+                            required
+                            minlength="8">
+                    </div>
+
+                    <div class="form-control mb-3">
+                        <label class="label">
+                            <span class="label-text">Confirm New Password</span>
+                        </label>
+                        <input type="password"
+                            name="new_password_confirmation"
+                            class="input input-bordered w-full"
+                            required
+                            minlength="8">
+                    </div>
+
+                    <div class="modal-action">
+                        <button type="submit"
+                            class="btn btn-primary">
+                            Update Password
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
 </x-layouts.app>

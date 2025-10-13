@@ -17,7 +17,7 @@
                 <tbody>
                     @foreach ($reviews as $review)
                         <tr class="hover">
-                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $review->id }}</td>
                             <td>{{ $review->client->name ?? 'N/A' }}</td>
                             <td>{{ $review->freelancer->name ?? 'N/A' }}</td>
                             <td>

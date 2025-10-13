@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Freelancer\FreelancerReviewController;
+use App\Models\FreelancerInformation;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\JobListing;
@@ -59,7 +60,11 @@ Route::prefix('freelancer')
             Route::get('/', [FreelancerInformationController::class, 'show'])->name('profile.show');
             Route::get('/edit', [FreelancerInformationController::class, 'edit'])->name('profile.edit');
             Route::put('/update', [FreelancerInformationController::class, 'update'])->name('profile.update');
+
+            // Reset password
+            Route::post('/change-password', [FreelancerInformationController::class, 'changePassword'])->name('profile.changePassword');
         });
 
         Route::get('/reviews', [FreelancerReviewController::class, 'index'])->name('reviews');
+
     });

@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\PasswordResetNotificationMail;
 use Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\JobListing;
 use App\Models\Review;
 use Illuminate\Support\Facades\Hash;
+use Mail;
+use Str;
 
 class AdminController extends Controller
 {
@@ -50,8 +53,6 @@ class AdminController extends Controller
     public function dashboard()
     {
         $usersCount = User::count();
-
-        // TODO: add cards for jobcount and reviews count
         $jobsCount = JobListing::count();
         $reviewsCount = Review::count();
 
@@ -91,40 +92,46 @@ class AdminController extends Controller
 
     public function resetPassword(User $user)
     {
-        $newPassword = 'password123'; // or Str::random(10)
+        $newPassword = Str::random(10);
 
         $user->update([
             'password' => Hash::make($newPassword),
         ]);
 
-        // TODO: send an email whenever the password is reset
-        // $user->notify(new PasswordResetNotification($newPassword));
+        // Send an email to the user whenever their password is reset
+        Mail::to($user->email)->send(new
+            PasswordResetNotificationMail($user, $newPassword));
 
         return redirect()->back()->with('success', "Password reset successfully. New password: $newPassword");
     }
 
     public function jobs()
     {
-        $jobs = JobListing::all();
+        $jobs = JobListing::with('client')->latest()->get();
         return view('admin.jobs', compact('jobs'));
     }
 
     public function updateJob(Request $request, JobListing $job)
     {
         $validated = $request->validate([
-            'title' => 'required|string',
+            'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'status' => 'required|string',
+            'status' => 'required|string|in:open,in_progress,cancelled,completed',
+            'budget' => 'nullable|numeric|min:0',
         ]);
 
         $job->update($validated);
-        return back()->with('success', 'Job updated successfully.');
+
+        return redirect()->route('admin.jobs')
+            ->with('success', 'Job listing updated successfully!');
     }
 
     public function deleteJob(JobListing $job)
     {
         $job->delete();
-        return back()->with('success', 'Job deleted successfully.');
+
+        return redirect()->route('admin.jobs')
+            ->with('success', 'Job listing deleted successfully!');
     }
 
     public function reviews()

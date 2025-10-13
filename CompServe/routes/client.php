@@ -72,4 +72,7 @@ Route::prefix('client')
         Route::get('/profile', [ClientProfileController::class, 'show'])->name('profile.show');
         Route::get('/profile/edit', [ClientProfileController::class, 'edit'])->name('profile.edit');
         Route::post('/profile/update', [ClientProfileController::class, 'update'])->name('profile.update');
+
+        // Reset password
+        Route::post('/profile/change-password', [ClientProfileController::class, 'changePassword'])->name('profile.changePassword');
     });
