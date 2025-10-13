@@ -221,6 +221,8 @@
                                 @csrf
                                 @method('PUT')
 
+                                <input type="hidden" name="freelancer_id" value="{{ $user->id }}">
+
                                 <button type="submit"
                                     class="btn btn-error">Cancel Job</button>
                             </form>
@@ -264,11 +266,11 @@
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="review"
+                                    <label for="comments"
                                         class="block mb-2 font-medium">Comments
                                         (optional)</label>
-                                    <textarea id="review"
-                                        name="review"
+                                    <textarea id="comments"
+                                        name="comments"
                                         class="textarea textarea-bordered w-full"
                                         rows="3"
                                         placeholder="Share your feedback..."></textarea>
@@ -297,6 +299,17 @@
                     </div>
                 </div>
 
+            </div>
+        @elseif ($jobListing->status === 'cancelled')
+            <div class="mt-6">
+                {{-- Show the rejected applicant --}}
+                <div class="mb-3">
+                    Rejected Applicant:
+                    <a href="{{ route('client.jobs.applicant', [$jobListing, $user]) }}"
+                        class="link link-primary">
+                        {{ $user->name }}
+                    </a>
+                </div>
             </div>
         @endif
     </div>

@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->foreignId('client_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('job_listing_id')->constrained('job_listings')->cascadeOnDelete();
             $table->unsignedTinyInteger('rating');
+            $table->text('comments')->nullable();
             $table->timestamps();
         });
     }

@@ -67,7 +67,19 @@ class FreelancerJobListingController extends Controller
     public function deleteJobApplication(JobListing $jobListing)
     {
         // Check if the current job is in progress, if the freelancer chooses to cancel while in progress cancel the listing
+        // If the user has been accepted and they also want to cancel their application
         if ($jobListing->status === "in_progress") {
+
+            $jobApplication = JobApplication::where([
+                ['freelancer_id', Auth::user()->id],
+                ['job_id', $jobListing->id],
+            ])->first();
+
+            // Remove the application
+            $jobApplication->status = "rejected";
+            $jobApplication->save();
+
+            // Change the job listing to be cancelled
             $jobListing->status = "cancelled";
             $jobListing->save();
         } else {

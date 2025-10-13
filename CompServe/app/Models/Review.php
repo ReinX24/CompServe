@@ -13,7 +13,8 @@ class Review extends Model
         'freelancer_id',
         'client_id',
         'job_listing_id',
-        'rating'
+        'rating',
+        'comments'
     ];
 
     public function freelancer()

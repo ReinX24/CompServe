@@ -67,7 +67,7 @@
                     </x-layouts.sidebar-two-level-link-parent>
 
                     {{-- Gigs --}}
-                    <x-layouts.sidebar-two-level-link-parent title="Gigs"
+                    {{-- <x-layouts.sidebar-two-level-link-parent title="Gigs"
                         icon='fas-pen-alt'
                         :active="request()->routeIs('freelancer.jobs*')">
                         <x-layouts.sidebar-two-level-link
@@ -110,10 +110,10 @@
                             )">
                             Finished Jobs
                         </x-layouts.sidebar-two-level-link>
-                    </x-layouts.sidebar-two-level-link-parent>
+                    </x-layouts.sidebar-two-level-link-parent> --}}
 
                     {{-- Contracts --}}
-                    <x-layouts.sidebar-two-level-link-parent title="Contracts"
+                    {{-- <x-layouts.sidebar-two-level-link-parent title="Contracts"
                         icon='fas-pen-fancy'
                         :active="request()->routeIs('freelancer.jobs*')">
                         <x-layouts.sidebar-two-level-link
@@ -156,7 +156,7 @@
                             )">
                             Finished Jobs
                         </x-layouts.sidebar-two-level-link>
-                    </x-layouts.sidebar-two-level-link-parent>
+                    </x-layouts.sidebar-two-level-link-parent> --}}
 
                     <x-layouts.sidebar-link
                         href="{{ route('freelancer.profile.show') }}"

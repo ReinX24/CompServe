@@ -97,17 +97,47 @@
             @if (Auth::user()->role === 'freelancer')
                 {{-- Freelancer applying for a job --}}
                 @php
+                    // Check if the user has already applied and is still pending
                     $alreadyApplied = \App\Models\JobApplication::where(
                         'job_id',
                         $jobListing->id,
                     )
                         ->where('freelancer_id', Auth::id())
+                        ->where('status', 'pending')
+                        ->exists();
+
+                    // Check if the user has already applied and has been accepted
+                    $alreadyAccepted = \App\Models\JobApplication::where(
+                        'job_id',
+                        $jobListing->id,
+                    )
+                        ->where('freelancer_id', Auth::id())
+                        ->where('status', 'accepted')
+                        ->exists();
+
+                    // Check if the user has already finished the job
+                    $alreadyCompleted = \App\Models\JobApplication::where(
+                        'job_id',
+                        $jobListing->id,
+                    )
+                        ->where('freelancer_id', Auth::id())
+                        ->where('status', 'completed')
+                        ->exists();
+
+                    // Check if the job has been accepted then has been cancelled
+                    $alreadyRejected = \App\Models\JobApplication::where(
+                        'job_id',
+                        $jobListing->id,
+                    )
+                        ->where('freelancer_id', Auth::id())
+                        ->where('status', 'rejected')
                         ->exists();
                 @endphp
 
                 @if ($alreadyApplied)
                     <button class="btn btn-success"
                         disabled="disabled">Applied</button>
+
                     {{-- Cancel application button --}}
                     <form
                         action="{{ route('freelancer.jobs.removeApplication', $jobListing) }}"
@@ -121,6 +151,29 @@
                             Remove Application
                         </button>
                     </form>
+                @elseif ($alreadyAccepted)
+                    <button class="btn btn-success"
+                        disabled="disabled">Accepted</button>
+
+                    {{-- Cancel application button --}}
+                    <form
+                        action="{{ route('freelancer.jobs.removeApplication', $jobListing) }}"
+                        method="POST"
+                        onsubmit="return confirm('Are you sure you want to remove your application for this job?');">
+                        @csrf
+                        @method('DELETE')
+
+                        <button class="btn btn-error"
+                            type="submit">
+                            Remove Application
+                        </button>
+                    </form>
+                @elseif ($alreadyCompleted)
+                    <button class="btn btn-success"
+                        disabled="disabled">Completed</button>
+                @elseif ($alreadyRejected)
+                    <button class="btn btn-success"
+                        disabled="disabled">Cancelled</button>
                 @else
                     {{-- <div>Job in progress.</div> --}}
                     <form action="{{ route('freelancer.jobs.apply') }}"

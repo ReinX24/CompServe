@@ -155,8 +155,14 @@ class ClientJobListingController extends Controller
             return view('client.jobs.show-job', compact('jobListing', 'applicant', 'user'));
         } else {
             // TODO: add cancelled jobs here
-            // Get the accepted applicant
-            $applicant = $jobListing->applications()->where('status', 'accepted')->first();
+            // Get the accepted applicant or the rejected applicant
+            $applicant = $jobListing->applications()->where(
+                'status',
+                'accepted'
+            )->orWhere(
+                    'status',
+                    'rejected'
+                )->first();
 
             // Getting the applicant that has been accepted for the job
             $user = User::findOrFail($applicant->freelancer_id);
@@ -275,7 +281,7 @@ class ClientJobListingController extends Controller
                 'freelancer_id' => $request->user_id,
                 'job_listing_id' => $jobListing->id,
                 'rating' => $request->rating,
-                'review_text' => $request->review,
+                'comments' => $request->comments,
             ]);
         }
 
@@ -294,8 +300,18 @@ class ClientJobListingController extends Controller
         return redirect()->route('client.jobs.show', $jobListing);
     }
 
-    public function markJobAsCancelled(JobListing $jobListing)
+    public function markJobAsCancelled(Request $request, JobListing $jobListing)
     {
+        // Make the accepted job application for the job into rejected
+        $jobApplication = JobApplication::where([
+            ['freelancer_id', $request->freelancer_id],
+            ['job_id', $jobListing->id],
+        ])->first();
+
+        // Reject the job application if the job is cancelled
+        $jobApplication->status = "rejected";
+        $jobApplication->save();
+
         $jobListing->status = "cancelled";
 
         $jobListing->save();

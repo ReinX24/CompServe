@@ -28,10 +28,16 @@ class ClientInformationController extends Controller
     public function reviews()
     {
         // Get all the reviews of the current client user
-        $reviews = Review::where('client_id', Auth::user()->id)->latest()->get();
+        $reviews = Review::where(
+            'client_id',
+            Auth::user()->id
+        )->latest()->paginate(6);
 
         // dd($reviews);
-        return view('client.reviews.all-reviews', compact('reviews'));
+        return view(
+            'client.reviews.all-reviews',
+            compact('reviews')
+        );
     }
 
     public function showReviews()
