@@ -110,10 +110,6 @@
 
         <!-- Action buttons -->
         <div class="flex space-x-3">
-            <a href="{{ url()->previous() }}"
-                class="px-3 py-2 btn btn-secondary">
-                Back
-            </a>
             @if (Auth::user()->role === 'freelancer')
                 {{-- Freelancer applying for a job --}}
                 @php
@@ -221,7 +217,9 @@
                                 @csrf
                                 @method('PUT')
 
-                                <input type="hidden" name="freelancer_id" value="{{ $user->id }}">
+                                <input type="hidden"
+                                    name="freelancer_id"
+                                    value="{{ $user->id }}">
 
                                 <button type="submit"
                                     class="btn btn-error">Cancel Job</button>
@@ -299,6 +297,17 @@
                     </div>
                 </div>
 
+            </div>
+        @elseif ($jobListing->status === 'completed')
+            <div class="mt-6">
+                {{-- Show the accepted and completed applicant --}}
+                <div class="mb-3">
+                    Accepted Applicant:
+                    <a href="{{ route('client.jobs.applicant', [$jobListing, $user]) }}"
+                        class="link link-primary">
+                        {{ $user->name }}
+                    </a>
+                </div>
             </div>
         @elseif ($jobListing->status === 'cancelled')
             <div class="mt-6">

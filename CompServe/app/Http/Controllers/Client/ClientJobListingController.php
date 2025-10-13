@@ -56,23 +56,101 @@ class ClientJobListingController extends Controller
         return view('client.jobs.available-jobs', compact('jobs'));
     }
 
-    public function inProgressJobs()
+    public function inProgressJobs(Request $request)
     {
-        $jobs = Auth::user()->jobListings()->where("status", "in_progress")->paginate(6);
+        $search = $request->input('search');
+        $category = $request->input('category');
+        $client = $request->input('client');
+
+        $jobs = Auth::user()->jobListings()->where(
+            "status",
+            "in_progress"
+        )
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', '%' . $search . '%')
+                        ->orWhere('description', 'like', '%' . $search . '%');
+                });
+            })
+            ->when($category, function ($query, $category) {
+                $query->where('category', $category);
+            })
+            ->when(
+                $client,
+                fn($q) =>
+                $q->whereHas(
+                    'client',
+                    fn($q2) =>
+                    $q2->where('name', 'like', "%$client%")
+                )
+            )->
+            paginate(6);
 
         return view('client.jobs.in-progress-jobs', compact('jobs'));
     }
 
-    public function cancelledJobs()
+    public function cancelledJobs(Request $request)
     {
-        $jobs = Auth::user()->jobListings()->where("status", "cancelled")->paginate(6);
+        $search = $request->input('search');
+        $category = $request->input('category');
+        $client = $request->input('client');
+
+        $jobs = Auth::user()->jobListings()->where(
+            "status",
+            "cancelled"
+        )
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', '%' . $search . '%')
+                        ->orWhere('description', 'like', '%' . $search . '%');
+                });
+            })
+            ->when($category, function ($query, $category) {
+                $query->where('category', $category);
+            })
+            ->when(
+                $client,
+                fn($q) =>
+                $q->whereHas(
+                    'client',
+                    fn($q2) =>
+                    $q2->where('name', 'like', "%$client%")
+                )
+            )->
+            paginate(6);
 
         return view('client.jobs.cancelled-jobs', compact('jobs'));
     }
 
-    public function completedJobs()
+    public function completedJobs(Request $request)
     {
-        $jobs = Auth::user()->jobListings()->where("status", "completed")->paginate(6);
+        $search = $request->input('search');
+        $category = $request->input('category');
+        $client = $request->input('client');
+
+        $jobs = Auth::user()->jobListings()->where(
+            "status",
+            "completed"
+        )
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', '%' . $search . '%')
+                        ->orWhere('description', 'like', '%' . $search . '%');
+                });
+            })
+            ->when($category, function ($query, $category) {
+                $query->where('category', $category);
+            })
+            ->when(
+                $client,
+                fn($q) =>
+                $q->whereHas(
+                    'client',
+                    fn($q2) =>
+                    $q2->where('name', 'like', "%$client%")
+                )
+            )->
+            paginate(6);
 
         return view('client.jobs.completed-jobs', compact('jobs'));
     }
@@ -99,7 +177,7 @@ class ClientJobListingController extends Controller
             'skills_required.*' => 'nullable|string|max:100',
             'budget_type' => 'required|in:fixed,hourly',
             'budget' => 'required|numeric|min:0',
-            'location' => 'nullable|string|max:255',
+            'location' => 'required|string|max:255',
             'deadline' => 'nullable|date|after:today',
             'status' => 'nullable|in:open,closed',
         ]);

@@ -11,8 +11,19 @@
             </a>
         </h2>
 
-        <div class="badge badge-primary badge-outline p-3 text-sm">
-            Open</div>
+        @if ($job->status === 'open')
+            <div class="badge badge-accent badge-outline p-3 text-sm">
+                Open</div>
+        @elseif($job->status === 'in_progress')
+            <div class="badge badge-warning badge-outline p-3 text-sm">
+                In-progress</div>
+        @elseif($job->status === 'cancelled')
+            <div class="badge badge-error badge-outline p-3 text-sm">
+                Cancelled</div>
+        @elseif($job->status === 'completed')
+            <div class="badge badge-success badge-outline p-3 text-sm">
+                Completed</div>
+        @endif
     </div>
 
     <p class="text-gray-600 dark:text-gray-400 mb-2">

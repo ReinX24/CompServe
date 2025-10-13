@@ -24,8 +24,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call(JobListingSeeder::class);
 
-        // Create 3 jobs, open, in_progress, and completed
-
         // $this->call(FreelancerInformationSeeder::class);
     }
 }

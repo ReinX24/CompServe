@@ -15,7 +15,7 @@
             class="space-y-6">
             @csrf
 
-            <!-- Job Title -->
+            {{-- Job Title --}}
             <div>
                 <label for="title"
                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -25,18 +25,18 @@
                     name="title"
                     id="title"
                     value="{{ old('title') }}"
-                    required
                     placeholder="e.g. Laptop Repair Specialist"
-                    class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
-                           bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                           focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                    class="input w-full {{ $errors->has('title') ? 'input-error' : 'input-primary' }}">
 
                 @error('title')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <div role="alert"
+                        class="alert alert-error alert-soft mt-3">
+                        <span>{{ $message }}</span>
+                    </div>
                 @enderror
             </div>
 
-            <!-- Job Description -->
+            {{-- Job Description --}}
             <div>
                 <label for="description"
                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -45,17 +45,19 @@
                 <textarea name="description"
                     id="description"
                     rows="4"
-                    required
                     placeholder="Provide details about the job..."
-                    class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
-                           bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                           focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">{{ old('description') }}</textarea>
+                    class="textarea w-full
+                    {{ $errors->has('description') ? 'textarea-error' : 'textarea-primary' }}
+                    ">{{ old('description') }}</textarea>
                 @error('description')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <div role="alert"
+                        class="alert alert-error alert-soft mt-3">
+                        <span>{{ $message }}</span>
+                    </div>
                 @enderror
             </div>
 
-            <!-- Category -->
+            {{-- Category --}}
             <div>
                 <label for="category"
                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -63,10 +65,9 @@
                 </label>
                 <select name="category"
                     id="category"
-                    required
-                    class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
-               bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-               focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                    class="select w-full
+                    {{ $errors->has('category') ? 'select-error' : 'select-primary' }}
+                    ">
                     <option value=""
                         disabled
                         selected>Select a category</option>
@@ -90,19 +91,24 @@
                         Networking</option>
                 </select>
                 @error('category')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <div role="alert"
+                        class="alert alert-error alert-soft mt-3">
+                        <span>{{ $message }}</span>
+                    </div>
                 @enderror
             </div>
 
-            <!-- Skills Required -->
-            <div x-data="{ skills: ['{{ old('skills_required.0') }}'].filter(s => s) }"
+            {{-- Skills Required --}}
+            <div x-data="{
+                skills: {{ json_encode(old('skills_required', [''])) }}
+            }"
                 class="space-y-2">
                 <label for="skills_required"
                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     {{ __('Skills Required') }}
                 </label>
 
-                <!-- List of skills -->
+                {{-- List of skills --}}
                 <template x-for="(skill, index) in skills"
                     :key="index">
                     <div class="flex items-stretch space-x-2">
@@ -110,70 +116,78 @@
                             :name="'skills_required[' + index + ']'"
                             x-model="skills[index]"
                             placeholder="Enter a skill"
-                            class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
-               bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-               focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            class="input w-full
+                    {{ $errors->has('skills_required') ? 'input-error' : 'input-primary' }}">
 
                         <button type="button"
                             @click="skills.splice(index, 1)"
-                            {{-- class="px-3 bg-red-500 text-white rounded-lg hover:bg-red-600 flex items-center justify-center"> --}}
-                            class="px-3 btn btn-error flex items-center justify-center">
+                            class="px-3 btn btn-error items-center justify-center">
                             ✕
                         </button>
                     </div>
                 </template>
 
                 <!-- Add Skill Button -->
-                <button type="button"
-                    @click="skills.push('')"
-                    class="mt-2 px-4 py-2 btn btn-success">
-                    + Add Skill
-                </button>
+                <div class="flex">
+                    <button type="button"
+                        @click="skills.push('')"
+                        class="mt-2 px-4 py-2 flex-1 btn btn-success">
+                        + Add Skill
+                    </button>
+                </div>
 
                 @error('skills_required')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <div role="alert"
+                        class="alert alert-error alert-soft mt-3">
+                        <span>{{ $message }}</span>
+                    </div>
                 @enderror
             </div>
 
-            <!-- Budget Type -->
-            <div class="grid grid-cols-2 gap-4">
-                <!-- Budget Type -->
-                <div>
-                    <label for="budget_type"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        {{ __('Budget Type') }}
-                    </label>
-                    <select name="budget_type"
-                        id="budget_type"
-                        required
-                        class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
-                   bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                   focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                        <option value="fixed"
-                            {{ old('budget_type') == 'fixed' ? 'selected' : '' }}>
-                            Fixed</option>
-                        <option value="hourly"
-                            {{ old('budget_type') == 'hourly' ? 'selected' : '' }}>
-                            Hourly</option>
-                    </select>
+            {{-- Budget type and amount --}}
+            <div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="budget_type"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            {{ __('Budget Type') }}
+                        </label>
+                        <select name="budget_type"
+                            id="budget_type"
+                            required
+                            class="select w-full input-primary">
+                            <option value="fixed"
+                                {{ old('budget_type') == 'fixed' ? 'selected' : '' }}>
+                                Fixed</option>
+                            <option value="hourly"
+                                {{ old('budget_type') == 'hourly' ? 'selected' : '' }}>
+                                Hourly</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="budget"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            {{ __('Budget (₱)') }}
+                        </label>
+                        <input type="number"
+                            step="0.01"
+                            name="budget"
+                            id="budget"
+                            value="{{ old('budget') }}"
+                            placeholder="e.g. 150.00"
+                            class="input w-full
+                        {{ $errors->has('budget') ? 'input-error' : 'input-primary' }}
+                        ">
+                    </div>
                 </div>
 
-                <!-- Budget -->
-                <div>
-                    <label for="budget"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        {{ __('Budget (₱)') }}
-                    </label>
-                    <input type="number"
-                        step="0.01"
-                        name="budget"
-                        id="budget"
-                        value="{{ old('budget') }}"
-                        placeholder="e.g. 150.00"
-                        class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
-                   bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                   focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                </div>
+                @error('budget')
+                    <div role="alert"
+                        class="alert alert-error alert-soft mt-3">
+                        <span>{{ $message }}</span>
+                    </div>
+                @enderror
             </div>
 
             <!-- Location -->
@@ -187,11 +201,13 @@
                     id="location"
                     value="{{ old('location') }}"
                     placeholder="Dagupan City, Pangasinan"
-                    class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
-                           bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                           focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                    class="input w-full
+                        {{ $errors->has('budget') ? 'input-error' : 'input-primary' }}">
                 @error('location')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <div role="alert"
+                        class="alert alert-error alert-soft mt-3 w-full">
+                        <span>{{ $message }}</span>
+                    </div>
                 @enderror
             </div>
 
@@ -209,31 +225,16 @@
                            bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
                            focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
                 @error('deadline')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <div role="alert"
+                        class="alert alert-error alert-soft mt-3 w-full">
+                        <span>{{ $message }}</span>
+                    </div>
                 @enderror
             </div>
 
-            <!-- Submit + Cancel -->
             <div class="flex items-center justify-between space-x-4">
-                {{-- <x-button type="primary"
-                    buttonType="submit"
-                    class="flex-1 btn">
-                    {{ __('Post Job') }}
-                </x-button> --}}
-
                 <button type="submit"
                     class="flex-1 btn btn-primary">{{ __('Post Job') }}</button>
-
-                {{-- <x-button type="secondary"
-                    buttonType="button"
-                    class="flex-1 btn btn-secondary"
-                    onclick="window.history.back()">
-                    {{ __('Cancel') }}
-                </x-button> --}}
-
-                <button class="flex-1 btn btn-secondary"
-                    onclick="window.history.back()">{{ __('Cancel') }}
-                </button>
             </div>
         </form>
     </div>

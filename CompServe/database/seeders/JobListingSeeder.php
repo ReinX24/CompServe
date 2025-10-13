@@ -16,10 +16,15 @@ class JobListingSeeder extends Seeder
     public function run(): void
     {
         // Get all users with role = 'client'
+        // $clients = User::where('role', 'client')->get();
+
         $clients = User::where('role', 'client')->get();
+        $freelancers = User::where('role', 'freelancer')
+            ->pluck('id');
 
         foreach ($clients as $client) {
-            // 10 open jobs
+
+            // Open job factories and applications
             $openJobs = JobListing::factory()
                 ->count(10)
                 ->create([
@@ -27,36 +32,20 @@ class JobListingSeeder extends Seeder
                     'status' => 'open',
                 ]);
 
-            // Add job applications to open job
-            // Structure of job application for a job
-            // job_id
-            // freelancer_id
-            // client_id
-            // status (pending)
-            $openClient = User::where('role', 'client')->first();
-            $pendingFreelancers = User::where('role', 'freelancer')->pluck('id');
-
-            // Add job applications to each open job
             foreach ($openJobs as $job) {
-                // You can randomize how many freelancers apply per job
-                $applicantCount = rand(1, 2); // 2–5 applications per job
-
-                // Randomly select freelancers for this job
-                $applicants = $pendingFreelancers->random($applicantCount);
+                $applicants = $freelancers->random(rand(1, 2));
 
                 foreach ($applicants as $freelancerId) {
                     JobApplication::create([
-                        'job_id' => $job->id,   // link to the job
-                        'freelancer_id' => $freelancerId, // who applied
-                        'client_id' => $openClient->id,     // job owner
-                        'status' => 'pending',          // still under review
+                        'job_id' => $job->id,
+                        'freelancer_id' => $freelancerId,
+                        'client_id' => $client->id,
+                        'status' => 'pending',
                     ]);
                 }
             }
 
-            // 10 in_progress jobs
-            // For each JobListing that is in progress, a job application that
-            // has the status of accepted must be made
+            // In-progress jobs and accepted applications
             $inProgressJobs = JobListing::factory()
                 ->count(10)
                 ->create([
@@ -64,21 +53,15 @@ class JobListingSeeder extends Seeder
                     'status' => 'in_progress',
                 ]);
 
-            // Structure of job application that has been accepted for a job
-            // job_id
-            // freelancer_id
-            // client_id
-            // status (accepted)
-            $client = User::where('role', 'client')->first();
-            $freelancer = User::where('role', 'freelancer')->first();
-
-            // For each JobListing that is in progress, create an accepted JobApplication
             foreach ($inProgressJobs as $job) {
+                // Randomly assign one freelancer to the accepted job
+                $acceptedFreelancerId = $freelancers->random();
+
                 JobApplication::create([
-                    'job_id' => $job->id,  // foreign key to job listing
-                    'freelancer_id' => $freelancer->id, // freelancer applying
-                    'client_id' => $client->id, // client who owns the job
-                    'status' => 'accepted', // job is in progress
+                    'job_id' => $job->id,
+                    'freelancer_id' => $acceptedFreelancerId,
+                    'client_id' => $client->id,
+                    'status' => 'accepted',
                 ]);
             }
 

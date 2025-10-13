@@ -171,12 +171,18 @@
             </div>
         @elseif($applicationInfo->status === 'accepted')
             <div class="mt-6 flex gap-2 justify-center">
-                <button class="btn flex-1"
-                    disabled="disabled">Accepted</button>
+                <button
+                    class="btn btn-active btn-success flex-1">Accepted</button>
+            </div>
+        @elseif($applicationInfo->status === 'completed')
+            <div class="mt-6 flex gap-2 justify-center">
+                <button
+                    class="btn btn-active btn-success flex-1">Completed</button>
             </div>
         @elseif($applicationInfo->status === 'rejected')
             <div class="mt-6 flex gap-2 justify-center">
-                <button class="btn btn-success flex-1">Accepted</button>
+                <button
+                    class="btn btn-active btn-error flex-1">Rejected</button>
             </div>
         @endif
     </div>

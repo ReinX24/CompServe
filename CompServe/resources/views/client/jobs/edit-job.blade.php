@@ -202,38 +202,21 @@
                 @enderror
             </div>
 
-            <!-- Submit + Cancel -->
             <div class="flex items-center justify-between space-x-4">
-                {{-- <x-button type="primary"
-                    buttonType="submit"
-                    class="flex-1">
-                    {{ __('Update Job') }}
-                </x-button> --}}
-
                 <button type="submit"
                     class="flex-1 btn btn-primary">{{ __('Update Job') }}</button>
-
-                {{-- <x-button type="secondary"
-                    buttonType="button"
-                    class="flex-1"
-                    onclick="window.history.back()">
-                    {{ __('Cancel') }}
-                </x-button> --}}
-
-                <button class="flex-1 btn btn-secondary"
-                    onclick="window.history.back()">{{ __('Cancel') }}</button>
             </div>
         </form>
 
         <!-- Delete Job -->
         <form action="{{ route('client.jobs.destroy', $jobListing->id) }}"
             method="POST"
-            class="mt-6">
+            class="mt-3">
             @csrf
             @method('DELETE')
             <button type="submit"
                 onclick="return confirm('Are you sure you want to delete this job? This action cannot be undone.')"
-                class="w-full px-4 py-2 btn btn-error">
+                class="w-full px-4 py-2 btn btn-error btn-outline">
                 {{ __('Delete Job') }}
             </button>
         </form>

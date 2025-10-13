@@ -59,3 +59,29 @@ Docker Container: localhost:8080
 [x] Version Control Best Practices (meaningful commits, branches if applicable).
 
 [x] Initial Test Cases (basic user test done with screenshots/logs).
+
+#### Functions per user
+
+Admin (To be implemented)
+
+- Update and delete job listing
+- Update and delete account information
+- See all registered users (freelancers and clients)
+- Reset the password of users
+- Disable account and review reports
+
+Freelancer
+
+- Find available job applications
+- Apply and cancel application for job listing
+- See all past and current jobs
+- Reset password
+- Setup freelancer profile
+
+Client
+
+- Create, update, and delete job listing 
+- Accept and reject applicants
+- Reset password
+- Setup client profile
+- Create reviews for each job finished by a freelancer
