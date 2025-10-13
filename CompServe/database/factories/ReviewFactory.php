@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ClientInformation>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Review>
  */
-class ClientInformationFactory extends Factory
+class ReviewFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,8 @@ class ClientInformationFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'rating' => $this->faker->numberBetween(3, 5),
+            'comments' => $this->faker->sentence(8),
         ];
     }
 }

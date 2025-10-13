@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +38,25 @@ require __DIR__ . '/freelancer.php';
 
 require __DIR__ . '/client.php';
 
-// TODO: admin routes
+
+// Login admin
+Route::get('/admin/login', [AdminController::class, 'loginPage'])->name('admin.login_page');
+Route::post('/admin/login', [AdminController::class, 'loginAdmin'])->name('admin.login_admin');
+
+// Admin routes
+// TODO: migrate to a separate file
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::get('/jobs', [AdminController::class, 'jobs'])->name('jobs');
+    Route::get('/reviews', [AdminController::class, 'reviews'])->name('reviews');
+
+    Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('users.update');
+    Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('users.delete');
+    Route::put('/users/{user}/reset-password', [AdminController::class, 'resetPassword'])->name('users.resetPassword');
+
+    Route::put('/jobs/{job}', [AdminController::class, 'updateJob'])->name('jobs.update');
+    Route::delete('/jobs/{job}', [AdminController::class, 'deleteJob'])->name('jobs.delete');
+});
 
 require __DIR__ . '/auth.php';

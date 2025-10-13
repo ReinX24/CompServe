@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\JobApplication;
 use App\Models\JobListing;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class JobListingSeeder extends Seeder
@@ -16,15 +15,14 @@ class JobListingSeeder extends Seeder
     public function run(): void
     {
         // Get all users with role = 'client'
-        // $clients = User::where('role', 'client')->get();
-
         $clients = User::where('role', 'client')->get();
-        $freelancers = User::where('role', 'freelancer')
-            ->pluck('id');
+        $freelancers = User::where('role', 'freelancer')->pluck('id');
 
         foreach ($clients as $client) {
 
-            // Open job factories and applications
+            /** -------------------------
+             *  10 Open Jobs + Applicants
+             *  ------------------------- */
             $openJobs = JobListing::factory()
                 ->count(10)
                 ->create([
@@ -34,7 +32,6 @@ class JobListingSeeder extends Seeder
 
             foreach ($openJobs as $job) {
                 $applicants = $freelancers->random(rand(1, 2));
-
                 foreach ($applicants as $freelancerId) {
                     JobApplication::create([
                         'job_id' => $job->id,
@@ -45,7 +42,9 @@ class JobListingSeeder extends Seeder
                 }
             }
 
-            // In-progress jobs and accepted applications
+            /** -------------------------
+             *  10 In-Progress Jobs
+             *  ------------------------- */
             $inProgressJobs = JobListing::factory()
                 ->count(10)
                 ->create([
@@ -54,9 +53,7 @@ class JobListingSeeder extends Seeder
                 ]);
 
             foreach ($inProgressJobs as $job) {
-                // Randomly assign one freelancer to the accepted job
                 $acceptedFreelancerId = $freelancers->random();
-
                 JobApplication::create([
                     'job_id' => $job->id,
                     'freelancer_id' => $acceptedFreelancerId,
@@ -65,13 +62,45 @@ class JobListingSeeder extends Seeder
                 ]);
             }
 
-            // 10 completed jobs
-            // JobListing::factory()
-            //     ->count(10)
-            //     ->create([
-            //         'client_id' => $client->id,
-            //         'status' => 'completed',
-            //     ]);
+            /** -------------------------
+             *  10 Cancelled Jobs
+             *  ------------------------- */
+            $cancelledJobs = JobListing::factory()
+                ->count(10)
+                ->create([
+                    'client_id' => $client->id,
+                    'status' => 'cancelled',
+                ]);
+
+            foreach ($cancelledJobs as $job) {
+                $rejectedFreelancerId = $freelancers->random();
+                JobApplication::create([
+                    'job_id' => $job->id,
+                    'freelancer_id' => $rejectedFreelancerId,
+                    'client_id' => $client->id,
+                    'status' => 'rejected',
+                ]);
+            }
+
+            /** -------------------------
+             *  10 Completed Jobs
+             *  ------------------------- */
+            $completedJobs = JobListing::factory()
+                ->count(10)
+                ->create([
+                    'client_id' => $client->id,
+                    'status' => 'completed',
+                ]);
+
+            foreach ($completedJobs as $job) {
+                $completedFreelancerId = $freelancers->random();
+                JobApplication::create([
+                    'job_id' => $job->id,
+                    'freelancer_id' => $completedFreelancerId,
+                    'client_id' => $client->id,
+                    'status' => 'completed',
+                ]);
+            }
         }
     }
 }

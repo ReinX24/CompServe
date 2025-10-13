@@ -68,20 +68,20 @@ Admin (To be implemented)
 - Update and delete account information
 - See all registered users (freelancers and clients)
 - Reset the password of users
-- Disable account and review reports
+- See all reviews
 
 Freelancer
 
-- Find available job applications
-- Apply and cancel application for job listing
-- See all past and current jobs
-- Reset password
-- Setup freelancer profile
+- Find available job applications X
+- Apply and cancel application for job listing X
+- See all past and current jobs X
+- Reset / forget password X
+- Setup freelancer profile X
 
 Client
 
-- Create, update, and delete job listing 
-- Accept and reject applicants
-- Reset password
-- Setup client profile
-- Create reviews for each job finished by a freelancer
+- Create, update, and delete job listing X
+- Accept and reject applicants X
+- Reset / forget password X
+- Setup client profile X
+- Create reviews for each job finished by a freelancer X

@@ -7,23 +7,8 @@ use App\Models\Review;
 use Auth;
 use Illuminate\Http\Request;
 
-class ClientInformationController extends Controller
+class ClientReviewController extends Controller
 {
-    public function show()
-    {
-        return view('client.profile-show');
-    }
-
-    public function edit()
-    {
-
-    }
-
-    public function update()
-    {
-
-    }
-
     // Show and edit the reviews of the current user client
     public function reviews()
     {
@@ -42,11 +27,11 @@ class ClientInformationController extends Controller
 
     public function showReviews()
     {
-
+        // TODO: show singular review
     }
 
     public function editReviews()
     {
-
+        // TODO: edit review after creating them
     }
 }

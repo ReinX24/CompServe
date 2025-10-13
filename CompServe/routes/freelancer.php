@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Freelancer\FreelancerReviewController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\JobListing;
@@ -59,4 +60,6 @@ Route::prefix('freelancer')
             Route::get('/edit', [FreelancerInformationController::class, 'edit'])->name('profile.edit');
             Route::put('/update', [FreelancerInformationController::class, 'update'])->name('profile.update');
         });
+
+        Route::get('/reviews', [FreelancerReviewController::class, 'index'])->name('reviews');
     });

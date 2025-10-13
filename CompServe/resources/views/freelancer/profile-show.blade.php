@@ -1,165 +1,164 @@
 <x-layouts.app>
-    <div
-        class="max-w-4xl mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8">
+    <div class="max-w-4xl mx-auto p-6">
+        <div class="card bg-base-100 shadow-xl dark:bg-gray-800">
+            <div class="card-body">
+                <!-- Header -->
+                <div
+                    class="flex flex-col md:flex-row items-center md:items-start gap-6 border-b border-base-300 pb-6">
+                    <!-- Profile Avatar -->
+                    <div class="avatar">
+                        <div
+                            class="w-32 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                            <div
+                                class="flex items-center justify-center w-full h-full bg-neutral text-neutral-content text-4xl font-bold">
+                                {{ strtoupper(substr($user->name ?? Auth::user()->name, 0, 1)) }}
+                            </div>
+                        </div>
+                    </div>
 
-        <!-- Header -->
-        <div
-            class="flex flex-col md:flex-row items-center md:items-start gap-6 border-b pb-6">
-            <!-- Profile Avatar -->
-            <div
-                class="w-32 h-32 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-4xl font-bold text-gray-600 dark:text-gray-300">
-                {{ strtoupper(substr($user->name, 0, 1)) }}
+                    <!-- Basic Info -->
+                    <div>
+                        <h1 class="text-3xl font-bold text-base-content">
+                            {{ $user->name }}
+                        </h1>
+                        <p class="text-lg text-base-content/70 mt-1">
+                            {{ ucfirst($user->role) }}
+                        </p>
+                        <p class="text-sm text-base-content/60 mt-1">
+                            Member since {{ $user->created_at->format('F Y') }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="mt-6">
+                    <h2
+                        class="text-xl font-semibold text-base-content mb-4 border-b border-base-300 pb-2">
+                        Contact</h2>
+                    <div class="space-y-2">
+                        <p><span class="font-semibold">Email:</span>
+                            {{ $user->email }}</p>
+                        <p><span class="font-semibold">Number:</span>
+                            {{ $freelancerInfo->contact_number ?? 'N/A' }}</p>
+                        <p><span class="font-semibold">Last Updated:</span>
+                            {{ $user->updated_at->diffForHumans() }}</p>
+                    </div>
+                </div>
+
+                <!-- About -->
+                <div class="mt-6">
+                    <h2
+                        class="text-xl font-semibold text-base-content mb-4 border-b border-base-300 pb-2">
+                        About Me</h2>
+                    <p class="text-base-content/80">
+                        {{ $freelancerInfo->about_me ?? 'No description available.' }}
+                    </p>
+                </div>
+
+                <!-- Skills -->
+                <div class="mt-6">
+                    <h2
+                        class="text-xl font-semibold text-base-content mb-4 border-b border-base-300 pb-2">
+                        Skills</h2>
+                    @if (!empty($freelancerInfo->skills))
+                        <div class="flex flex-wrap gap-2">
+                            @foreach (explode(',', $freelancerInfo->skills) as $skill)
+                                <span
+                                    class="badge badge-outline">{{ trim($skill) }}</span>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-base-content/70">No skills added yet.</p>
+                    @endif
+                </div>
+
+                <!-- Experiences -->
+                <div class="mt-6">
+                    <h2
+                        class="text-xl font-semibold text-base-content mb-4 border-b border-base-300 pb-2">
+                        Experiences</h2>
+                    @php
+                        $experiences = !empty($freelancerInfo->experiences)
+                            ? $freelancerInfo->experiences
+                            : [];
+                    @endphp
+
+                    @if (!empty($experiences))
+                        <div class="grid gap-4">
+                            @foreach ($experiences as $exp)
+                                <div
+                                    class="card bg-base-200 shadow-sm dark:bg-gray-700 p-4">
+                                    <h3
+                                        class="font-semibold text-base-content text-lg">
+                                        {{ $exp['job_title'] ?? 'N/A' }}</h3>
+                                    <p><span class="font-medium">Company:</span>
+                                        {{ $exp['company'] ?? 'N/A' }}</p>
+                                    <p><span
+                                            class="font-medium">Duration:</span>
+                                        {{ $exp['start_date'] ?? 'N/A' }} -
+                                        {{ $exp['end_date'] ?? 'Present' }}</p>
+                                    <p><span
+                                            class="font-medium">Description:</span>
+                                        {{ $exp['description'] ?? 'N/A' }}</p>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-base-content/70">No experiences listed.
+                        </p>
+                    @endif
+                </div>
+
+                <!-- Education -->
+                <div class="mt-6">
+                    <h2
+                        class="text-xl font-semibold text-base-content mb-4 border-b border-base-300 pb-2">
+                        Education</h2>
+                    @php
+                        $education = !empty($freelancerInfo->education)
+                            ? $freelancerInfo->education
+                            : [];
+                    @endphp
+
+                    @if (!empty($education))
+                        <div class="grid gap-4">
+                            @foreach ($education as $edu)
+                                <div
+                                    class="card bg-base-200 shadow-sm dark:bg-gray-700 p-4">
+                                    <h3
+                                        class="font-semibold text-base-content text-lg">
+                                        {{ $edu['degree'] ?? 'N/A' }}</h3>
+                                    <p><span class="font-medium">School:</span>
+                                        {{ $edu['school'] ?? 'N/A' }}</p>
+                                    <p><span class="font-medium">Field of
+                                            Study:</span>
+                                        {{ $edu['field_of_study'] ?? 'N/A' }}
+                                    </p>
+                                    <p><span class="font-medium">Years:</span>
+                                        {{ $edu['start_year'] ?? 'N/A' }} -
+                                        {{ $edu['end_year'] ?? 'Present' }}</p>
+                                    @if (!empty($edu['awards']))
+                                        <p><span
+                                                class="font-medium">Awards:</span>
+                                            {{ $edu['awards'] }}</p>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-base-content/70">No education added yet.
+                        </p>
+                    @endif
+                </div>
+
+                <!-- Edit Button -->
+                <div class="mt-8 flex justify-end">
+                    <a href="{{ route('freelancer.profile.edit') }}"
+                        class="btn btn-primary">
+                        Edit Information
+                    </a>
+                </div>
             </div>
-
-            <!-- Basic Info -->
-            <div>
-                <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100">
-                    {{ $user->name }}
-                </h1>
-                <p class="text-gray-600 dark:text-gray-400 text-lg mt-1">
-                    {{ ucfirst($user->role) }}
-                </p>
-                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">
-                    Member since {{ $user->created_at->format('F Y') }}
-                </p>
-            </div>
-        </div>
-
-        <!-- Contact Info -->
-        <div class="mt-6">
-            <h2
-                class="text-xl font-semibold text-gray-800 dark:text-gray-100 border-b pb-2 mb-4">
-                Contact</h2>
-            <p class="text-gray-700 dark:text-gray-300"><span
-                    class="font-semibold">Email:</span> {{ $user->email }}</p>
-            <p class="text-gray-700 dark:text-gray-300"><span
-                    class="font-semibold">Number:</span>
-                {{ $freelancerInfo->contact_number ?? 'N/A' }}
-            </p>
-            <p class="text-gray-700 dark:text-gray-300"><span
-                    class="font-semibold">Last Updated:</span>
-                {{ $user->updated_at->diffForHumans() }}</p>
-        </div>
-
-        <!-- About -->
-        <div class="mt-6">
-            <h2
-                class="text-xl font-semibold text-gray-800 dark:text-gray-100 border-b pb-2 mb-4">
-                About Me</h2>
-            <p class="text-gray-700 dark:text-gray-300">
-                {{ $freelancerInfo->about_me ?? 'N/A' }}
-            </p>
-        </div>
-
-        <!-- Skills -->
-        <div class="mt-6">
-            <h2
-                class="text-xl font-semibold text-gray-800 dark:text-gray-100 border-b pb-2 mb-4">
-                Skills
-            </h2>
-            <ul
-                class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-1">
-                @if (!empty($freelancerInfo->skills))
-                    @foreach (explode(',', $freelancerInfo->skills) as $skill)
-                        <li>{{ trim($skill) }}</li>
-                    @endforeach
-                @else
-                    <li>No skills added yet.</li>
-                @endif
-            </ul>
-        </div>
-
-        <!-- Experiences -->
-        <div class="mt-6">
-            <h2
-                class="text-xl font-semibold text-gray-800 dark:text-gray-100 border-b pb-2 mb-4">
-                Experiences
-            </h2>
-            @php
-                $experiences = !empty($freelancerInfo->experiences)
-                    ? $freelancerInfo->experiences
-                    : [];
-            @endphp
-
-            @if (!empty($experiences))
-                <ul class="space-y-4">
-                    @foreach ($experiences as $exp)
-                        <li class="border rounded-lg p-4 dark:border-gray-700">
-                            <h3
-                                class="font-semibold text-gray-800 dark:text-gray-100">
-                                {{ $exp['job_title'] ?? 'N/A' }}
-                            </h3>
-                            <p class="text-gray-700 dark:text-gray-300">
-                                <span class="font-medium">Company:</span>
-                                {{ $exp['company'] ?? 'N/A' }}
-                            </p>
-                            <p class="text-gray-700 dark:text-gray-300">
-                                <span class="font-medium">Duration:</span>
-                                {{ $exp['start_date'] ?? 'N/A' }} -
-                                {{ $exp['end_date'] ?? 'Present' }}
-                            </p>
-                            <p class="text-gray-700 dark:text-gray-300">
-                                <span class="font-medium">Description:</span>
-                                {{ $exp['description'] ?? 'N/A' }}
-                            </p>
-                        </li>
-                    @endforeach
-                </ul>
-            @else
-                <p class="text-gray-700 dark:text-gray-300">N/A</p>
-            @endif
-        </div>
-
-        <!-- Education -->
-        <div class="mt-6">
-            <h2
-                class="text-xl font-semibold text-gray-800 dark:text-gray-100 border-b pb-2 mb-4">
-                Education
-            </h2>
-            @php
-                $education = !empty($freelancerInfo->education)
-                    ? $freelancerInfo->education
-                    : [];
-            @endphp
-
-            @if (!empty($education))
-                <ul class="space-y-4">
-                    @foreach ($education as $edu)
-                        <li class="border rounded-lg p-4 dark:border-gray-700">
-                            <h3
-                                class="font-semibold text-gray-800 dark:text-gray-100">
-                                {{ $edu['degree'] ?? 'N/A' }}
-                            </h3>
-                            <p class="text-gray-700 dark:text-gray-300">
-                                <span class="font-medium">School:</span>
-                                {{ $edu['school'] ?? 'N/A' }}
-                            </p>
-                            <p class="text-gray-700 dark:text-gray-300">
-                                <span class="font-medium">Field of Study:</span>
-                                {{ $edu['field_of_study'] ?? 'N/A' }}
-                            </p>
-                            <p class="text-gray-700 dark:text-gray-300">
-                                <span class="font-medium">Years:</span>
-                                {{ $edu['start_year'] ?? 'N/A' }} -
-                                {{ $edu['end_year'] ?? 'Present' }}
-                            </p>
-                            @if (!empty($edu['awards']))
-                                <p class="text-gray-700 dark:text-gray-300">
-                                    <span class="font-medium">Awards:</span>
-                                    {{ $edu['awards'] }}
-                                </p>
-                            @endif
-                        </li>
-                    @endforeach
-                </ul>
-            @else
-                <p class="text-gray-700 dark:text-gray-300">N/A</p>
-            @endif
-        </div>
-
-        <div class="mt-6">
-            <x-button tag="a"
-                :href="route('freelancer.profile.edit')">Edit Information</x-button>
         </div>
     </div>
 </x-layouts.app>

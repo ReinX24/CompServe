@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\Client\ClientInformationController;
+use App\Http\Controllers\Client\ClientReviewController;
+use App\Http\Controllers\Client\ClientReviews;
 use App\Http\Controllers\Client\ClientJobListingController;
+use App\Http\Controllers\Client\ClientProfileController;
 use App\Models\JobApplication;
 use App\Models\JobListing;
 
@@ -63,13 +65,11 @@ Route::prefix('client')
             Route::put('/{jobListing}/cancel', [ClientJobListingController::class, 'markJobAsCancelled'])->name('jobs.cancel');
         });
 
-        // Profile of the client
-        Route::prefix('profile')->group(function () {
-            Route::get('/', [ClientInformationController::class, 'show'])->name('profile.show');
-            Route::get('/edit', [ClientInformationController::class, 'edit'])->name('profile.edit');
-            Route::put('/update', [ClientInformationController::class, 'update'])->name('profile.update');
-        });
-
         // Routes for reviews
-        Route::get('/reviews', [ClientInformationController::class, 'reviews'])->name('reviews');
+        Route::get('/reviews', [ClientReviewController::class, 'reviews'])->name('reviews');
+
+        // ClientProfile
+        Route::get('/profile', [ClientProfileController::class, 'show'])->name('profile.show');
+        Route::get('/profile/edit', [ClientProfileController::class, 'edit'])->name('profile.edit');
+        Route::post('/profile/update', [ClientProfileController::class, 'update'])->name('profile.update');
     });

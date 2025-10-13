@@ -1,312 +1,198 @@
 <x-layouts.app>
+    <div class="max-w-4xl mx-auto bg-base-100 shadow-lg rounded-2xl p-8">
+        <div class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-primary">Edit Freelancer Profile
+            </h1>
+            <p class="text-base-content/70 mt-2">
+                Update your professional information and showcase your
+                experience.
+            </p>
+        </div>
 
-    <div class="mb-6">
-        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
-            {{ __('Edit Freelancer Profile') }}
-        </h1>
-        <p class="text-gray-600 dark:text-gray-400 mt-1">
-            {{ __('Update your profile information below.') }}
-        </p>
-    </div>
-
-    <div
-        class="max-w-3xl mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8">
-        <!-- Form -->
         <form action="{{ route('freelancer.profile.update') }}"
-            method="POST">
+            method="POST"
+            class="space-y-6">
             @csrf
             @method('PUT')
 
             <!-- Name -->
-            <div class="mb-3">
-                <x-forms.input label="Name"
+            <div class="form-control">
+                <label class="label font-semibold">Name</label>
+                <input type="text"
                     name="name"
-                    type="text"
+                    class="input input-bordered w-full"
                     placeholder="Enter your name"
-                    value="{{ old('name', $user->name ?? '') }}" />
+                    value="{{ old('name', $user->name ?? '') }}">
             </div>
 
             <!-- Contact Number -->
-            <div class="mb-3">
-                <x-forms.input label="Contact Number"
+            <div class="form-control">
+                <label class="label font-semibold">Contact Number</label>
+                <input type="text"
                     name="contact_number"
-                    type="text"
+                    class="input input-bordered w-full"
                     placeholder="Enter your contact number"
-                    value="{{ old('contact_number', $freelancerInfo->contact_number ?? '') }}" />
+                    value="{{ old('contact_number', $freelancerInfo->contact_number ?? '') }}">
             </div>
 
             <!-- About Me -->
-            <div class="mb-3">
-                <x-forms.textarea label="About Me"
-                    name="about_me"
-                    placeholder="Write something about yourself"
-                    class="h-24">{{ old('about_me', $freelancerInfo->about_me ?? '') }}</x-forms.textarea>
+            <div class="form-control">
+                <label class="label font-semibold">About Me</label>
+                <textarea name="about_me"
+                    class="textarea textarea-bordered w-full h-28"
+                    placeholder="Write something about yourself">{{ old('about_me', $freelancerInfo->about_me ?? '') }}</textarea>
             </div>
 
-            <!-- Skills Component -->
-            <div class="mb-3"
-                x-data="skillsInput({{ json_encode(explode(',', old('skills', $freelancerInfo->skills ?? ''))) }})">
-
-                <x-forms.input label="Skills"
-                    name="skill_temp"
-                    type="text"
-                    placeholder="Enter a skill"
-                    x-model="newSkill" />
-
-                <div class="mt-3">
-                    <x-button type="success"
-                        buttonType="button"
-                        @click="addSkill">
-                        Add Skill
-                    </x-button>
+            <!-- Skills Section -->
+            <div x-data="skillsInput({{ json_encode(explode(',', old('skills', $freelancerInfo->skills ?? ''))) }})"
+                class="form-control">
+                <label class="label font-semibold">Skills</label>
+                <div class="flex gap-2">
+                    <input type="text"
+                        x-model="newSkill"
+                        placeholder="Enter a skill"
+                        class="input input-bordered flex-1">
+                    <button type="button"
+                        @click="addSkill"
+                        class="btn btn-primary">Add</button>
                 </div>
 
-                <!-- Hidden field -->
                 <input type="hidden"
                     name="skills"
                     :value="skills.join(',')">
 
-                <!-- Skill List -->
-                <ul class="mt-3 flex flex-wrap gap-2">
+                <div class="flex flex-wrap gap-2 mt-3">
                     <template x-for="(skill, index) in skills"
                         :key="index">
-                        <li
-                            class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center">
+                        <div class="badge badge-primary gap-2 p-3">
                             <span x-text="skill"></span>
                             <button type="button"
-                                class="ml-2 text-red-600"
-                                @click="removeSkill(index)">✕</button>
-                        </li>
+                                @click="removeSkill(index)"
+                                class="text-error">✕</button>
+                        </div>
                     </template>
-                </ul>
+                </div>
             </div>
 
-            <!-- Experiences Component -->
-            <div class="mb-3"
-                x-data="experiencesInput({{ json_encode(old('experiences', $freelancerInfo->experiences ?? [])) }})">
-
-                <h2
-                    class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">
-                    Experiences
-                </h2>
+            <!-- Experiences Section -->
+            <div x-data="experiencesInput({{ json_encode(old('experiences', $freelancerInfo->experiences ?? [])) }})"
+                class="form-control">
+                <label class="label font-semibold text-lg">Experiences</label>
 
                 <template x-for="(exp, index) in experiences"
                     :key="index">
                     <div
-                        class="p-4 mb-4 border rounded-lg bg-gray-50 dark:bg-gray-800">
-                        <!-- Job Title -->
-                        <label
-                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Job Title
-                        </label>
-                        <input type="text"
-                            x-model="exp.job_title"
-                            :name="`experiences[${index}][job_title]`"
-                            placeholder="e.g. Software Engineer"
-                            class="w-full px-4 py-1.5 rounded-lg text-gray-700 dark:text-gray-300
-                                   bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                        class="card bg-base-200 p-4 mb-3 border border-base-300 rounded-xl">
+                        <div class="grid gap-3">
+                            <input type="text"
+                                x-model="exp.job_title"
+                                :name="`experiences[${index}][job_title]`"
+                                placeholder="Job Title"
+                                class="input input-bordered w-full">
 
-                        <!-- Company -->
-                        <label
-                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Company
-                        </label>
-                        <input type="text"
-                            x-model="exp.company"
-                            :name="`experiences[${index}][company]`"
-                            placeholder="e.g. Google"
-                            class="w-full px-4 py-1.5 rounded-lg text-gray-700 dark:text-gray-300
-                                   bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                            <input type="text"
+                                x-model="exp.company"
+                                :name="`experiences[${index}][company]`"
+                                placeholder="Company"
+                                class="input input-bordered w-full">
 
-                        <!-- Start Date -->
-                        <label
-                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Start Date
-                        </label>
-                        <input type="date"
-                            x-model="exp.start_date"
-                            :name="`experiences[${index}][start_date]`"
-                            class="w-full px-4 py-1.5 rounded-lg text-gray-700 dark:text-gray-300
-                                   bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                            <div class="grid grid-cols-2 gap-3">
+                                <input type="date"
+                                    x-model="exp.start_date"
+                                    :name="`experiences[${index}][start_date]`"
+                                    class="input input-bordered">
+                                <input type="date"
+                                    x-model="exp.end_date"
+                                    :name="`experiences[${index}][end_date]`"
+                                    class="input input-bordered">
+                            </div>
 
-                        <!-- End Date -->
-                        <label
-                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            End Date
-                        </label>
-                        <input type="date"
-                            x-model="exp.end_date"
-                            :name="`experiences[${index}][end_date]`"
-                            class="w-full px-4 py-1.5 rounded-lg text-gray-700 dark:text-gray-300
-                                   bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                            <textarea x-model="exp.description"
+                                :name="`experiences[${index}][description]`"
+                                placeholder="Brief description of role"
+                                class="textarea textarea-bordered w-full h-24"></textarea>
 
-                        <!-- Description -->
-                        <label
-                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Description
-                        </label>
-                        <textarea x-model="exp.description"
-                            :name="`experiences[${index}][description]`"
-                            placeholder="Brief description of role"
-                            class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
-                                   bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        </textarea>
-
-                        <!-- Remove Button -->
-                        <button type="button"
-                            @click="removeExperience(index)"
-                            class="mt-2 px-3 py-1 text-red-600 bg-red-100 rounded-lg hover:bg-red-200">
-                            Remove
-                        </button>
+                            <button type="button"
+                                @click="removeExperience(index)"
+                                class="btn btn-error btn-sm mt-2">Remove</button>
+                        </div>
                     </div>
                 </template>
 
-                <!-- Add Experience -->
                 <button type="button"
                     @click="addExperience"
-                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                    + Add Experience
-                </button>
+                    class="btn btn-primary w-full">+ Add Experience</button>
             </div>
 
             <!-- Education Section -->
-            <div class="mb-3"
-                x-data="educationInput({{ json_encode(old('education', $freelancerInfo->education ?? [])) }})">
+            <div x-data="educationInput({{ json_encode(old('education', $freelancerInfo->education ?? [])) }})"
+                class="form-control">
+                <label class="label font-semibold text-lg">Education</label>
 
-                <h2
-                    class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">
-                    Education
-                </h2>
-
-                <!-- Education Inputs -->
                 <template x-for="(edu, index) in education"
                     :key="index">
                     <div
-                        class="p-4 mb-4 border rounded-lg bg-gray-50 dark:bg-gray-800">
+                        class="card bg-base-200 p-4 mb-3 border border-base-300 rounded-xl">
+                        <div class="grid gap-3">
+                            <input type="text"
+                                x-model="edu.school"
+                                :name="`education[${index}][school]`"
+                                placeholder="School / University"
+                                class="input input-bordered w-full">
 
-                        <!-- School -->
-                        <label
-                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            School / University
-                        </label>
-                        <input type="text"
-                            x-model="edu.school"
-                            :name="`education[${index}][school]`"
-                            placeholder="e.g. Harvard University"
-                            class="w-full px-4 py-1.5 rounded-lg text-gray-700 dark:text-gray-300
-                          bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                            <input type="text"
+                                x-model="edu.degree"
+                                :name="`education[${index}][degree]`"
+                                placeholder="Degree / Qualification"
+                                class="input input-bordered w-full">
 
-                        <!-- Degree -->
-                        <label
-                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Degree / Qualification
-                        </label>
-                        <input type="text"
-                            x-model="edu.degree"
-                            :name="`education[${index}][degree]`"
-                            placeholder="e.g. Bachelor of Science"
-                            class="w-full px-4 py-1.5 rounded-lg text-gray-700 dark:text-gray-300
-                          bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                            <input type="text"
+                                x-model="edu.field_of_study"
+                                :name="`education[${index}][field_of_study]`"
+                                placeholder="Field of Study"
+                                class="input input-bordered w-full">
 
-                        <!-- Field of Study -->
-                        <label
-                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Field of Study
-                        </label>
-                        <input type="text"
-                            x-model="edu.field_of_study"
-                            :name="`education[${index}][field_of_study]`"
-                            placeholder="e.g. Computer Science"
-                            class="w-full px-4 py-1.5 rounded-lg text-gray-700 dark:text-gray-300
-                          bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                            <div class="grid grid-cols-2 gap-3">
+                                <input type="number"
+                                    x-model="edu.start_year"
+                                    :name="`education[${index}][start_year]`"
+                                    placeholder="Start Year"
+                                    class="input input-bordered">
+                                <input type="number"
+                                    x-model="edu.end_year"
+                                    :name="`education[${index}][end_year]`"
+                                    placeholder="End Year"
+                                    class="input input-bordered">
+                            </div>
 
-                        <!-- Start Year -->
-                        <label
-                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Start Year
-                        </label>
-                        <input type="number"
-                            x-model="edu.start_year"
-                            :name="`education[${index}][start_year]`"
-                            placeholder="e.g. 2018"
-                            class="w-full px-4 py-1.5 rounded-lg text-gray-700 dark:text-gray-300
-                          bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                            <textarea x-model="edu.awards"
+                                :name="`education[${index}][awards]`"
+                                placeholder="Awards, honors, or achievements"
+                                class="textarea textarea-bordered w-full h-20"></textarea>
 
-                        <!-- End Year -->
-                        <label
-                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            End Year
-                        </label>
-                        <input type="number"
-                            x-model="edu.end_year"
-                            :name="`education[${index}][end_year]`"
-                            placeholder="e.g. 2022"
-                            class="w-full px-4 py-1.5 rounded-lg text-gray-700 dark:text-gray-300
-                          bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
-
-                        <!-- Awards -->
-                        <label
-                            class="block ml-1 font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Awards
-                        </label>
-                        <textarea x-model="edu.awards"
-                            :name="`education[${index}][awards]`"
-                            placeholder="Additional achievements, awards, honors, etc."
-                            class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
-                             bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            </textarea>
-
-                        <!-- Remove Button -->
-                        <button type="button"
-                            @click="removeEducation(index)"
-                            class="mt-2 px-3 py-1 text-red-600 bg-red-100 rounded-lg hover:bg-red-200">
-                            Remove
-                        </button>
+                            <button type="button"
+                                @click="removeEducation(index)"
+                                class="btn btn-error btn-sm mt-2">Remove</button>
+                        </div>
                     </div>
                 </template>
 
-                <!-- Add Education -->
                 <button type="button"
                     @click="addEducation"
-                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                    + Add Education
+                    class="btn btn-primary w-full">+ Add Education</button>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex flex-col gap-3 mt-6">
+                <button type="submit"
+                    class="btn btn-success w-full">
+                    Save Changes
                 </button>
-            </div>
-
-            <!-- Submit -->
-            <div class="mb-3">
-                <x-button type="primary"
-                    buttonType="submit"
-                    class="w-full">
-                    {{ __('Save Changes') }}
-                </x-button>
-            </div>
-
-            <!-- Cancel -->
-            <div>
-                <x-button type="secondary"
-                    buttonType="button"
-                    class="w-full"
-                    onclick="window.history.back()">
-                    {{ __('Cancel') }}
-                </x-button>
             </div>
         </form>
     </div>
 
     <script>
-        // Skills Alpine component
         function skillsInput(initialSkills = []) {
             return {
                 skills: initialSkills.filter(s => s.trim() !== ""),
@@ -324,7 +210,6 @@
             }
         }
 
-        // Experiences Alpine component
         function experiencesInput(initialExperiences = []) {
             return {
                 experiences: initialExperiences.length ? initialExperiences : [],
@@ -353,7 +238,7 @@
                         field_of_study: "",
                         start_year: "",
                         end_year: "",
-                        description: ""
+                        awards: ""
                     });
                 },
                 removeEducation(index) {

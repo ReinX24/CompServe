@@ -316,9 +316,19 @@ class ClientJobListingController extends Controller
     {
         $freelancerInfo = $user->freelancerInformation;
 
+        if ($freelancerInfo) {
+            // If the user has freelancerInfo
+            $reviews = Review::with('jobListing')->where('freelancer_id', $freelancerInfo->user_id)->get();
+        } else {
+            // If the user does not have freelancerInfo
+            $reviews = Review::with('jobListing')->where('freelancer_id', $user->id)->get();
+        }
+
+        $averageRating = $reviews->avg('rating');
+
         $applicationInfo = $jobListing->applications()->where('freelancer_id', $user->id)->first();
 
-        return view('client.applicant.applicant-profile-show', compact('freelancerInfo', 'applicationInfo', 'user'));
+        return view('client.applicant.applicant-profile-show', compact('freelancerInfo', 'applicationInfo', 'user', 'averageRating'));
     }
 
     public function acceptApplicant(JobApplication $application)
