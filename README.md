@@ -1,4 +1,8 @@
-# Flowchart
+# CompServe
+
+#### Flowchart
+
+```
 [User Browser / Client App]
     |
     |-- Access “Home / Landing / Login / Register”
@@ -23,3 +27,4 @@
            ├── Manage Job Listings (CRUD)
            ├── View All Reviews
            ├── Dashboard (stats: user count, job count, review count)
+```

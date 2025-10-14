@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -41,6 +42,15 @@ class UserSeeder extends Seeder
             'email' => 'freelancer2@example.com',
             'password' => 'password',
             'role' => 'freelancer',
+            'created_at' => Carbon::now()->addDays(10),
+        ]);
+
+        User::factory()->create([
+            'name' => 'Freelancer3',
+            'email' => 'freelancer3@example.com',
+            'password' => 'password',
+            'role' => 'freelancer',
+            'created_at' => Carbon::now()->addMonth(),
         ]);
 
         // Client account for testing
@@ -56,6 +66,15 @@ class UserSeeder extends Seeder
             'email' => 'client2@example.com',
             'password' => 'password',
             'role' => 'client',
+            'created_at' => Carbon::now()->addDays(10),
+        ]);
+
+        User::factory()->create([
+            'name' => 'Client3',
+            'email' => 'client3@example.com',
+            'password' => 'password',
+            'role' => 'client',
+            'created_at' => Carbon::now()->addMonth(),
         ]);
 
         // Admin account for testing

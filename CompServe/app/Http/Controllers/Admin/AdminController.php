@@ -50,13 +50,67 @@ class AdminController extends Controller
         ])->onlyInput('email');
     }
 
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $usersCount = User::count();
         $jobsCount = JobListing::count();
         $reviewsCount = Review::count();
 
-        return view('admin.dashboard', compact('usersCount', 'jobsCount', 'reviewsCount'));
+        // Get filter type (default = monthly)
+        $filterJobs = $request->input('filter_jobs', 'monthly');
+        $filterUsers = $request->input('filter_users', 'monthly');
+
+        // Jobs chart data
+        $jobQuery = JobListing::query();
+        switch ($filterJobs) {
+            case 'daily':
+                $jobChartData = $jobQuery->selectRaw('DATE(created_at) as label, COUNT(*) as count')
+                    ->groupBy('label')->orderBy('label')->get();
+                break;
+            case 'weekly':
+                $jobChartData = $jobQuery->selectRaw('YEARWEEK(created_at, 1) as label, COUNT(*) as count')
+                    ->groupBy('label')->orderBy('label')->get();
+                break;
+            case 'yearly':
+                $jobChartData = $jobQuery->selectRaw('YEAR(created_at) as label, COUNT(*) as count')
+                    ->groupBy('label')->orderBy('label')->get();
+                break;
+            default: // monthly
+                $jobChartData = $jobQuery->selectRaw('DATE_FORMAT(created_at, "%Y-%m") as label, COUNT(*) as count')
+                    ->groupBy('label')->orderBy('label')->get();
+                break;
+        }
+
+        // Users chart data
+        $userQuery = User::query();
+        switch ($filterUsers) {
+            case 'daily':
+                $userChartData = $userQuery->selectRaw('DATE(created_at) as label, COUNT(*) as count')
+                    ->groupBy('label')->orderBy('label')->get();
+                break;
+            case 'weekly':
+                $userChartData = $userQuery->selectRaw('YEARWEEK(created_at, 1) as label, COUNT(*) as count')
+                    ->groupBy('label')->orderBy('label')->get();
+                break;
+            case 'yearly':
+                $userChartData = $userQuery->selectRaw('YEAR(created_at) as label, COUNT(*) as count')
+                    ->groupBy('label')->orderBy('label')->get();
+                break;
+            default: // monthly
+                $userChartData = $userQuery->selectRaw('DATE_FORMAT(created_at, "%Y-%m") as label, COUNT(*) as count')
+                    ->groupBy('label')->orderBy('label')->get();
+                break;
+        }
+
+        return view('admin.dashboard', compact(
+            'usersCount',
+            'jobsCount',
+            'reviewsCount',
+            'jobChartData',
+            'userChartData',
+            'filterJobs',
+            'filterUsers'
+        ));
     }
 
     public function users()

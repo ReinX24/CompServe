@@ -29,6 +29,9 @@ class ClientJobListingController extends Controller
         $category = $request->input('category');
         $client = $request->input('client');
 
+        // Get location from the field
+        $location = $request->input('location');
+
         $jobs = Auth::user()->jobListings()->where(
             "status",
             "open"
@@ -50,7 +53,9 @@ class ClientJobListingController extends Controller
                     fn($q2) =>
                     $q2->where('name', 'like', "%$client%")
                 )
-            )->
+            )->when($location, function ($query, $location) {
+                $query->where('location', 'like', "%$location%");
+            })->
             paginate(6);
 
         return view('client.jobs.available-jobs', compact('jobs'));

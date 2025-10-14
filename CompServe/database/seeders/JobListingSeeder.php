@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\JobApplication;
 use App\Models\JobListing;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class JobListingSeeder extends Seeder
@@ -28,6 +29,15 @@ class JobListingSeeder extends Seeder
                 ->create([
                     'client_id' => $client->id,
                     'status' => 'open',
+                ]);
+
+            // 10 more jobs for another day
+            JobListing::factory()
+                ->count(10)
+                ->create([
+                    'client_id' => $client->id,
+                    'status' => 'open',
+                    'created_at' => Carbon::now()->addDays(10),
                 ]);
 
             foreach ($openJobs as $job) {

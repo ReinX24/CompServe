@@ -62,13 +62,13 @@ Docker Container: localhost:8080
 
 #### Functions per user
 
-Admin (To be implemented)
+Admin
 
-- Update and delete job listing
-- Update and delete account information
-- See all registered users (freelancers and clients)
-- Reset the password of users
-- See all reviews
+- Update and delete job listing X
+- Update and delete account information X
+- See all registered users (freelancers and clients) X
+- Reset the password of users X
+- See all reviews X
 
 Freelancer
 

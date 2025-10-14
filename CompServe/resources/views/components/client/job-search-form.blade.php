@@ -45,6 +45,13 @@
             value="{{ request('client') ?? '' }}"
             class="input input-bordered w-full md:w-64 dark:bg-gray-700 dark:text-gray-200" />
 
+        {{-- Search by location --}}
+        <input type="text"
+            name="location"
+            placeholder="Search by location"
+            value="{{ request('location') ?? '' }}"
+            class="input input-bordered w-full md:w-64 dark:bg-gray-700 dark:text-gray-200" />
+
         {{-- Buttons container --}}
         <div class="flex gap-2">
             {{-- Submit button --}}
