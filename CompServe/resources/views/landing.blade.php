@@ -6,59 +6,29 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name') }}</title>
+
     <script>
-        window.setAppearance = function(appearance) {
-            let setDark = () => document.documentElement.classList.add('dark')
-            let setLight = () => document.documentElement.classList.remove(
-                'dark')
-            let setButtons = (appearance) => {
-                document.querySelectorAll(
-                    'button[onclick^="setAppearance"]').forEach((
-                    button) => {
-                    button.setAttribute('aria-pressed', String(
-                        appearance === button.value))
-                })
-            }
-            if (appearance === 'system') {
-                let media = window.matchMedia('(prefers-color-scheme: dark)')
-                window.localStorage.removeItem('appearance')
-                media.matches ? setDark() : setLight()
-            } else if (appearance === 'dark') {
-                window.localStorage.setItem('appearance', 'dark')
-                setDark()
-            } else if (appearance === 'light') {
-                window.localStorage.setItem('appearance', 'light')
-                setLight()
-            }
-            if (document.readyState === 'complete') {
-                setButtons(appearance)
-            } else {
-                document.addEventListener("DOMContentLoaded", () => setButtons(
-                    appearance))
-            }
-        }
-        window.setAppearance(window.localStorage.getItem('appearance') || 'system')
+        window.setAppearance = function(theme) {
+            const root = document.documentElement;
+            const validThemes = ['light', 'dark'];
+            if (!validThemes.includes(theme)) theme = 'light';
+
+            root.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        };
+
+        // Load saved theme on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', saved);
+        });
     </script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body
-    class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 antialiased"
-    x-data="{
-        sidebarOpen: localStorage.getItem('sidebarOpen') === null ? window.innerWidth >= 1024 : localStorage.getItem('sidebarOpen') === 'true',
-        toggleSidebar() {
-            this.sidebarOpen = !this.sidebarOpen;
-            localStorage.setItem('sidebarOpen', this.sidebarOpen);
-        },
-        temporarilyOpenSidebar() {
-            if (!this.sidebarOpen) {
-                this.sidebarOpen = true;
-                localStorage.setItem('sidebarOpen', true);
-            }
-        },
-        formSubmitted: false,
-    }">
+<body {{-- class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 antialiased" --}}
+    class="antialiased">
 
     {{-- Main Container --}}
     <div class="min-h-screen flex flex-col">
@@ -69,11 +39,11 @@
         <main>
             <div
                 class="flex flex-col items-center justify-center text-center h-svh px-6">
+
                 <h2 class="text-3xl md:text-5xl font-extrabold mb-6">
                     Welcome to <span class="text-primary">CompServe</span>
                 </h2>
-                <p
-                    class="text-base md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mb-8">
+                <p class="text-base md:text-xl max-w-2xl mb-8">
                     CompServe is your trusted online platform for freelancers
                     specializing in <span class="font-medium">hardware
                         maintenance</span>
@@ -96,15 +66,15 @@
 
             {{-- Freelancer and Client Section --}}
             <section id="join-section"
-                class="relative bg-white dark:bg-gray-800 min-h-screen flex items-center justify-center px-6 py-12">
+                {{-- class="relative bg-white dark:bg-gray-800 min-h-screen flex items-center justify-center px-6 py-12"> --}}
+                class="relative min-h-screen flex items-center justify-center px-6 py-12">
                 <div class="max-w-7xl mx-auto w-full">
                     <div class="text-center mb-12">
                         <h2
-                            class="text-2xl md:text-4xl font-bold text-gray-900 dark:text-white">
+                            class="text-2xl md:text-4xl font-bold text-secondary">
                             Join <span class="text-primary">CompServe</span>
                         </h2>
-                        <p
-                            class="mt-4 text-base md:text-lg text-gray-600 dark:text-gray-300">
+                        <p class="mt-4 text-base md:text-lg">
                             Whether you're a freelancer or a client, we have a
                             space for you.
                         </p>
@@ -112,8 +82,8 @@
 
                     <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
                         {{-- Freelancer Card --}}
-                        <div
-                            class="flex flex-col items-center bg-gray-50 dark:bg-gray-900 rounded-2xl shadow-lg p-6 md:p-8 transition hover:shadow-xl">
+                        <div {{-- class="flex flex-col items-center bg-gray-50 dark:bg-gray-900 rounded-2xl shadow-lg p-6 md:p-8 transition hover:shadow-xl"> --}}
+                            class="flex flex-col items-center rounded-2xl shadow-lg p-6 md:p-8 transition hover:shadow-xl">
                             <div
                                 class="w-14 h-14 md:w-16 md:h-16 flex items-center justify-center rounded-full bg-primary text-white mb-4">
                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -128,7 +98,7 @@
                                 </svg>
                             </div>
                             <h3
-                                class="text-lg md:text-xl font-semibold text-gray-900 dark:text-white">
+                                class="text-lg md:text-xl font-semibold text-primary">
                                 Freelancers
                             </h3>
                             <p
@@ -146,8 +116,8 @@
                         </div>
 
                         {{-- Client Card --}}
-                        <div
-                            class="flex flex-col items-center bg-gray-50 dark:bg-gray-900 rounded-2xl shadow-lg p-6 md:p-8 transition hover:shadow-xl">
+                        <div {{-- class="flex flex-col items-center bg-gray-50 dark:bg-gray-900 rounded-2xl shadow-lg p-6 md:p-8 transition hover:shadow-xl"> --}}
+                            class="flex flex-col items-center rounded-2xl shadow-lg p-6 md:p-8 transition hover:shadow-xl">
                             <div
                                 class="w-14 h-14 md:w-16 md:h-16 flex items-center justify-center rounded-full bg-accent text-white mb-4">
                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -162,7 +132,7 @@
                                 </svg>
                             </div>
                             <h3
-                                class="text-lg md:text-xl font-semibold text-gray-900 dark:text-white">
+                                class="text-lg md:text-xl font-semibold text-accent">
                                 Clients
                             </h3>
                             <p

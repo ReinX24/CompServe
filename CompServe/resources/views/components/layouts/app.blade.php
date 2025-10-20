@@ -52,8 +52,8 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body
-    class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 antialiased"
+<body {{-- class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 antialiased" --}}
+    class="antialiased"
     x-data="{
         sidebarOpen: localStorage.getItem('sidebarOpen') === null ? window.innerWidth >= 1024 : localStorage.getItem('sidebarOpen') === 'true',
         toggleSidebar() {
@@ -86,7 +86,8 @@
                     'lg:ml-0': !
                         sidebarOpen // collapsed (if you add a mini mode later)
                 }"
-                class="flex-1 overflow-auto bg-gray-100 dark:bg-gray-900 content-transition pt-16">
+                {{-- class="flex-1 overflow-auto bg-gray-100 dark:bg-gray-900 content-transition pt-16"> --}}
+                class="flex-1 overflow-auto content-transition pt-20">
                 <div class="p-6">
                     <!-- Success Message -->
                     @session('status')

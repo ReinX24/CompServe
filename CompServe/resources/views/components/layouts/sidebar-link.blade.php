@@ -3,23 +3,25 @@
 <li>
     <a href="{{ $href }}"
         @class([
-            'flex items-center px-3 py-2 text-sm rounded-md transition-colors duration-200',
-            // 'bg-sidebar-accent text-sidebar-accent-foreground font-medium' => $active,
-            'bg-primary dark:text-base-content text-sidebar-accent-foreground font-medium' => $active,
-            // 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground' => !$active,
-            'hover:bg-primary hover:bg-primary/20 text-sidebar-foreground' => !$active,
+            // Base styles from daisyUI's `menu` + some custom spacing
+            'flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200',
+            'text-base-content hover:bg-base-200 dark:hover:bg-base-300',
+            // Active state
+            'bg-primary text-primary-content font-semibold shadow-sm' => $active,
         ])>
 
-        @svg($icon, $active ? 'w-5 h-5 text-white dark:text-gray-800' : 'w-5 h-5 text-gray-500')
+        {{-- Icon --}}
+        @svg($icon, $active ? 'w-5 h-5 text-primary-content' : 'w-5 h-5 text-base-content/70')
 
-        <span :class="{ 'hidden ml-0': !sidebarOpen, 'ml-3': sidebarOpen }"
-            x-transition:enter="transition-opacity duration-300"
+        {{-- Label --}}
+        <span :class="{ 'hidden ml-0': !sidebarOpen, 'ml-1': sidebarOpen }"
+            x-transition:enter="transition-opacity duration-200"
             x-transition:enter-start="opacity-0"
             x-transition:enter-end="opacity-100"
-            x-transition:leave="transition-opacity duration-300"
+            x-transition:leave="transition-opacity duration-200"
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
-            class="transition-opacity duration-300">
+            class="whitespace-nowrap">
             {{ $slot }}
         </span>
     </a>

@@ -1,9 +1,9 @@
 <x-layouts.app>
 
     <div class="mb-6">
-        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
+        <h1 class="text-2xl font-bold">
             {{ __('Client Dashboard') }}</h1>
-        <p class="text-gray-600 dark:text-gray-400 mt-1">
+        <p class="text-gray-600 mt-1">
             {{ __('Welcome to the dashboard') }}</p>
     </div>
 
@@ -11,15 +11,12 @@
 
         {{-- TODO: add link to pages for each card --}}
         <a href="{{ route('client.jobs.posts') }}">
-            <div
-                class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+            <div class="rounded-lg shadow-sm p-6 border">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p
-                            class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        <p class="text-sm font-medium">
                             {{ __('Received Applications') }}</p>
-                        <p
-                            class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
+                        <p class="text-2xl font-bold mt-1">
                             {{ $applicationCount ?? '--' }}</p>
                         <p class="text-xs text-gray-500 flex items-center mt-1">
                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -52,15 +49,12 @@
         </a>
 
         <!-- Revenue Card -->
-        <div
-            class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+        <div class="rounded-lg shadow-sm p-6 border">
             <div class="flex items-center justify-between">
                 <div>
-                    <p
-                        class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    <p class="text-sm font-medium">
                         {{ __('Posted Jobs') }}</p>
-                    <p
-                        class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
+                    <p class="text-2xl font-bold mt-1">
                         {{ $postedCount ?? '--' }}</p>
                     <p class="text-xs text-gray-500 flex items-center mt-1">
                         <svg xmlns="http://www.w3.org/2000/svg"

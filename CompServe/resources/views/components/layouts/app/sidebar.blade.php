@@ -5,7 +5,7 @@
     x-transition:leave="transition ease-in duration-200"
     x-transition:leave-start="translate-x-0 opacity-100"
     x-transition:leave-end="-translate-x-full opacity-0"
-    class="fixed inset-y-0 left-0 z-30 w-64 bg-sidebar text-sidebar-foreground border-r border-gray-200 dark:border-gray-700 shadow-lg pt-16">
+    class="fixed inset-y-0 left-0 z-30 w-64 shadow-lg pt-20 bg-base-200 md:bg-base-100 border-r border-primary">
 
     <!-- Sidebar Content -->
     <div class="h-full flex flex-col">

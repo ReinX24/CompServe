@@ -2,7 +2,7 @@
 
     <!-- Login Card -->
     <div
-        class="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden">
+        class="rounded-lg shadow-md border overflow-hidden border-primary">
         <div class="p-6">
             <div class="mb-3 flex flex-col items-center space-y-3">
                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -16,7 +16,7 @@
                         d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
                 </svg>
 
-                <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                <h1 class="text-2xl font-bold">
                     {{ __('Login Client Account') }}</h1>
             </div>
 

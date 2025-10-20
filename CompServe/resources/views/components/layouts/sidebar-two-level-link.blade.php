@@ -2,16 +2,22 @@
 
 <a href="{{ $href }}"
     @class([
-        'flex items-center px-3 py-2 text-sm rounded-md transition-colors duration-200',
-        // 'bg-sidebar-accent text-sidebar-accent-foreground font-medium' => $active,
-        'bg-primary dark:text-base-content text-sidebar-accent-foreground font-medium' => $active,
-        // 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground' => !$active,
-        'hover:bg-primary hover:bg-primary/20 text-sidebar-foreground' => !$active,
+        // Base styles (consistent with DaisyUI menu links)
+        'flex items-center gap-3 px-4 py-2 text-sm rounded-lg transition-all duration-200',
+        'text-base-content hover:bg-base-200 dark:hover:bg-base-300',
+
+        // Active state
+        'bg-primary text-primary-content font-semibold shadow-sm' => $active,
     ])>
-    <div class="flex items-center">
-        {{-- @svg($icon, $active ? 'w-5 h-5 mr-3 text-white' : 'w-5 h-5 mr-3 text-gray-500') --}}
-        @svg($icon, $active ? 'w-5 h-5 mr-3' : 'w-5 h-5 mr-3 text-gray-500')
-        <span x-data="{}"
-            :class="{ 'opacity-0 hidden': !sidebarOpen }">{{ $slot }}</span>
+    <div class="flex items-center gap-3">
+        {{-- Icon --}}
+        @svg($icon, $active ? 'w-5 h-5 text-primary-content' : 'w-5 h-5 text-base-content/70')
+
+        {{-- Label --}}
+        <span
+            :class="{ 'opacity-0 hidden ml-0': !sidebarOpen, 'ml-1': sidebarOpen }"
+            class="transition-all duration-300 ease-in-out whitespace-nowrap">
+            {{ $slot }}
+        </span>
     </div>
 </a>

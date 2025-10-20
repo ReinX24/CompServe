@@ -1,6 +1,6 @@
 <x-layouts.auth :title="__('Client Register')">
     <div
-        class="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden">
+        class="rounded-lg shadow-md border overflow-hidden border-primary">
         <div class="p-6">
             <div class="mb-3 flex flex-col items-center space-y-3">
                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -15,7 +15,7 @@
                 </svg>
 
                 <h1
-                    class="text-2xl font-bold text-gray-800 dark:text-gray-100 text-center">
+                    class="text-2xl font-bold text-center">
                     {{ __('Register Client Account') }}</h1>
             </div>
 
