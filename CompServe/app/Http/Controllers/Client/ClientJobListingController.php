@@ -61,6 +61,18 @@ class ClientJobListingController extends Controller
         return view('client.jobs.available-jobs', compact('jobs'));
     }
 
+    public function openGigJobs(Request $request)
+    {
+        // TODO: comeplete this function
+        dd("OPEN GIG JOBS");
+    }
+
+    public function openContractJobs(Request $request)
+    {
+        // TODO: comeplete this function
+        dd("OPEN CONTRACT JOBS");
+    }
+
     public function inProgressJobs(Request $request)
     {
         $search = $request->input('search');
@@ -92,6 +104,16 @@ class ClientJobListingController extends Controller
             paginate(6);
 
         return view('client.jobs.in-progress-jobs', compact('jobs'));
+    }
+
+    public function inProgressGigJobs(Request $request)
+    {
+        // TODO: comeplete this function
+    }
+
+    public function inProgressContractJobs(Request $request)
+    {
+        // TODO: comeplete this function
     }
 
     public function cancelledJobs(Request $request)
@@ -127,6 +149,16 @@ class ClientJobListingController extends Controller
         return view('client.jobs.cancelled-jobs', compact('jobs'));
     }
 
+    public function cancelledGigJobs(Request $request)
+    {
+        // TODO: comeplete this function
+    }
+
+    public function cancelledContractJobs(Request $request)
+    {
+        // TODO: comeplete this function
+    }
+
     public function completedJobs(Request $request)
     {
         $search = $request->input('search');
@@ -158,6 +190,16 @@ class ClientJobListingController extends Controller
             paginate(6);
 
         return view('client.jobs.completed-jobs', compact('jobs'));
+    }
+
+    public function completedGigJobs(Request $request)
+    {
+        // TODO: comeplete this function
+    }
+
+    public function completedContractJobs(Request $request)
+    {
+        // TODO: comeplete this function
     }
 
     /**

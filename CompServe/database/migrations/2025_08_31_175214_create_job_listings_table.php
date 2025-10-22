@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->enum('budget_type', ['fixed', 'hourly']);
             $table->decimal('budget', 10, 2)->nullable();
             $table->string('location')->nullable();
+            $table->enum('duration_type', ['gig', 'contract']);
             $table->date('deadline')->nullable();
             $table->enum('status', ['open', 'in_progress', 'completed', 'cancelled'])->default('open');
             $table->timestamps();

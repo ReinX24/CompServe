@@ -9,16 +9,16 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
 
-        {{-- TODO: add link to pages for each card --}}
         <a href="{{ route('client.jobs.posts') }}">
-            <div class="rounded-lg shadow-sm p-6 border">
-                <div class="flex items-center justify-between">
+            <div
+                class="rounded-lg shadow-sm p-6 border bg-primary-content border-primary">
+                <div class="flex items-center justify-between text-neutral">
                     <div>
                         <p class="text-sm font-medium">
                             {{ __('Received Applications') }}</p>
                         <p class="text-2xl font-bold mt-1">
                             {{ $applicationCount ?? '--' }}</p>
-                        <p class="text-xs text-gray-500 flex items-center mt-1">
+                        <p class="text-xs flex items-center mt-1">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 class="h-4 w-4 mr-1"
                                 fill="none"
@@ -48,15 +48,15 @@
             </div>
         </a>
 
-        <!-- Revenue Card -->
-        <div class="rounded-lg shadow-sm p-6 border">
-            <div class="flex items-center justify-between">
+        <div
+            class="rounded-lg shadow-sm p-6 border bg-secondary-content border-secondary">
+            <div class="flex items-center justify-between text-neutral">
                 <div>
                     <p class="text-sm font-medium">
                         {{ __('Posted Jobs') }}</p>
                     <p class="text-2xl font-bold mt-1">
                         {{ $postedCount ?? '--' }}</p>
-                    <p class="text-xs text-gray-500 flex items-center mt-1">
+                    <p class="text-xs flex items-center mt-1">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-4 w-4 mr-1"
                             fill="none"
@@ -85,18 +85,15 @@
             </div>
         </div>
 
-        <!-- Orders Card -->
         <div
-            class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
-            <div class="flex items-center justify-between">
+            class="rounded-lg shadow-sm p-6 border bg-neutral-content border-neutral">
+            <div class="flex items-center justify-between text-neutral">
                 <div>
-                    <p
-                        class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    <p class="text-sm font-medium">
                         {{ __('In-progress Jobs') }}</p>
-                    <p
-                        class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
+                    <p class="text-2xl font-bold mt-1">
                         {{ $inProgressCount ?? '--' }}</p>
-                    <p class="text-xs text-gray-500 flex items-center mt-1">
+                    <p class="text-xs flex items-center mt-1">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-4 w-4 mr-1"
                             fill="none"
@@ -125,18 +122,15 @@
             </div>
         </div>
 
-        <!-- Visitors Card -->
         <div
-            class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+            class="rounded-lg shadow-sm p-6 border bg-base-300 border-base-content">
             <div class="flex items-center justify-between">
                 <div>
-                    <p
-                        class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    <p class="text-sm font-medium">
                         {{ __('Completed Jobs') }}</p>
-                    <p
-                        class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
+                    <p class="text-2xl font-bold mt-1">
                         {{ $completedCount ?? '--' }}</p>
-                    <p class="text-xs text-gray-500 flex items-center mt-1">
+                    <p class="text-xs flex items-center mt-1">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="h-4 w-4 mr-1"
                             fill="none"

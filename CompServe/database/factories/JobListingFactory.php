@@ -28,6 +28,7 @@ class JobListingFactory extends Factory
             'budget_type' => $this->faker->randomElement(['fixed', 'hourly']),
             'budget' => $this->faker->randomFloat(2, 100, 5000),
             'location' => $this->faker->city(),
+            'duration_type' => $this->faker->randomElement(['gig', 'contract']),
             'deadline' => $this->faker->dateTimeBetween('now', '+3 months'),
             'status' => $this->faker->randomElement(['open', 'in_progress', 'completed']),
         ];

@@ -12,7 +12,7 @@
         <!-- Sidebar Menu -->
         <nav class="flex-1 overflow-y-auto custom-scrollbar py-4">
             <ul class="space-y-1 px-2">
-                {{-- Freelancer --}}
+                {{-- Sidebar loads for different roles --}}
                 @if (Auth::user()->role === 'freelancer')
                     <x-layouts.freelancer-sidebar />
                 @elseif (Auth::user()->role === 'client')
