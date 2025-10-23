@@ -22,6 +22,32 @@ class ClientJobListingController extends Controller
         return view('client.jobs.all-jobs', compact('jobs'));
     }
 
+    public function gigsIndex(Request $request)
+    {
+        $filters = $request->only(['search', 'category', 'client', 'location']);
+
+        $jobs = Auth::user()
+            ->jobListings()
+            ->where('duration_type', 'gig')
+            ->filter($filters)
+            ->get();
+
+        return view('gigs.all-gigs', compact('jobs'));
+    }
+
+    public function contractsIndex(Request $request)
+    {
+        $filters = $request->only(['search', 'category', 'client', 'location']);
+
+        $jobs = Auth::user()
+            ->jobListings()
+            ->where('duration_type', 'contract')
+            ->filter($filters)
+            ->get();
+
+        return view('contracts.all-contracts', compact('jobs'));
+    }
+
     public function postedJobs(Request $request)
     {
         // dd("posted jobs");
@@ -63,8 +89,16 @@ class ClientJobListingController extends Controller
 
     public function openGigJobs(Request $request)
     {
-        // TODO: comeplete this function
-        dd("OPEN GIG JOBS");
+        $filters = $request->only(['search', 'category', 'client', 'location']);
+
+        $jobs = Auth::user()
+            ->jobListings()
+            ->where('status', 'open')
+            ->where('duration_type', 'gig')
+            ->filter($filters)
+            ->paginate(6);
+
+        return view('gigs.open-gigs', compact('jobs'));
     }
 
     public function openContractJobs(Request $request)
@@ -108,7 +142,16 @@ class ClientJobListingController extends Controller
 
     public function inProgressGigJobs(Request $request)
     {
-        // TODO: comeplete this function
+        $filters = $request->only(['search', 'category', 'client', 'location']);
+
+        $jobs = Auth::user()
+            ->jobListings()
+            ->where('status', 'in_progress')
+            ->where('duration_type', 'gig')
+            ->filter($filters)
+            ->paginate(6);
+
+        return view('gigs.in-progress-gigs', compact('jobs'));
     }
 
     public function inProgressContractJobs(Request $request)
@@ -151,7 +194,16 @@ class ClientJobListingController extends Controller
 
     public function cancelledGigJobs(Request $request)
     {
-        // TODO: comeplete this function
+        $filters = $request->only(['search', 'category', 'client', 'location']);
+
+        $jobs = Auth::user()
+            ->jobListings()
+            ->where('status', 'cancelled')
+            ->where('duration_type', 'gig')
+            ->filter($filters)
+            ->paginate(6);
+
+        return view('gigs.cancelled-gigs', compact('jobs'));
     }
 
     public function cancelledContractJobs(Request $request)
@@ -194,7 +246,16 @@ class ClientJobListingController extends Controller
 
     public function completedGigJobs(Request $request)
     {
-        // TODO: comeplete this function
+        $filters = $request->only(['search', 'category', 'client', 'location']);
+
+        $jobs = Auth::user()
+            ->jobListings()
+            ->where('status', 'completed')
+            ->where('duration_type', 'gig')
+            ->filter($filters)
+            ->paginate(6);
+
+        return view('gigs.completed-gigs', compact('jobs'));
     }
 
     public function completedContractJobs(Request $request)

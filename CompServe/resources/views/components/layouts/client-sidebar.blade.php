@@ -4,7 +4,7 @@
     Dashboard
 </x-layouts.sidebar-link>
 
-<x-layouts.sidebar-two-level-link-parent title="Jobs"
+{{-- <x-layouts.sidebar-two-level-link-parent title="Jobs"
     icon='fas-pencil-alt'
     :active="request()->routeIs('client.jobs*')">
     <x-layouts.sidebar-two-level-link href="{{ route('client.jobs.index') }}"
@@ -35,42 +35,42 @@
         :active="request()->routeIs('client.jobs.completed')">
         Completed Jobs
     </x-layouts.sidebar-two-level-link>
-</x-layouts.sidebar-two-level-link-parent>
+</x-layouts.sidebar-two-level-link-parent> --}}
 
-<x-layouts.sidebar-two-level-link-parent title="Jobs"
+<x-layouts.sidebar-two-level-link-parent title="Gigs"
     icon='fas-pencil-alt'
     :active="request()->routeIs('client.jobs*')">
-    <x-layouts.sidebar-two-level-link href="{{ route('client.jobs.index') }}"
+    <x-layouts.sidebar-two-level-link href="{{ route('client.gigs.index') }}"
         icon='fas-border-all'
-        :active="request()->routeIs('client.jobs.index')">
+        :active="request()->routeIs('client.gigs.index')">
         All Gigs
     </x-layouts.sidebar-two-level-link>
-    <x-layouts.sidebar-two-level-link href="{{ route('client.jobs.posts') }}"
+    <x-layouts.sidebar-two-level-link href="{{ route('client.gigs.open') }}"
         icon='far-folder-open'
-        :active="request()->routeIs('client.jobs.posts')">
-        Posted Jobs
+        :active="request()->routeIs('client.gigs.open')">
+        Open Gigs
     </x-layouts.sidebar-two-level-link>
     <x-layouts.sidebar-two-level-link
-        href="{{ route('client.jobs.in_progress') }}"
+        href="{{ route('client.gigs.in_progress') }}"
         icon='fas-envelope-open-text'
-        :active="request()->routeIs('client.jobs.in_progress')">
+        :active="request()->routeIs('client.gigs.in_progress')">
         In Progress Jobs
     </x-layouts.sidebar-two-level-link>
     <x-layouts.sidebar-two-level-link
-        href="{{ route('client.jobs.cancelled') }}"
+        href="{{ route('client.gigs.cancelled') }}"
         icon='far-circle-xmark'
-        :active="request()->routeIs('client.jobs.cancelled')">
-        Cancelled Jobs
+        :active="request()->routeIs('client.gigs.cancelled')">
+        Cancelled Gigs
     </x-layouts.sidebar-two-level-link>
     <x-layouts.sidebar-two-level-link
-        href="{{ route('client.jobs.completed') }}"
-        icon='fas-pen'
-        :active="request()->routeIs('client.jobs.completed')">
-        Completed Jobs
+        href="{{ route('client.gigs.completed') }}"
+        icon='fas-pencil'
+        :active="request()->routeIs('client.gigs.completed')">
+        Completed Gigs
     </x-layouts.sidebar-two-level-link>
 </x-layouts.sidebar-two-level-link-parent>
 
-<x-layouts.sidebar-two-level-link-parent title="Jobs"
+<x-layouts.sidebar-two-level-link-parent title="Contracts"
     icon='fas-pen-alt'
     :active="request()->routeIs('client.jobs*')">
     <x-layouts.sidebar-two-level-link href="{{ route('client.jobs.index') }}"
@@ -78,28 +78,29 @@
         :active="request()->routeIs('client.jobs.index')">
         All Contracts
     </x-layouts.sidebar-two-level-link>
-    <x-layouts.sidebar-two-level-link href="{{ route('client.jobs.posts') }}"
+    <x-layouts.sidebar-two-level-link
+        href="{{ route('client.contracts.open') }}"
         icon='far-folder-open'
-        :active="request()->routeIs('client.jobs.posts')">
-        Posted Jobs
+        :active="request()->routeIs('client.contracts.open')">
+        Posted Contracts
     </x-layouts.sidebar-two-level-link>
     <x-layouts.sidebar-two-level-link
-        href="{{ route('client.jobs.in_progress') }}"
+        href="{{ route('client.contracts.in_progress') }}"
         icon='fas-envelope-open-text'
-        :active="request()->routeIs('client.jobs.in_progress')">
-        In Progress Jobs
+        :active="request()->routeIs('client.contracts.in_progress')">
+        In Progress Contracts
     </x-layouts.sidebar-two-level-link>
     <x-layouts.sidebar-two-level-link
-        href="{{ route('client.jobs.cancelled') }}"
+        href="{{ route('client.contracts.cancelled') }}"
         icon='far-circle-xmark'
-        :active="request()->routeIs('client.jobs.cancelled')">
-        Cancelled Jobs
+        :active="request()->routeIs('client.contracts.cancelled')">
+        Cancelled Contracts
     </x-layouts.sidebar-two-level-link>
     <x-layouts.sidebar-two-level-link
-        href="{{ route('client.jobs.completed') }}"
+        href="{{ route('client.contracts.completed') }}"
         icon='fas-pen'
-        :active="request()->routeIs('client.jobs.completed')">
-        Completed Jobs
+        :active="request()->routeIs('client.contracts.completed')">
+        Completed Contracts
     </x-layouts.sidebar-two-level-link>
 </x-layouts.sidebar-two-level-link-parent>
 

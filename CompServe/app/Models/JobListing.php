@@ -37,4 +37,24 @@ class JobListing extends Model
     {
         return $this->hasMany(JobApplication::class, 'job_id');
     }
+
+    public function scopeFilter($query, $filters)
+    {
+        return $query
+            ->when($filters['search'] ?? null, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                        ->orWhere('description', 'like', "%{$search}%");
+                });
+            })
+            ->when($filters['category'] ?? null, function ($query, $category) {
+                $query->where('category', $category);
+            })
+            ->when($filters['client'] ?? null, function ($query, $client) {
+                $query->whereHas('client', fn($q) => $q->where('name', 'like', "%{$client}%"));
+            })
+            ->when($filters['location'] ?? null, function ($query, $location) {
+                $query->where('location', 'like', "%{$location}%");
+            });
+    }
 }

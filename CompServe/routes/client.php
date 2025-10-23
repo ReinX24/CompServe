@@ -73,6 +73,57 @@ Route::prefix('client')
         Route::get('/profile/edit', [ClientProfileController::class, 'edit'])->name('profile.edit');
         Route::post('/profile/update', [ClientProfileController::class, 'update'])->name('profile.update');
 
+        // Routes for gigs
+        Route::prefix('gigs')->group(function () {
+            Route::get('/index', [
+                ClientJobListingController::class,
+                'gigsIndex'
+            ])->name('gigs.index');
+
+            Route::get('/open', [
+                ClientJobListingController::class,
+                'openGigJobs'
+            ])->name('gigs.open');
+
+            Route::get(
+                '/in_progress',
+                [ClientJobListingController::class, 'inProgressGigJobs']
+            )->name('gigs.in_progress');
+
+            Route::get(
+                '/cancelled',
+                [ClientJobListingController::class, 'cancelledGigJobs']
+            )->name('gigs.cancelled');
+
+            Route::get(
+                '/completed',
+                [ClientJobListingController::class, 'completedGigJobs']
+            )->name('gigs.completed');
+        });
+
+        // Routes for contracts
+        Route::prefix('contracts')->group(function () {
+            Route::get('/open', [
+                ClientJobListingController::class,
+                'openContractJobs'
+            ])->name('contracts.open');
+
+            Route::get('/in_progress', [
+                ClientJobListingController::class,
+                'inProgressContractJobs'
+            ])->name('contracts.in_progress');
+
+            Route::get('/cancelled', [
+                ClientJobListingController::class,
+                'cancelledContractJobs'
+            ])->name('contracts.cancelled');
+
+            Route::get(
+                '/finished',
+                [ClientJobListingController::class, 'completedContractJobs']
+            )->name('contracts.completed');
+        });
+
         // Reset password
         Route::post('/profile/change-password', [ClientProfileController::class, 'changePassword'])->name('profile.changePassword');
     });
