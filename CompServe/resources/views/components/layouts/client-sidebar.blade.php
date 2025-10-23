@@ -39,7 +39,7 @@
 
 <x-layouts.sidebar-two-level-link-parent title="Gigs"
     icon='fas-pencil-alt'
-    :active="request()->routeIs('client.jobs*')">
+    :active="request()->routeIs('client.gigs*')">
     <x-layouts.sidebar-two-level-link href="{{ route('client.gigs.index') }}"
         icon='fas-border-all'
         :active="request()->routeIs('client.gigs.index')">
@@ -72,17 +72,17 @@
 
 <x-layouts.sidebar-two-level-link-parent title="Contracts"
     icon='fas-pen-alt'
-    :active="request()->routeIs('client.jobs*')">
-    <x-layouts.sidebar-two-level-link href="{{ route('client.jobs.index') }}"
+    :active="request()->routeIs('client.contracts*')">
+    <x-layouts.sidebar-two-level-link href="{{ route('client.contracts.index') }}"
         icon='fas-border-all'
-        :active="request()->routeIs('client.jobs.index')">
+        :active="request()->routeIs('client.contracts.index')">
         All Contracts
     </x-layouts.sidebar-two-level-link>
     <x-layouts.sidebar-two-level-link
         href="{{ route('client.contracts.open') }}"
         icon='far-folder-open'
         :active="request()->routeIs('client.contracts.open')">
-        Posted Contracts
+        Open Contracts
     </x-layouts.sidebar-two-level-link>
     <x-layouts.sidebar-two-level-link
         href="{{ route('client.contracts.in_progress') }}"

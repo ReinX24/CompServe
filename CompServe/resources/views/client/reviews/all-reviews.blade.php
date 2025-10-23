@@ -1,15 +1,26 @@
 <x-layouts.app>
-    <div class="mb-6">
-        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
-            {{ __('Reviews') }}
-        </h1>
-        <p class="text-gray-600 dark:text-gray-400 mt-1">
-            {{ __('Your reviews from completed jobs.') }}
-        </p>
+    <div class="breadcrumbs text-sm mb-4">
+        <ul class="text-base-content/70">
+            <li><a href="{{ route('dashboard') }}"
+                    class="hover:text-primary">Dashboard</a></li>
+            <li class="text-primary font-semibold">All Reviews</li>
+        </ul>
+    </div>
+
+    <div
+        class="flex flex-col md:flex-row md:justify-between md:items-center mb-8 bg-base-200 dark:bg-base-300 p-5 rounded-xl shadow-sm">
+        <div>
+            <h1 class="text-2xl font-bold text-primary">
+                {{ __('Reviews') }}
+            </h1>
+            <p class="mt-1 text-base-content/70">
+                {{ __('All your reviews from completed jobs.') }}
+            </p>
+        </div>
     </div>
 
     @if ($reviews->isEmpty())
-        <div class="alert alert-info shadow-sm">
+        <div class="alert alert-info shadow-md">
             <svg xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -23,27 +34,25 @@
             <span>No reviews yet.</span>
         </div>
     @else
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach ($reviews as $review)
-                <div
-                    class="card bg-white dark:bg-gray-800 shadow-md border border-gray-200 dark:border-gray-700">
+                <div class="card bg-base-100 shadow-xl border border-base-300">
                     <div class="card-body">
                         <!-- Job Title -->
                         <h2
-                            class="card-title text-lg font-semibold text-gray-800 dark:text-gray-100">
+                            class="card-title text-lg font-semibold text-base-content">
                             {{ $review->jobListing->title ?? 'Job Title Unavailable' }}
                         </h2>
 
-                        {{-- Freelancer Info --}}
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                        <!-- Freelancer Info -->
+                        <p class="text-sm text-base-content/70">
                             Reviewed Freelancer:
-                            <span
-                                class="font-medium text-gray-800 dark:text-gray-100">
+                            <span class="font-medium text-base-content">
                                 {{ $review->freelancer->name ?? 'Unknown Freelancer' }}
                             </span>
                         </p>
 
-                        {{-- Rating --}}
+                        <!-- Rating -->
                         <div class="flex items-center mt-3 space-x-1">
                             @for ($i = 1; $i <= 5; $i++)
                                 @if ($i <= $review->rating)
@@ -70,8 +79,7 @@
                         </div>
 
                         <!-- Review Meta -->
-                        <div
-                            class="mt-3 text-sm text-gray-500 dark:text-gray-400">
+                        <div class="mt-3 text-sm text-base-content/60">
                             <p>Reviewed on
                                 {{ $review->created_at->format('M d, Y') }}</p>
                         </div>
@@ -80,7 +88,8 @@
             @endforeach
         </div>
 
-        <div class="mt-6">
+        <!-- Pagination -->
+        <div class="mt-4">
             {{ $reviews->links() }}
         </div>
     @endif

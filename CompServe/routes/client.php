@@ -13,7 +13,6 @@ Route::prefix('client')
     ->middleware('client')
     ->name('client.')
     ->group(function () {
-
         Route::get('/dashboard', function () {
             $postedCount = JobListing::where(
                 [['client_id', Auth::user()->id], ['status', 'open']]
@@ -40,6 +39,7 @@ Route::prefix('client')
                 'applicationCount'
             ));
         })->name('dashboard');
+
 
         Route::prefix('jobs')->group(function () {
             Route::get('/', [ClientJobListingController::class, 'index'])->name('jobs.index');
@@ -103,6 +103,11 @@ Route::prefix('client')
 
         // Routes for contracts
         Route::prefix('contracts')->group(function () {
+            Route::get('/index', [
+                ClientJobListingController::class,
+                'contractsIndex'
+            ])->name('contracts.index');
+
             Route::get('/open', [
                 ClientJobListingController::class,
                 'openContractJobs'

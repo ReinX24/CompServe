@@ -103,8 +103,16 @@ class ClientJobListingController extends Controller
 
     public function openContractJobs(Request $request)
     {
-        // TODO: comeplete this function
-        dd("OPEN CONTRACT JOBS");
+        $filters = $request->only(['search', 'category', 'client', 'location']);
+
+        $jobs = Auth::user()
+            ->jobListings()
+            ->where('status', 'open')
+            ->where('duration_type', 'contract')
+            ->filter($filters)
+            ->paginate(6);
+
+        return view('contracts.open-contracts', compact('jobs'));
     }
 
     public function inProgressJobs(Request $request)
@@ -156,7 +164,16 @@ class ClientJobListingController extends Controller
 
     public function inProgressContractJobs(Request $request)
     {
-        // TODO: comeplete this function
+        $filters = $request->only(['search', 'category', 'client', 'location']);
+
+        $jobs = Auth::user()
+            ->jobListings()
+            ->where('status', 'in_progress')
+            ->where('duration_type', 'contract')
+            ->filter($filters)
+            ->paginate(6);
+
+        return view('contracts.in-progress-contracts', compact('jobs'));
     }
 
     public function cancelledJobs(Request $request)
@@ -208,7 +225,16 @@ class ClientJobListingController extends Controller
 
     public function cancelledContractJobs(Request $request)
     {
-        // TODO: comeplete this function
+        $filters = $request->only(['search', 'category', 'client', 'location']);
+
+        $jobs = Auth::user()
+            ->jobListings()
+            ->where('status', 'cancelled')
+            ->where('duration_type', 'contract')
+            ->filter($filters)
+            ->paginate(6);
+
+        return view('contracts.cancelled-contracts', compact('jobs'));
     }
 
     public function completedJobs(Request $request)
@@ -260,7 +286,16 @@ class ClientJobListingController extends Controller
 
     public function completedContractJobs(Request $request)
     {
-        // TODO: comeplete this function
+        $filters = $request->only(['search', 'category', 'client', 'location']);
+
+        $jobs = Auth::user()
+            ->jobListings()
+            ->where('status', 'completed')
+            ->where('duration_type', 'contract')
+            ->filter($filters)
+            ->paginate(6);
+
+        return view('contracts.cancelled-contracts', compact('jobs'));
     }
 
     /**

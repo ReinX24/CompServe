@@ -4,7 +4,7 @@
         <ul class="text-base-content/70">
             <li><a href="{{ route('dashboard') }}"
                     class="hover:text-primary">Dashboard</a></li>
-            <li class="text-primary font-semibold">All Gigs</li>
+            <li class="text-primary font-semibold">Contracts Gigs</li>
         </ul>
     </div>
 
@@ -13,17 +13,17 @@
         class="flex flex-col md:flex-row md:justify-between md:items-center mb-8 bg-base-200 dark:bg-base-300 p-5 rounded-xl shadow-sm">
         <div>
             <h1 class="text-2xl font-bold text-primary">
-                {{ __('All Gigs') }}
+                {{ __('All Contracts') }}
             </h1>
             <p class="mt-1 text-base-content/70">
-                {{ __('Gigs are short term jobs that last a week up to a month.') }}
+                {{ __('Contracts are long term jobs that can last a month or more.') }}
             </p>
         </div>
 
         <div class="mt-3 md:mt-0">
             <a href="{{ route('client.jobs.create') }}"
                 class="btn btn-primary shadow-md">
-                + {{ __('Add Gig') }}
+                + {{ __('Add Contract') }}
             </a>
         </div>
     </div>
@@ -33,7 +33,7 @@
         <h2
             class="text-xl font-semibold mb-4 flex items-center gap-2 text-primary">
             <i class="fa-solid fa-briefcase"></i>
-            {{ __('Open Gigs') }}
+            {{ __('Open Contracts') }}
         </h2>
 
         @php $openJobs = $jobs->where('status', 'open')->sortByDesc('created_at')->take(3); @endphp
@@ -49,13 +49,13 @@
                 <div class="mt-4 text-right">
                     <a href="{{ route('client.jobs.posts') }}"
                         class="link link-primary">
-                        {{ __('See more open gigs →') }}
+                        {{ __('See more open contracts →') }}
                     </a>
                 </div>
             @endif
         @else
             <div class="alert alert-info shadow-sm mt-3">
-                <span>{{ __('No open gigs found.') }}</span>
+                <span>{{ __('No open contracts found.') }}</span>
             </div>
         @endif
     </div>
@@ -65,7 +65,7 @@
         <h2
             class="text-xl font-semibold mb-4 flex items-center gap-2 text-secondary">
             <i class="fa-solid fa-spinner animate-spin-slow"></i>
-            {{ __('In Progress Gigs') }}
+            {{ __('In Progress Contracts') }}
         </h2>
 
         @php $inProgressJobs = $jobs->where('status', 'in_progress')->sortByDesc('created_at')->take(3); @endphp
@@ -81,13 +81,13 @@
                 <div class="mt-4 text-right">
                     <a href="{{ route('client.jobs.in_progress') }}"
                         class="link link-secondary">
-                        {{ __('See more in progress gigs →') }}
+                        {{ __('See more in progress contracts →') }}
                     </a>
                 </div>
             @endif
         @else
             <div class="alert alert-warning shadow-sm mt-3">
-                <span>{{ __('No in progress jobs found.') }}</span>
+                <span>{{ __('No in progress contracts found.') }}</span>
             </div>
         @endif
     </div>
@@ -97,7 +97,7 @@
         <h2
             class="text-xl font-semibold mb-4 flex items-center gap-2 text-error">
             <i class="fa-solid fa-ban"></i>
-            {{ __('Cancelled Jobs') }}
+            {{ __('Cancelled Contracts') }}
         </h2>
 
         @php $cancelledJobs = $jobs->where('status', 'cancelled')->sortByDesc('created_at')->take(3); @endphp

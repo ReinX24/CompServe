@@ -3,7 +3,7 @@
         <ul class="text-base-content/70">
             <li><a href="{{ route('dashboard') }}"
                     class="hover:text-primary">Dashboard</a></li>
-            <li class="text-primary font-semibold">Completed Gigs</li>
+            <li class="text-primary font-semibold">Completed Contracts</li>
         </ul>
     </div>
 
@@ -11,17 +11,17 @@
         class="flex flex-col md:flex-row md:justify-between md:items-center mb-8 bg-base-200 dark:bg-base-300 p-5 rounded-xl shadow-sm">
         <div>
             <h1 class="text-2xl font-bold text-primary">
-                {{ __('Completed Gigs') }}
+                {{ __('Completed Contracts') }}
             </h1>
             <p class="mt-1 text-base-content/70">
-                {{ __('All your completed gigs.') }}
+                {{ __('All your completed contracts.') }}
             </p>
         </div>
 
         <div class="mt-3 md:mt-0">
             <a href="{{ route('client.jobs.create') }}"
                 class="btn btn-primary shadow-md">
-                + {{ __('Add Gig') }}
+                + {{ __('Add Contract') }}
             </a>
         </div>
     </div>
