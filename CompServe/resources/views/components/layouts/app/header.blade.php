@@ -1,7 +1,7 @@
 <!-- Header -->
 <header
     class="navbar bg-primary text-primary-content shadow-sm z-40 fixed top-0 left-0 right-0">
-    <div class="flex items-center justify-between h-16 px-4 w-full">
+    <div class="flex items-center justify-between h-8 px-4 w-full">
         <!-- Left: Sidebar Toggle + Logo -->
         <div class="flex items-center space-x-3">
             <button @click="toggleSidebar"

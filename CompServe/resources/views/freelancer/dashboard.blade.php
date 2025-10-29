@@ -1,26 +1,24 @@
 <x-layouts.app>
 
     <div class="mb-6">
-        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
+        <h1 class="text-2xl font-bold">
             {{ __('Freelancer Dashboard') }}</h1>
-        <p class="text-gray-600 dark:text-gray-400 mt-1">
+        <p class="text-gray-600 mt-1">
             {{ __('Welcome to the dashboard') }}</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         <a href="{{ route('freelancer.jobs.available') }}">
             <div
-                class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+                class="rounded-lg shadow-sm p-6 border bg-primary-content border-primary">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p
-                            class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        <p class="text-sm font-medium">
                             {{ __('Available Jobs') }}</p>
-                        <p
-                            class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
+                        <p class="text-2xl font-bold mt-1">
                             {{ $availableJobsCount ?? '--' }}
                         </p>
-                        <p class="text-xs text-gray-500 flex items-center mt-1">
+                        <p class="text-xs flex items-center mt-1">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 class="h-4 w-4 mr-1"
                                 fill="none"
@@ -53,16 +51,14 @@
         <!-- Revenue Card -->
         <a href="{{ route('freelancer.jobs.applied') }}">
             <div
-                class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+                class="rounded-lg shadow-sm p-6 border bg-secondary-content border-secondary">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p
-                            class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        <p class="text-sm font-medium">
                             {{ __('Applied Jobs') }}</p>
-                        <p
-                            class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
+                        <p class="text-2xl font-bold mt-1">
                             {{ $appliedJobsCount ?? '--' }}</p>
-                        <p class="text-xs text-gray-500 flex items-center mt-1">
+                        <p class="text-xs flex items-center mt-1">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 class="h-4 w-4 mr-1"
                                 fill="none"
@@ -96,14 +92,12 @@
         <!-- Orders Card -->
         <a href="{{ route('freelancer.jobs.current') }}">
             <div
-                class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+                class="rounded-lg shadow-sm p-6 border bg-neutral-content border-neutral">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p
-                            class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        <p class="text-sm font-medium">
                             {{ __('Current Jobs') }}</p>
-                        <p
-                            class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
+                        <p class="text-2xl font-bold mt-1">
                             {{ $currentJobsCount ?? '--' }}</p>
                         <p class="text-xs text-gray-500 flex items-center mt-1">
                             <svg xmlns="http://www.w3.org/2000/svg"

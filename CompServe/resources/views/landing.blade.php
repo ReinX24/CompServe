@@ -40,6 +40,10 @@
             <div
                 class="flex flex-col items-center justify-center text-center h-svh px-6">
 
+                <img src="{{ asset('images/logo.png') }}"
+                    alt="Banner"
+                    class="w-50 h-auto rounded-full shadow-md">
+
                 <h2 class="text-3xl md:text-5xl font-extrabold mb-6">
                     Welcome to <span class="text-primary">CompServe</span>
                 </h2>

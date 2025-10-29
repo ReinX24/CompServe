@@ -1,8 +1,7 @@
 <x-layouts.auth :title="__('Client Login')">
 
     <!-- Login Card -->
-    <div
-        class="rounded-lg shadow-md border overflow-hidden border-primary">
+    <div class="rounded-lg shadow-md border overflow-hidden border-primary">
         <div class="p-6">
             <div class="mb-3 flex flex-col items-center space-y-3">
                 <svg xmlns="http://www.w3.org/2000/svg"
