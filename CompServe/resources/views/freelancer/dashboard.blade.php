@@ -133,14 +133,12 @@
         <!-- Visitors Card -->
         <a href="{{ route('freelancer.jobs.finished') }}">
             <div
-                class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+                class="rounded-lg shadow-sm p-6 border bg-base-300 border-base-content">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p
-                            class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        <p class="text-sm font-medium">
                             {{ __('Completed Jobs') }}</p>
-                        <p
-                            class="text-2xl font-bold text-gray-800 dark:text-gray-100 mt-1">
+                        <p class="text-2xl font-bold mt-1">
                             {{ $completedJobsCount ?? '--' }}</p>
                         <p class="text-xs text-gray-500 flex items-center mt-1">
                             <svg xmlns="http://www.w3.org/2000/svg"

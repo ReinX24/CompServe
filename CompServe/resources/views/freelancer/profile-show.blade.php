@@ -1,6 +1,6 @@
 <x-layouts.app>
     <div class="max-w-4xl mx-auto p-6">
-        <div class="card bg-base-100 shadow-xl dark:bg-gray-800">
+        <div class="card bg-base-100 shadow-xl">
             <div class="card-body">
                 <!-- Header -->
                 <div

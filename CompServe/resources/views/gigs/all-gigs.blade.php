@@ -1,5 +1,4 @@
 <x-layouts.app>
-    {{-- Breadcrumbs --}}
     <div class="breadcrumbs text-sm mb-4">
         <ul class="text-base-content/70">
             <li><a href="{{ route('dashboard') }}"
@@ -8,27 +7,11 @@
         </ul>
     </div>
 
-    {{-- Page Header --}}
-    <div
-        class="flex flex-col md:flex-row md:justify-between md:items-center mb-8 bg-base-200 dark:bg-base-300 p-5 rounded-xl shadow-sm">
-        <div>
-            <h1 class="text-2xl font-bold text-primary">
-                {{ __('All Gigs') }}
-            </h1>
-            <p class="mt-1 text-base-content/70">
-                {{ __('Gigs are short term jobs that last a week up to a month.') }}
-            </p>
-        </div>
+    <x-client.page-header-with-action title="All Gigs"
+        description="Gigs are short term jobs that last a week up to a month."
+        buttonText="Add Gig"
+        :buttonLink="route('client.jobs.create') . '?type=gig'" />
 
-        <div class="mt-3 md:mt-0">
-            <a href="{{ route('client.jobs.create') }}"
-                class="btn btn-primary shadow-md">
-                + {{ __('Add Gig') }}
-            </a>
-        </div>
-    </div>
-
-    {{-- Section: Open Jobs --}}
     <div class="mb-10">
         <h2
             class="text-xl font-semibold mb-4 flex items-center gap-2 text-primary">

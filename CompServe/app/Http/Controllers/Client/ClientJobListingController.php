@@ -301,9 +301,10 @@ class ClientJobListingController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view("client.jobs.create-job");
+        $jobType = $request->query('type', 'contract');
+        return view("client.jobs.create-job", compact("jobType"));
     }
 
     /**

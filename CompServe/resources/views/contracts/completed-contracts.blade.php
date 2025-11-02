@@ -7,24 +7,10 @@
         </ul>
     </div>
 
-    <div
-        class="flex flex-col md:flex-row md:justify-between md:items-center mb-8 bg-base-200 dark:bg-base-300 p-5 rounded-xl shadow-sm">
-        <div>
-            <h1 class="text-2xl font-bold text-primary">
-                {{ __('Completed Contracts') }}
-            </h1>
-            <p class="mt-1 text-base-content/70">
-                {{ __('All your completed contracts.') }}
-            </p>
-        </div>
-
-        <div class="mt-3 md:mt-0">
-            <a href="{{ route('client.jobs.create') }}"
-                class="btn btn-primary shadow-md">
-                + {{ __('Add Contract') }}
-            </a>
-        </div>
-    </div>
+    <x-client.page-header-with-action title="Completed Contracts"
+        description="All your completed contracts."
+        buttonText="Add Contract"
+        :buttonLink="route('client.jobs.create') . '?type=contract'" />
 
     <x-client.job-search-form :route="route('client.gigs.completed')" />
 
