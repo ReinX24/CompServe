@@ -1,6 +1,6 @@
 <x-layouts.app>
     <div
-        class="max-w-4xl mx-auto bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+        class="max-w-4xl mx-auto bg-base-100 dark:bg-base-200 text-base shadow rounded-lg p-6">
 
         @session('success')
             <div class="mb-4">
@@ -23,14 +23,14 @@
 
         <!-- Title & Basic Info -->
         <div class="mb-6 flex flex-col gap-3">
-            <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+            <h1 class="text-3xl font-bold">
                 {{ $jobListing->title }}
             </h1>
-            <p class="text-sm text-gray-500 dark:text-gray-400">
-                Category: <span
-                    class="font-medium">{{ $jobListing->category }}</span>
+            <p class="text-sm">
+                <span class="font-medium">{{ __('Category:') }}</span>
+                {{ Str::headline($jobListing->category) }}
             </p>
-            <p class="text-sm text-gray-500 dark:text-gray-400">
+            <p class="text-sm">
                 Status:
                 @php
                     $statusColors = [
@@ -51,10 +51,9 @@
 
         <!-- Description -->
         <div class="mb-6">
-            <h2
-                class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
+            <h2 class="text-xl font-semibold mb-2">
                 Description</h2>
-            <p class="text-gray-700 dark:text-gray-300">
+            <p>
                 {{ $jobListing->description }}
             </p>
         </div>
@@ -62,8 +61,7 @@
         <!-- Skills Required -->
         @if (!empty($jobListing->skills_required))
             <div class="mb-6">
-                <h2
-                    class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                <h2 class="text-xl font-semibold mb-2">
                     Skills Required</h2>
                 <div class="flex flex-wrap gap-2">
                     @foreach ($jobListing->skills_required as $skill)
@@ -78,10 +76,9 @@
 
         <!-- Budget -->
         <div class="mb-6">
-            <h2
-                class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
+            <h2 class="text-xl font-semibold mb-2">
                 Budget</h2>
-            <p class="text-gray-700 dark:text-gray-300">
+            <p class="">
                 {{ ucfirst($jobListing->budget_type) }} -
                 <span
                     class="font-bold">₱{{ number_format($jobListing->budget, 2) }}</span>
@@ -91,18 +88,16 @@
         <!-- Location & Deadline -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
-                <h2
-                    class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                <h2 class="text-xl font-semibold mb-2">
                     Location</h2>
-                <p class="text-gray-700 dark:text-gray-300">
+                <p class="">
                     {{ $jobListing->location ?? 'Remote' }}
                 </p>
             </div>
             <div>
-                <h2
-                    class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                <h2 class="text-xl font-semibold mb-2">
                     Deadline</h2>
-                <p class="text-gray-700 dark:text-gray-300">
+                <p class="">
                     {{ $jobListing->deadline ? $jobListing->deadline->format('M d, Y') : 'No deadline specified' }}
                 </p>
             </div>

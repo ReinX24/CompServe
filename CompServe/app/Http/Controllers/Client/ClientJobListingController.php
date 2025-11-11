@@ -359,6 +359,7 @@ class ClientJobListingController extends Controller
                 ->latest()
                 ->take(3)
                 ->get();
+
             return view('client.jobs.show-job', compact('jobListing', 'applicants'));
         } elseif ($jobListing->status === "in_progress") {
             // Get the accepted applicant

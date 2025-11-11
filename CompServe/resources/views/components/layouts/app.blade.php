@@ -7,47 +7,43 @@
         content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name') }}</title>
     <script>
-        let htmlTag = document.documentElement;
+        const htmlTag = document.documentElement;
 
-        window.setAppearance = function(appearance) {
-            let setDark = () => {
-                document.documentElement.classList.add('dark');
-                htmlTag.setAttribute('data-theme',
-                    'dark');
-            }
-            let setLight = () => {
-                document.documentElement.classList.remove(
-                    'dark');
+        function applyTheme(mode) {
+            if (mode === 'dark') {
+                htmlTag.classList.add('dark');
+                htmlTag.setAttribute('data-theme', 'dark');
+            } else {
+                htmlTag.classList.remove('dark');
                 htmlTag.setAttribute('data-theme', 'light');
             }
-            let setButtons = (appearance) => {
-                document.querySelectorAll(
-                    'button[onclick^="setAppearance"]').forEach((
-                    button) => {
-                    button.setAttribute('aria-pressed', String(
-                        appearance === button.value))
-                })
-            }
-            if (appearance === 'system') {
-                let media = window.matchMedia('(prefers-color-scheme: dark)')
-                window.localStorage.removeItem('appearance')
-                media.matches ? setDark() : setLight()
-            } else if (appearance === 'dark') {
-                window.localStorage.setItem('appearance', 'dark')
-                setDark()
-            } else if (appearance === 'light') {
-                window.localStorage.setItem('appearance', 'light')
-                setLight()
-            }
-            if (document.readyState === 'complete') {
-                setButtons(appearance)
+        }
+
+        function setAppearance(mode) {
+            if (mode === 'system') {
+                localStorage.removeItem('appearance');
+                const prefersDark = window.matchMedia(
+                    '(prefers-color-scheme: dark)').matches;
+                applyTheme(prefersDark ? 'dark' : 'light');
             } else {
-                document.addEventListener("DOMContentLoaded", () => setButtons(
-                    appearance))
+                localStorage.setItem('appearance', mode);
+                applyTheme(mode);
             }
         }
-        window.setAppearance(window.localStorage.getItem('appearance') || 'system')
+
+        // Load saved theme or fallback to system
+        const saved = localStorage.getItem('appearance');
+        if (saved) {
+            applyTheme(saved);
+        } else {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')
+                .matches;
+            applyTheme(prefersDark ? 'dark' : 'light');
+        }
+
+        window.setAppearance = setAppearance;
     </script>
+
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>

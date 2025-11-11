@@ -1,143 +1,125 @@
 <x-layouts.app>
-    <div class="mb-6 text-center">
-        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
-            {{ __('Edit Job') }}
-        </h1>
-        <p class="text-gray-600 dark:text-gray-400 mt-1">
-            {{ __('Update the details below to edit your job posting.') }}
-        </p>
+    <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold text-base-content">
+            {{ __('Edit Job Listing') }}</h1>
+        <p class="text-base-content/70 mt-1">
+            {{ __('Update the details of your job listing.') }}</p>
     </div>
 
-    <div
-        class="max-w-3xl mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8">
+    <div class="max-w-3xl mx-auto card bg-base-100 shadow-xl p-6">
         <form action="{{ route('client.jobs.update', $jobListing->id) }}"
             method="POST"
             class="space-y-6">
             @csrf
             @method('PUT')
 
-            <!-- Job Title -->
-            <div>
-                <label for="title"
-                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    {{ __('Job Title') }}
-                </label>
+            {{-- Job Title --}}
+            <div class="form-control">
+                <label class="label"><span class="label-text">Job
+                        Title</span></label>
                 <input type="text"
                     name="title"
-                    id="title"
+                    placeholder="Laptop Repair Specialist"
                     value="{{ old('title', $jobListing->title) }}"
-                    required
-                    placeholder="e.g. Laptop Repair Specialist"
-                    class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
-                           bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                           focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                    class="input input-bordered w-full" />
                 @error('title')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <span class="text-error text-sm mt-1">{{ $message }}</span>
                 @enderror
             </div>
 
-            <!-- Job Description -->
-            <div>
-                <label for="description"
-                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    {{ __('Description') }}
-                </label>
+            {{-- Job Description --}}
+            <div class="form-control">
+                <label class="label"><span
+                        class="label-text">Description</span></label>
                 <textarea name="description"
-                    id="description"
                     rows="4"
-                    required
-                    placeholder="Provide details about the job..."
-                    class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
-                           bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                           focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">{{ old('description', $jobListing->description) }}</textarea>
+                    placeholder="Provide job details..."
+                    class="textarea textarea-bordered w-full">{{ old('description', $jobListing->description) }}</textarea>
                 @error('description')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <span class="text-error text-sm mt-1">{{ $message }}</span>
                 @enderror
             </div>
 
-            <!-- Category -->
-            <div>
-                <label for="category"
-                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    {{ __('Category') }}
-                </label>
+            {{-- Job Type (Gig / Contract) --}}
+            <div class="form-control">
+                <label class="label"><span class="label-text">Job
+                        Type</span></label>
+                <select name="duration_type"
+                    class="select select-bordered w-full">
+                    <option value="gig"
+                        {{ old('duration_type', $jobListing->duration_type) === 'gig' ? 'selected' : '' }}>
+                        Gig</option>
+                    <option value="contract"
+                        {{ old('duration_type', $jobListing->duration_type) === 'contract' ? 'selected' : '' }}>
+                        Contract</option>
+                </select>
+            </div>
+
+            {{-- Category --}}
+            <div class="form-control">
+                <label class="label"><span
+                        class="label-text">Category</span></label>
                 <select name="category"
-                    id="category"
-                    required
-                    class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
-               bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-               focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                    <option value=""
-                        disabled>Select a category</option>
+                    class="select select-bordered w-full">
+                    <option disabled>Select a category</option>
                     <option value="Hardware"
                         {{ old('category', $jobListing->category) == 'Hardware' ? 'selected' : '' }}>
-                        Hardware</option>
-                    <option value="Software"
-                        {{ old('category', $jobListing->category) == 'Software' ? 'selected' : '' }}>
-                        Software</option>
+                        Hardware
+                    </option>
+                    <option value="DesktopComputers"
+                        {{ old('category', $jobListing->category) == 'DesktopComputers' ? 'selected' : '' }}>
+                        Desktop Computers</option>
+                    <option value="LaptopComputers"
+                        {{ old('category', $jobListing->category) == 'LaptopComputers' ? 'selected' : '' }}>
+                        Laptop Computers</option>
+                    <option value="MobilePhones"
+                        {{ old('category', $jobListing->category) == 'MobilePhones' ? 'selected' : '' }}>
+                        Mobile Phones</option>
+                    <option value="Accessories"
+                        {{ old('category', $jobListing->category) == 'Accessories' ? 'selected' : '' }}>
+                        Computer Accessories</option>
                     <option value="Networking"
                         {{ old('category', $jobListing->category) == 'Networking' ? 'selected' : '' }}>
                         Networking</option>
                 </select>
                 @error('category')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <span class="text-error text-sm">{{ $message }}</span>
                 @enderror
             </div>
 
-            <!-- Skills Required -->
-            <div x-data="{ skills: {{ json_encode(old('skills_required', $jobListing->skills_required ?? [])) }} }"
+            {{-- Skills Required --}}
+            <div x-data="{ skills: {{ json_encode(old('skills_required', $jobListing->skills_required ?? [''])) }} }"
                 class="space-y-2">
-                <label for="skills_required"
-                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    {{ __('Skills Required') }}
-                </label>
-
-                <!-- List of skills -->
+                <label class="label"><span class="label-text">Skills
+                        Required</span></label>
                 <template x-for="(skill, index) in skills"
                     :key="index">
-                    <div class="flex items-stretch space-x-2">
-                        <input type="text"
-                            :name="'skills_required[' + index + ']'"
+                    <div class="flex gap-2">
+                        <input class="input input-bordered w-full"
+                            type="text"
                             x-model="skills[index]"
-                            placeholder="Enter a skill"
-                            class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
-               bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-               focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            :name="'skills_required[' + index + ']'"
+                            placeholder="Enter a skill" />
                         <button type="button"
                             @click="skills.splice(index, 1)"
-                            {{-- class="px-3 bg-red-500 text-white rounded-lg hover:bg-red-600 flex items-center justify-center"> --}}
-                            class="px-3 btn btn-error flex items-center justify-center">
-                            ✕
-                        </button>
+                            class="btn btn-error">✕</button>
                     </div>
                 </template>
-
-                <!-- Add Skill Button -->
                 <button type="button"
                     @click="skills.push('')"
-                    class="mt-2 px-4 py-2 btn btn-success">
-                    + Add Skill
-                </button>
-
+                    class="btn btn-success btn-sm">+ Add Skill</button>
                 @error('skills_required')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <span class="text-error text-sm">{{ $message }}</span>
                 @enderror
             </div>
 
-            <!-- Budget Type -->
+            {{-- Budget and Type --}}
             <div class="grid grid-cols-2 gap-4">
-                <!-- Budget Type -->
-                <div>
-                    <label for="budget_type"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        {{ __('Budget Type') }}
-                    </label>
+                <div class="form-control">
+                    <label class="label"><span class="label-text">Budget
+                            Type</span></label>
                     <select name="budget_type"
-                        id="budget_type"
-                        required
-                        class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
-                   bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                   focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        class="select select-bordered w-full">
                         <option value="fixed"
                             {{ old('budget_type', $jobListing->budget_type) == 'fixed' ? 'selected' : '' }}>
                             Fixed</option>
@@ -146,79 +128,38 @@
                             Hourly</option>
                     </select>
                 </div>
-
-                <!-- Budget -->
-                <div>
-                    <label for="budget"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        {{ __('Budget (₱)') }}
-                    </label>
+                <div class="form-control">
+                    <label class="label"><span class="label-text">Budget
+                            (₱)</span></label>
                     <input type="number"
-                        step="0.01"
                         name="budget"
-                        id="budget"
                         value="{{ old('budget', $jobListing->budget) }}"
-                        placeholder="e.g. 150.00"
-                        class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
-                   bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                   focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        class="input input-bordered w-full"
+                        placeholder="150.00" />
                 </div>
             </div>
 
-            <!-- Location -->
-            <div>
-                <label for="location"
-                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    {{ __('Location') }}
-                </label>
-                <input type="text"
-                    name="location"
-                    id="location"
+            {{-- Location --}}
+            <div class="form-control">
+                <label class="label"><span
+                        class="label-text">Location</span></label>
+                <input name="location"
                     value="{{ old('location', $jobListing->location) }}"
-                    placeholder="Dagupan City, Pangasinan"
-                    class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
-                           bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                           focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                @error('location')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
+                    placeholder="Dagupan City"
+                    class="input input-bordered w-full" />
             </div>
 
-            <!-- Deadline -->
-            <div>
-                <label for="deadline"
-                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    {{ __('Deadline') }}
-                </label>
+            {{-- Deadline --}}
+            <div class="form-control">
+                <label class="label"><span
+                        class="label-text">Deadline</span></label>
                 <input type="date"
                     name="deadline"
-                    id="deadline"
                     value="{{ old('deadline', $jobListing->deadline ? $jobListing->deadline->format('Y-m-d') : '') }}"
-                    class="w-full px-4 py-2 rounded-lg text-gray-700 dark:text-gray-300
-                           bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-                           focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                @error('deadline')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
+                    class="input input-bordered w-full" />
             </div>
 
-            <div class="flex items-center justify-between space-x-4">
-                <button type="submit"
-                    class="flex-1 btn btn-primary">{{ __('Update Job') }}</button>
-            </div>
-        </form>
-
-        <!-- Delete Job -->
-        <form action="{{ route('client.jobs.destroy', $jobListing->id) }}"
-            method="POST"
-            class="mt-3">
-            @csrf
-            @method('DELETE')
-            <button type="submit"
-                onclick="return confirm('Are you sure you want to delete this job? This action cannot be undone.')"
-                class="w-full px-4 py-2 btn btn-error btn-outline">
-                {{ __('Delete Job') }}
-            </button>
+            <button class="btn btn-primary w-full">Update Job</button>
         </form>
     </div>
 </x-layouts.app>
