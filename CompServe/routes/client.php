@@ -47,10 +47,10 @@ Route::prefix('client')
             Route::get('/create', [ClientJobListingController::class, 'create'])->name('jobs.create');
             Route::post('/', [ClientJobListingController::class, 'store'])->name('jobs.store');
 
-            Route::get('/posted', [ClientJobListingController::class, 'postedJobs'])->name('jobs.posts');
-            Route::get('/in_progress', [ClientJobListingController::class, 'inProgressJobs'])->name('jobs.in_progress');
-            Route::get('/cancelled', [ClientJobListingController::class, 'cancelledJobs'])->name('jobs.cancelled');
-            Route::get('/finished', [ClientJobListingController::class, 'completedJobs'])->name('jobs.completed');
+            // Route::get('/posted', [ClientJobListingController::class, 'postedJobs'])->name('jobs.posts');
+            // Route::get('/in_progress', [ClientJobListingController::class, 'inProgressJobs'])->name('jobs.in_progress');
+            // Route::get('/cancelled', [ClientJobListingController::class, 'cancelledJobs'])->name('jobs.cancelled');
+            // Route::get('/finished', [ClientJobListingController::class, 'completedJobs'])->name('jobs.completed');
 
             Route::get('/{jobListing}/', [ClientJobListingController::class, 'show'])->name('jobs.show');
             Route::get('/{jobListing}/edit', [ClientJobListingController::class, 'edit'])->name('jobs.edit');

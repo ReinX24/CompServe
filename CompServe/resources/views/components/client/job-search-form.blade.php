@@ -14,6 +14,27 @@
             value="{{ request('search') ?? '' }}"
             class="input input-bordered w-full md:w-64 bg-base-100 dark:bg-base-200" />
 
+        {{-- Status Select (only on client.gigs.index) --}}
+        @if (request()->routeIs('client.gigs.index') ||
+                request()->routeIs('client.contracts.index'))
+            <select name="status"
+                class="select select-bordered w-full md:w-auto bg-base-100 dark:bg-base-200">
+                <option value="">{{ __('All Status') }}</option>
+                <option value="open"
+                    {{ request('status') == 'open' ? 'selected' : '' }}>Open
+                </option>
+                <option value="in_progress"
+                    {{ request('status') == 'in_progress' ? 'selected' : '' }}>
+                    In Progress</option>
+                <option value="completed"
+                    {{ request('status') == 'completed' ? 'selected' : '' }}>
+                    Completed</option>
+                <option value="cancelled"
+                    {{ request('status') == 'cancelled' ? 'selected' : '' }}>
+                    Cancelled</option>
+            </select>
+        @endif
+
         {{-- Category Select --}}
         <select name="category"
             class="select select-bordered w-full md:w-auto bg-base-100 dark:bg-base-200">

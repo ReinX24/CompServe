@@ -38,23 +38,38 @@ class JobListing extends Model
         return $this->hasMany(JobApplication::class, 'job_id');
     }
 
-    public function scopeFilter($query, $filters)
+    public function scopeFilter($query, array $filters)
     {
-        return $query
-            ->when($filters['search'] ?? null, function ($query, $search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('title', 'like', "%{$search}%")
-                        ->orWhere('description', 'like', "%{$search}%");
-                });
-            })
-            ->when($filters['category'] ?? null, function ($query, $category) {
-                $query->where('category', $category);
-            })
-            ->when($filters['client'] ?? null, function ($query, $client) {
-                $query->whereHas('client', fn($q) => $q->where('name', 'like', "%{$client}%"));
-            })
-            ->when($filters['location'] ?? null, function ($query, $location) {
-                $query->where('location', 'like', "%{$location}%");
+        // Search by title or description
+        if (!empty($filters['search'])) {
+            $query->where(function ($q) use ($filters) {
+                $q->where('title', 'like', '%' . $filters['search'] . '%')
+                    ->orWhere('description', 'like', '%' . $filters['search'] . '%');
             });
+        }
+
+        // Filter by category
+        if (!empty($filters['category'])) {
+            $query->where('category', $filters['category']);
+        }
+
+        // Filter by client
+        if (!empty($filters['client'])) {
+            $query->whereHas('client', function ($q) use ($filters) {
+                $q->where('name', 'like', '%' . $filters['client'] . '%');
+            });
+        }
+
+        // Filter by location
+        if (!empty($filters['location'])) {
+            $query->where('location', 'like', '%' . $filters['location'] . '%');
+        }
+
+        // Filter by status (only if status is provided)
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        return $query;
     }
 }

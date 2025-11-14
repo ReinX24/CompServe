@@ -1,6 +1,6 @@
 <x-layouts.app>
     <div
-        class="max-w-4xl mx-auto bg-base-100 dark:bg-base-200 text-base shadow rounded-lg p-6">
+        class="max-w-4xl mx-auto bg-base-200 text-base shadow rounded-lg p-6">
 
         @session('success')
             <div class="mb-4">
@@ -148,18 +148,17 @@
         {{-- Section that shows preview of applicants --}}
         @if ($jobListing->status === 'open')
             <div class="mt-6">
-                <h2 class="text-lg font-semibold mb-3">Applicants Preview</h2>
+                {{-- <h2 class="text-lg font-semibold mb-3">Applicants Preview</h2> --}}
 
                 @if ($applicants->isEmpty())
-                    <p class="text-gray-500">No applicants yet.</p>
+                    <p>No applicants yet.</p>
                 @else
-                    <ul class="space-y-3">
+                    {{-- <ul class="space-y-3">
                         @foreach ($applicants as $applicant)
                             <li
-                                class="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-between">
+                                class="p-3 bg-primary text-neutral-content rounded-lg flex items-center justify-between">
                                 <div>
-                                    <p
-                                        class="font-medium text-gray-900 dark:text-gray-100">
+                                    <p class="font-medium">
                                         {{ $applicant->freelancer->name }}
                                     </p>
                                     <p
@@ -169,7 +168,39 @@
                                     </p>
                                 </div>
                                 <a href="{{ route('client.jobs.applicant', [$jobListing, $applicant->freelancer_id]) }}"
-                                    class="btn btn-outline btn-info">
+                                    class="btn btn-secondary">
+                                    View Profile
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul> --}}
+
+                    {{-- Start of applicants list --}}
+                    <ul class="list bg-base-100 rounded-box shadow-md">
+                        <li
+                            class="p-4 pb-2 text-lg tracking-wide font-semibold">
+                            Applicants Preview</li>
+
+                        @foreach ($applicants as $applicant)
+                            <li class="list-row">
+                                <div
+                                    class="text-4xl font-thin opacity-30 tabular-nums">
+                                    {{ $applicant->freelancer->id }}</div>
+                                {{-- <div><img class="size-10 rounded-box"
+                                        src="https://img.daisyui.com/images/profile/demo/1@94.webp" />
+                                </div> --}}
+                                <div class="list-col-grow">
+                                    <div>{{ $applicant->freelancer->name }}
+                                    </div>
+                                    <div
+                                        class="text-xs uppercase font-semibold opacity-60">
+                                        Applied on
+                                        {{ $applicant->created_at->format('M d, Y') }}
+                                    </div>
+                                </div>
+
+                                <a href="{{ route('client.jobs.applicant', [$jobListing, $applicant->freelancer_id]) }}"
+                                    class="btn btn-secondary">
                                     View Profile
                                 </a>
                             </li>

@@ -22,7 +22,12 @@ return new class extends Migration {
             $table->string('location')->nullable();
             $table->enum('duration_type', ['gig', 'contract']);
             $table->date('deadline')->nullable();
-            $table->enum('status', ['open', 'in_progress', 'completed', 'cancelled'])->default('open');
+            $table->enum('status', [
+                'open',
+                'in_progress',
+                'completed',
+                'cancelled'
+            ])->default('open');
             $table->timestamps();
         });
     }

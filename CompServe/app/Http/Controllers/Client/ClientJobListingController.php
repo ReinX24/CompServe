@@ -24,7 +24,7 @@ class ClientJobListingController extends Controller
 
     public function gigsIndex(Request $request)
     {
-        $filters = $request->only(['search', 'category', 'client', 'location']);
+        $filters = $request->only(['search', 'category', 'client', 'location', 'status']);
 
         $jobs = Auth::user()
             ->jobListings()
@@ -37,7 +37,7 @@ class ClientJobListingController extends Controller
 
     public function contractsIndex(Request $request)
     {
-        $filters = $request->only(['search', 'category', 'client', 'location']);
+        $filters = $request->only(['search', 'category', 'client', 'location', 'status']);
 
         $jobs = Auth::user()
             ->jobListings()
@@ -410,7 +410,7 @@ class ClientJobListingController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'category' => 'required|string|in:Hardware,Software,Networking',
+            'category' => 'required|string|max:100',
             'skills_required' => 'nullable|array',
             'skills_required.*' => 'nullable|string|max:255',
             'budget_type' => 'required|string|in:fixed,hourly',
@@ -443,7 +443,7 @@ class ClientJobListingController extends Controller
         $jobListing->delete();
 
         return redirect()
-            ->route('client.jobs.posts')
+            ->route('dashboard')
             ->with('success', 'Job listing deleted successfully!');
     }
 

@@ -12,7 +12,7 @@
         buttonText="Add Gig"
         :buttonLink="route('client.jobs.create') . '?type=gig'" />
 
-    <x-client.job-search-form :route="route('client.jobs.posts')" />
+    <x-client.job-search-form :route="route('client.gigs.cancelled')" />
 
     @if ($jobs->count())
         <div>

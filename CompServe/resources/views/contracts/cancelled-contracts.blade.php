@@ -12,7 +12,7 @@
         buttonText="Add Contract"
         :buttonLink="route('client.jobs.create') . '?type=contract'" />
 
-    <x-client.job-search-form :route="route('client.jobs.posts')" />
+    <x-client.job-search-form :route="route('client.contracts.cancelled')" />
 
     @if ($jobs->count())
         <div>

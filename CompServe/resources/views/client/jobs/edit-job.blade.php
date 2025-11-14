@@ -161,5 +161,18 @@
 
             <button class="btn btn-primary w-full">Update Job</button>
         </form>
+
+        <form action="{{ route('client.jobs.destroy', $jobListing->id) }}"
+            method="POST"
+            class="mt-4">
+            @csrf
+            @method('DELETE')
+
+            <button type="submit"
+                class="btn btn-outline btn-error w-full"
+                onclick="return confirm('Are you sure you want to delete this job listing? This action cannot be undone.')">
+                Delete Job
+            </button>
+        </form>
     </div>
 </x-layouts.app>

@@ -18,7 +18,7 @@
                 <div class="badge badge-accent badge-outline p-3 text-sm">Open
                 </div>
             @elseif($job->status === 'in_progress')
-                <div class="badge badge-warning badge-outline p-3 text-sm">
+                <div class="badge badge-secondary badge-outline p-3 text-sm">
                     In-progress</div>
             @elseif($job->status === 'cancelled')
                 <div class="badge badge-error badge-outline p-3 text-sm">
@@ -56,7 +56,7 @@
         {{-- Action --}}
         <div class="card-actions mt-3">
             <a href="{{ route('client.jobs.show', $job->id) }}"
-                class="btn btn-primary btn-sm">
+                class="btn btn-secondary">
                 {{ __('View Details') }}
             </a>
         </div>
