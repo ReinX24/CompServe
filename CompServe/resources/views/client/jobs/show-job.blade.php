@@ -211,7 +211,7 @@
                 {{-- Link to see all applicants --}}
                 <div class="mt-3">
                     <a href="{{ route('client.jobs.applicants', $jobListing) }}"
-                        class="btn btn-neutral">
+                        class="btn btn-secondary">
                         View All Applicants
                     </a>
                 </div>
