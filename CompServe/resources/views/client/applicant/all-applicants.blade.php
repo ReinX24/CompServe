@@ -36,20 +36,20 @@
 
             @foreach ($applications as $application)
                 <div
-                    class="card bg-base-100 shadow-md hover:shadow-xl transition-all duration-200 border border-base-300">
+                    class="card bg-base-200 shadow-sm hover:shadow-md transition-all duration-199 border border-base-300">
                     <div class="card-body">
 
                         {{-- Applicant --}}
                         <div class="flex items-center gap-4">
-                            {{-- TODO: show avatar here --}}
-                            {{-- <div class="avatar placeholder">
+                            <div class="avatar">
                                 <div
-                                    class="bg-neutral-focus text-neutral-content rounded-full w-12">
-                                    <span class="text-xl">
-                                        {{ strtoupper(substr($application->freelancer->name, 0, 1)) }}
-                                    </span>
+                                    class="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                                    <div
+                                        class="flex items-center justify-center w-full h-full bg-neutral text-neutral-content text-4xl font-bold">
+                                        {{ strtoupper(substr($application->freelancer->name ?? Auth::user()->name, 0, 1)) }}
+                                    </div>
                                 </div>
-                            </div> --}}
+                            </div>
 
                             <div>
                                 <h2 class="text-lg font-semibold">
@@ -58,29 +58,34 @@
                                         {{ Str::limit($application->freelancer->name, 40) }}
                                     </a>
                                 </h2>
-
-                                {{-- Status Badge --}}
-                                {{-- <span
-                                    class="badge
-                                    @if ($application->status == 'pending') badge-warning
-                                    @elseif($application->status == 'accepted') badge-success
-                                    @elseif($application->status == 'rejected') badge-error
-                                    @else badge-ghost @endif">
-                                    {{ ucfirst($application->status) }}
-                                </span> --}}
                             </div>
                         </div>
 
-                        {{-- View Button --}}
+                        {{-- Accept Applicant --}}
                         <div class="mt-4">
+                            <form
+                                action="{{ route('client.jobs.applicant.accept', $application) }}"
+                                method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button class="btn btn-success w-full">
+                                    Accept Applicant
+                                </button>
+                            </form>
+                        </div>
+
+                        {{-- View Applicant --}}
+                        <div class="mt-2">
                             <a href="{{ route('client.jobs.applicant', [$jobListing, $application->freelancer_id]) }}"
-                                class="btn btn-secondary w-full">
+                                class="btn btn-outline btn-secondary w-full">
                                 View Applicant
                             </a>
                         </div>
+
                     </div>
                 </div>
             @endforeach
+
 
         </div>
     @else

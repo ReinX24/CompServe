@@ -1,6 +1,5 @@
 <x-layouts.app>
-    <div
-        class="max-w-4xl mx-auto bg-base-200 text-base shadow rounded-lg p-6">
+    <div class="max-w-4xl mx-auto bg-base-200 text-base shadow rounded-lg p-6">
 
         @session('success')
             <div class="mb-4">
@@ -183,12 +182,20 @@
 
                         @foreach ($applicants as $applicant)
                             <li class="list-row">
-                                <div
+                                {{-- <div
                                     class="text-4xl font-thin opacity-30 tabular-nums">
-                                    {{ $applicant->freelancer->id }}</div>
-                                {{-- <div><img class="size-10 rounded-box"
-                                        src="https://img.daisyui.com/images/profile/demo/1@94.webp" />
-                                </div> --}}
+                                    {{ $applicant->freelancer->id }}</div> --}}
+
+                                <div class="avatar">
+                                    <div
+                                        class="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                                        <div
+                                            class="flex items-center justify-center w-full h-full bg-neutral text-neutral-content text-4xl font-bold">
+                                            {{ strtoupper(substr($applicat->name ?? 'F', 0, 1)) }}
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="list-col-grow">
                                     <div>{{ $applicant->freelancer->name }}
                                     </div>

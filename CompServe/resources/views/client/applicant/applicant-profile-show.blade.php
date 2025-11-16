@@ -1,6 +1,6 @@
 <x-layouts.app>
     <div class="max-w-4xl mx-auto p-6">
-        <div class="card bg-base-200 shadow-xl">
+        <div class="card bg-base-200 shadow-sm">
             <div class="card-body">
                 <!-- Header -->
                 <div
@@ -31,7 +31,8 @@
                 </div>
 
                 {{-- Average Rating --}}
-                <div class="flex flex-col items-center mb-10 border-b border-base-300 pb-6">
+                <div
+                    class="flex flex-col items-center mb-10 border-b border-base-300 pb-6">
                     <p class="text-lg font-semibold mb-2 text-gray-700">
                         Average
                         Rating</p>

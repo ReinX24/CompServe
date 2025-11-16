@@ -30,6 +30,16 @@ class JobListingFactory extends Factory
             'location' => $this->faker->city(),
             'duration_type' => $this->faker->randomElement(['gig', 'contract']),
             'deadline' => $this->faker->dateTimeBetween('now', '+3 months'),
+            'duration' => fake()->randomElement([
+                '1 day',
+                '3 days',
+                '5 days',
+                '1 week',
+                '1 month',
+                '3 months',
+                '6 months',
+                '1 year'
+            ]),
             'status' => $this->faker->randomElement(['open', 'in_progress', 'completed']),
         ];
     }

@@ -6,7 +6,7 @@
 ])
 
 <div
-    class="flex flex-col md:flex-row md:justify-between md:items-center mb-8 bg-base-200 dark:bg-base-300 p-5 rounded-xl shadow-sm">
+    class="flex flex-col md:flex-row md:justify-between md:items-center mb-8 bg-base-200 p-5 rounded-xl shadow-sm">
     <div>
         <h1 class="text-2xl font-bold text-primary">
             {{ $title }}

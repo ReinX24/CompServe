@@ -19,6 +19,7 @@ class JobListing extends Model
         'budget',
         'location',
         'deadline',
+        'duration',
         'status',
     ];
 
@@ -34,6 +35,11 @@ class JobListing extends Model
     }
 
     public function applications()
+    {
+        return $this->hasMany(JobApplication::class, 'job_id');
+    }
+
+    public function applicants()
     {
         return $this->hasMany(JobApplication::class, 'job_id');
     }

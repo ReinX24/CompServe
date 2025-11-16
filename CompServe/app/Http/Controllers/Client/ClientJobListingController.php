@@ -95,6 +95,7 @@ class ClientJobListingController extends Controller
             ->jobListings()
             ->where('status', 'open')
             ->where('duration_type', 'gig')
+            ->latest()
             ->filter($filters)
             ->paginate(6);
 
@@ -323,6 +324,7 @@ class ClientJobListingController extends Controller
             'budget' => 'required|numeric|min:0',
             'location' => 'required|string|max:255',
             'deadline' => 'nullable|date|after:today',
+            'duration' => 'required|string|in:1 day,3 days,5 days,1 week,1 month,3 months,6 months,1 year',
             'status' => 'nullable|in:open,closed',
         ]);
 
