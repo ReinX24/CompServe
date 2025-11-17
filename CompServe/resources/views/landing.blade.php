@@ -69,9 +69,119 @@
             </div>
 
             {{-- Add an about section here --}}
-            <div class="border">
-                <p>About Section goes here</p>
-            </div>
+            <section id="about"
+                class="min-h-screen flex items-center bg-base-200 px-6 py-16">
+
+                <div class="max-w-5xl mx-auto text-center space-y-8">
+
+                    <h2
+                        class="text-3xl md:text-5xl font-extrabold text-primary">
+                        About <span class="text-secondary">CompServe</span>
+                    </h2>
+
+                    <p
+                        class="text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
+                        CompServe is a cutting-edge digital platform designed to
+                        connect
+                        skilled Filipino freelancers specializing in
+                        <span class="font-semibold">computer repair, hardware
+                            maintenance, IT services,
+                            and technology support</span>
+                        with clients who need reliable and professional
+                        technical assistance.
+                    </p>
+
+                    <p
+                        class="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                        We aim to bridge the gap between clients looking for
+                        trustworthy tech
+                        experts and freelancers seeking new opportunities to
+                        grow their careers.
+                        Whether you’re searching for a quick gig or long-term
+                        contract work, CompServe
+                        provides a secure and user-friendly platform to help you
+                        reach your goals.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+
+                        <div
+                            class="p-6 rounded-xl bg-base-100 shadow-md hover:shadow-xl transition">
+                            <div class="text-primary mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="h-10 w-10 mx-auto"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M12 6v6h4.5m4.5 3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold">Fast & Reliable
+                                Service</h3>
+                            <p class="mt-2 text-gray-600 dark:text-gray-400">
+                                Connect instantly with qualified freelancers
+                                ready to help you.
+                            </p>
+                        </div>
+
+                        <div
+                            class="p-6 rounded-xl bg-base-100 shadow-md hover:shadow-xl transition">
+                            <div class="text-secondary mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="h-10 w-10 mx-auto"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M12 1.5l3.09 6.26 6.91 1-5 4.87 1.18 6.88L12 17.77l-6.18 3.24L7 13.63l-5-4.87 6.91-1L12 1.5z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold">Verified
+                                Professionals</h3>
+                            <p class="mt-2 text-gray-600 dark:text-gray-400">
+                                All freelancers undergo screening and can earn
+                                certifications.
+                            </p>
+                        </div>
+
+                        <div
+                            class="p-6 rounded-xl bg-base-100 shadow-md hover:shadow-xl transition">
+                            <div class="text-accent mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="h-10 w-10 mx-auto"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M3 12l2-2m0 0l7-7 7 7m-9 2v8m-4 0h8" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold">Career Growth</h3>
+                            <p class="mt-2 text-gray-600 dark:text-gray-400">
+                                Freelancers can expand their portfolio and gain
+                                more clients.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-12">
+                        <a href="#join-section"
+                            class="btn btn-primary px-8 py-4 text-lg">
+                            Join CompServe Today
+                        </a>
+                    </div>
+
+                </div>
+
+            </section>
 
             {{-- Freelancer and Client Section --}}
             <section id="join-section"

@@ -16,12 +16,15 @@
         </p>
     </div>
 
-    @if ($buttonText)
-        <div class="mt-3 md:mt-0">
-            <a href="{{ $buttonLink }}"
-                class="btn btn-primary shadow-md">
-                + {{ $buttonText }}
-            </a>
-        </div>
+    {{-- Only show action button for client users --}}
+    @if (Auth::user()->role === 'client')
+        @if ($buttonText)
+            <div class="mt-3 md:mt-0">
+                <a href="{{ $buttonLink }}"
+                    class="btn btn-primary shadow-md">
+                    + {{ $buttonText }}
+                </a>
+            </div>
+        @endif
     @endif
 </div>

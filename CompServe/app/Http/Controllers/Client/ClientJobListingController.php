@@ -567,8 +567,8 @@ class ClientJobListingController extends Controller
             ['job_id', $jobListing->id],
         ])->first();
 
-        // Reject the job application if the job is cancelled
-        $jobApplication->status = "rejected";
+        // Set the job application as cancelled if the job is cancelled
+        $jobApplication->status = "cancelled";
         $jobApplication->save();
 
         $jobListing->status = "cancelled";

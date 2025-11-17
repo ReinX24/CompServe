@@ -60,6 +60,12 @@
         In Progress Jobs
     </x-layouts.sidebar-two-level-link>
     <x-layouts.sidebar-two-level-link
+        href="{{ route('freelancer.gigs.rejected') }}"
+        icon='far-rectangle-xmark'
+        :active="request()->routeIs('freelancer.gigs.rejected')">
+        Rejected Gigs
+    </x-layouts.sidebar-two-level-link>
+    <x-layouts.sidebar-two-level-link
         href="{{ route('freelancer.gigs.cancelled') }}"
         icon='far-circle-xmark'
         :active="request()->routeIs('freelancer.gigs.cancelled')">
@@ -96,6 +102,12 @@
         In Progress Contracts
     </x-layouts.sidebar-two-level-link>
     <x-layouts.sidebar-two-level-link
+        href="{{ route('freelancer.contracts.rejected') }}"
+        icon='far-rectangle-xmark'
+        :active="request()->routeIs('freelancer.contracts.rejected')">
+        Cancelled Contracts
+    </x-layouts.sidebar-two-level-link>
+    <x-layouts.sidebar-two-level-link
         href="{{ route('freelancer.contracts.cancelled') }}"
         icon='far-circle-xmark'
         :active="request()->routeIs('freelancer.contracts.cancelled')">
@@ -106,6 +118,23 @@
         icon='fas-pen'
         :active="request()->routeIs('freelancer.contracts.completed')">
         Completed Contracts
+    </x-layouts.sidebar-two-level-link>
+</x-layouts.sidebar-two-level-link-parent>
+
+<x-layouts.sidebar-two-level-link-parent title="Certifications"
+    icon='fas-certificate'
+    :active="request()->routeIs('freelancer.certifications*')">
+    <x-layouts.sidebar-two-level-link
+        href="{{ route('freelancer.certifications.index') }}"
+        icon='fas-border-all'
+        :active="request()->routeIs('freelancer.certifications.index')">
+        Certifications
+    </x-layouts.sidebar-two-level-link>
+    <x-layouts.sidebar-two-level-link
+        href="{{ route('freelancer.certifications.create') }}"
+        icon='fas-pen-fancy'
+        :active="request()->routeIs('freelancer.certifications.create')">
+        Create Certifications
     </x-layouts.sidebar-two-level-link>
 </x-layouts.sidebar-two-level-link-parent>
 

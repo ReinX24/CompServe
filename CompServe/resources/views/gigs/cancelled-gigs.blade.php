@@ -12,7 +12,12 @@
         buttonText="Add Gig"
         :buttonLink="route('client.jobs.create') . '?type=gig'" />
 
-    <x-client.job-search-form :route="route('client.gigs.cancelled')" />
+    @if (Auth::user()->role === 'client')
+        <x-client.job-search-form :route="route('client.gigs.cancelled')" />
+    @elseif(Auth::user()->role === 'freelancer')
+        <x-client.job-search-form :route="route('freelancer.gigs.cancelled')" />
+    @endif
+
 
     @if ($jobs->count())
         <div>

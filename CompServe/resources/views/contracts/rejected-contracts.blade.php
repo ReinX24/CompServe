@@ -3,19 +3,17 @@
         <ul class="text-base-content/70">
             <li><a href="{{ route('dashboard') }}"
                     class="hover:text-primary">Dashboard</a></li>
-            <li class="text-primary font-semibold">In-progress Gigs</li>
+            <li class="text-primary font-semibold">Rejected Contracts</li>
         </ul>
     </div>
 
-    <x-client.page-header-with-action title="In-progress Gigs"
-        description="All your in-progress gigs."
-        buttonText="Add Gig"
-        :buttonLink="route('client.jobs.create') . '?type=gig'" />
+    <x-client.page-header-with-action title="Rejected Contracts"
+        description="All contracts you were rejected from." />
 
     @if (Auth::user()->role === 'client')
-        <x-client.job-search-form :route="route('client.gigs.in_progress')" />
+        <x-client.job-search-form :route="route('client.contracts.rejected')" />
     @elseif(Auth::user()->role === 'freelancer')
-        <x-client.job-search-form :route="route('freelancer.gigs.in_progress')" />
+        <x-client.job-search-form :route="route('freelancer.contracts.rejected')" />
     @endif
 
     @if ($jobs->count())

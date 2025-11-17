@@ -81,4 +81,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(JobApplication::class, 'freelancer_id');
     }
+
+    public function certifications()
+    {
+        return $this->hasMany(Certification::class, 'freelancer_id');
+    }
 }

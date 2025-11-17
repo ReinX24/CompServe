@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\CertificationController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -60,3 +61,20 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 });
 
 require __DIR__ . '/auth.php';
+
+Route::middleware('freelancer')->group(function () {
+    Route::get('/freelancer/certifications', [
+        CertificationController::class,
+        'index'
+    ])->name('freelancer.certifications.index');
+
+    Route::get('/freelancer/certifications/create', [
+        CertificationController::class,
+        'create'
+    ])->name('freelancer.certifications.create');
+
+    Route::post('/freelancer/certifications/store', [
+        CertificationController::class,
+        'store'
+    ])->name('freelancer.certifications.store');
+});

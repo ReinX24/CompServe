@@ -75,28 +75,32 @@ Route::prefix('freelancer')
             Route::get(
                 '/index',
                 [GigController::class, 'gigsIndex']
-            )
-                ->name('gigs.index');
+            )->name('gigs.index');
+
             Route::get(
                 '/open',
                 [GigController::class, 'openGigJobs']
-            )
-                ->name('gigs.open');
+            )->name('gigs.open');
+
             Route::get(
                 '/in_progress',
                 [GigController::class, 'inProgressGigJobs']
-            )
-                ->name('gigs.in_progress');
+            )->name('gigs.in_progress');
+
+            Route::get(
+                '/rejected',
+                [GigController::class, 'rejectedGigJobs']
+            )->name('gigs.rejected');
+
             Route::get(
                 '/cancelled',
                 [GigController::class, 'cancelledGigJobs']
-            )
-                ->name('gigs.cancelled');
+            )->name('gigs.cancelled');
+
             Route::get('/completed', [
                 GigController::class,
                 'completedGigJobs'
-            ])
-                ->name('gigs.completed');
+            ])->name('gigs.completed');
         });
 
         // Contract routes
@@ -115,6 +119,11 @@ Route::prefix('freelancer')
                 ContractController::class,
                 'inProgressContractJobs'
             ])->name('contracts.in_progress');
+
+            Route::get('/rejected', [
+                ContractController::class,
+                'rejectedContractJobs'
+            ])->name('contracts.rejected');
 
             Route::get('/cancelled', [
                 ContractController::class,

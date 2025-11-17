@@ -68,16 +68,13 @@ class GigController extends Controller
         $filters = $request->only(['search', 'category', 'client', 'location']);
 
         if (Auth::user()->role === 'client') {
-
             $jobs = Auth::user()
                 ->jobListings()
                 ->where('status', 'in_progress')
                 ->where('duration_type', 'gig')
                 ->filter($filters)
                 ->paginate(6);
-
         } else {
-
             $jobs = JobListing::where('status', 'in_progress')
                 ->where('duration_type', 'gig')
                 ->whereHas('applications', function ($query) {
@@ -91,6 +88,21 @@ class GigController extends Controller
         return view('gigs.in-progress-gigs', compact('jobs'));
     }
 
+    public function rejectedGigJobs(Request $request)
+    {
+        $filters = $request->only(['search', 'category', 'client', 'location']);
+
+        $jobs = JobListing::where('duration_type', 'gig')
+            ->whereHas('applications', function ($query) {
+                $query->where('freelancer_id', Auth::id())
+                    ->where('status', 'rejected');
+            })
+            ->filter($filters)
+            ->paginate(6);
+
+        return view('gigs.rejected-gigs', compact('jobs'));
+    }
+
     /**
      * Cancelled Gigs Page
      */
@@ -98,7 +110,24 @@ class GigController extends Controller
     {
         $filters = $request->only(['search', 'category', 'client', 'location']);
 
-        $jobs = $this->fetchGigsForRole('cancelled', $filters)->paginate(6);
+        if (Auth::user()->role === 'client') {
+            $jobs = Auth::user()
+                ->jobListings()
+                ->where('status', 'cancelled')
+                ->where('duration_type', 'gig')
+                ->filter($filters)
+                ->paginate(6);
+        } else {
+            $jobs = JobListing
+                ::where('status', 'cancelled')
+                ::where('duration_type', 'gig')
+                ->whereHas('applications', function ($query) {
+                    $query->where('freelancer_id', Auth::id())
+                        ->where('status', 'cancelled');
+                })
+                ->filter($filters)
+                ->paginate(6);
+        }
 
         return view('gigs.cancelled-gigs', compact('jobs'));
     }
@@ -110,7 +139,22 @@ class GigController extends Controller
     {
         $filters = $request->only(['search', 'category', 'client', 'location']);
 
-        $jobs = $this->fetchGigsForRole('completed', $filters)->paginate(6);
+        if (Auth::user()->role === 'client') {
+            $jobs = Auth::user()
+                ->jobListings()
+                ->where('status', 'completed')
+                ->where('duration_type', 'gig')
+                ->filter($filters)
+                ->paginate(6);
+        } else {
+            $jobs = JobListing::where('duration_type', 'gig')
+                ->whereHas('applications', function ($query) {
+                    $query->where('freelancer_id', Auth::id())
+                        ->where('status', 'accepted');
+                })
+                ->filter($filters)
+                ->paginate(6);
+        }
 
         return view('gigs.completed-gigs', compact('jobs'));
     }
