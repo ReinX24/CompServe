@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Client\ClientJobListingController;
+use App\Http\Controllers\ContractController;
 use App\Http\Controllers\Freelancer\FreelancerReviewController;
+use App\Http\Controllers\GigController;
 use App\Models\FreelancerInformation;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -36,12 +39,12 @@ Route::prefix('freelancer')
         })->name('dashboard');
 
         Route::prefix('jobs')->group(function () {
-            Route::get('/', [FreelancerJobListingController::class, 'index'])->name('jobs.index');
-            Route::get('/available', [FreelancerJobListingController::class, 'availableJobs'])->name('jobs.available');
-            Route::get('/applied', [FreelancerJobListingController::class, 'appliedJobs'])->name('jobs.applied');
-            Route::get('/current', [FreelancerJobListingController::class, 'currentJobs'])->name('jobs.current');
-            Route::get('/rejected', [FreelancerJobListingController::class, 'rejectedJobs'])->name('jobs.rejected');
-            Route::get('/finished', [FreelancerJobListingController::class, 'completedJobs'])->name('jobs.finished');
+            // Route::get('/', [FreelancerJobListingController::class, 'index'])->name('jobs.index');
+            // Route::get('/available', [FreelancerJobListingController::class, 'availableJobs'])->name('jobs.available');
+            // Route::get('/applied', [FreelancerJobListingController::class, 'appliedJobs'])->name('jobs.applied');
+            // Route::get('/current', [FreelancerJobListingController::class, 'currentJobs'])->name('jobs.current');
+            // Route::get('/rejected', [FreelancerJobListingController::class, 'rejectedJobs'])->name('jobs.rejected');
+            // Route::get('/finished', [FreelancerJobListingController::class, 'completedJobs'])->name('jobs.finished');
 
             Route::get('/{jobListing}', [FreelancerJobListingController::class, 'show'])->name('jobs.show');
 
@@ -67,4 +70,60 @@ Route::prefix('freelancer')
 
         Route::get('/reviews', [FreelancerReviewController::class, 'index'])->name('reviews');
 
+        // Gig routes
+        Route::prefix('gigs')->group(function () {
+            Route::get(
+                '/index',
+                [GigController::class, 'gigsIndex']
+            )
+                ->name('gigs.index');
+            Route::get(
+                '/open',
+                [GigController::class, 'openGigJobs']
+            )
+                ->name('gigs.open');
+            Route::get(
+                '/in_progress',
+                [GigController::class, 'inProgressGigJobs']
+            )
+                ->name('gigs.in_progress');
+            Route::get(
+                '/cancelled',
+                [GigController::class, 'cancelledGigJobs']
+            )
+                ->name('gigs.cancelled');
+            Route::get('/completed', [
+                GigController::class,
+                'completedGigJobs'
+            ])
+                ->name('gigs.completed');
+        });
+
+        // Contract routes
+        Route::prefix('contracts')->group(function () {
+            Route::get('/index', [
+                ContractController::class,
+                'contractsIndex'
+            ])->name('contracts.index');
+
+            Route::get('/open', [
+                ContractController::class,
+                'openContractJobs'
+            ])->name('contracts.open');
+
+            Route::get('/in_progress', [
+                ContractController::class,
+                'inProgressContractJobs'
+            ])->name('contracts.in_progress');
+
+            Route::get('/cancelled', [
+                ContractController::class,
+                'cancelledContractJobs'
+            ])->name('contracts.cancelled');
+
+            Route::get(
+                '/finished',
+                [ContractController::class, 'completedContractJobs']
+            )->name('contracts.completed');
+        });
     });

@@ -178,7 +178,7 @@
                     <ul class="list bg-base-100 rounded-box shadow-md">
                         <li
                             class="p-4 pb-2 text-lg tracking-wide font-semibold">
-                            Applicants Preview</li>
+                            Pending Applicants</li>
 
                         @foreach ($applicants as $applicant)
                             <li class="list-row">

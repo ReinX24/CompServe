@@ -358,6 +358,7 @@ class ClientJobListingController extends Controller
         if ($jobListing->status === "open") {
             $applicants = $jobListing->applications()
                 ->with('freelancer')
+                ->where('status', 'pending')
                 ->latest()
                 ->take(3)
                 ->get();
@@ -504,7 +505,30 @@ class ClientJobListingController extends Controller
         }
 
         // Redirect back to page showing job information
-        return redirect()->route('client.jobs.show', $jobListing);
+        return redirect()->route(
+            'client.jobs.show',
+            $jobListing
+        )->with('success', 'Accepted applicant!');
+    }
+
+    public function rejectApplicant(JobApplication $application)
+    {
+        // Update application status
+        $application->update([
+            'status' => 'rejected',
+        ]);
+
+        // Get the related job listing for redirect
+        $jobListing = $application->job;
+
+        // return redirect()->route(
+        //     'client.jobs.show',
+        //     $jobListing
+        // )->with('success', 'Rejected applicant!');
+
+        $applications = $jobListing->applications()->with('freelancer')->latest()->get();
+
+        return view('client.applicant.all-applicants', compact('jobListing', 'applications'));
     }
 
     public function markJobAsComplete(Request $request, JobListing $jobListing)

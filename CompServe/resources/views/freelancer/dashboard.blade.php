@@ -8,7 +8,7 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-        <a href="{{ route('freelancer.jobs.available') }}">
+        <a href="#">
             <div
                 class="rounded-lg shadow-sm p-6 border bg-primary-content border-primary">
                 <div class="flex items-center justify-between">
@@ -49,7 +49,7 @@
         </a>
 
         <!-- Revenue Card -->
-        <a href="{{ route('freelancer.jobs.applied') }}">
+        <a href="#">
             <div
                 class="rounded-lg shadow-sm p-6 border bg-secondary-content border-secondary">
                 <div class="flex items-center justify-between">
@@ -90,7 +90,7 @@
         </a>
 
         <!-- Orders Card -->
-        <a href="{{ route('freelancer.jobs.current') }}">
+        <a href="#">
             <div
                 class="rounded-lg shadow-sm p-6 border bg-neutral-content border-neutral">
                 <div class="flex items-center justify-between">
@@ -131,7 +131,7 @@
         </a>
 
         <!-- Visitors Card -->
-        <a href="{{ route('freelancer.jobs.finished') }}">
+        <a href="#">
             <div
                 class="rounded-lg shadow-sm p-6 border bg-base-300 border-base-content">
                 <div class="flex items-center justify-between">

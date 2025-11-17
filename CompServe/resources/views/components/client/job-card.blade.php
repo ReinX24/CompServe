@@ -37,8 +37,13 @@
                 {{ ucfirst($job->duration_type) }}</p>
             <p><span class="font-medium">Category:</span> {{ $job->category }}
             </p>
-            <p><span class="font-medium">Applicants:</span>
-                {{ $job->applicants->count() }}</p>
+
+            @if ($job->status === 'open')
+                <p><span class="font-medium">Applicants:</span>
+                    {{ $job->applicants->count() }}
+                </p>
+            @endif
+
             <p><span class="font-medium">Duration:</span> {{ $job->duration }}
             </p>
             <p class="col-span-2"><span class="font-medium">Location:</span>

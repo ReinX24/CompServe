@@ -4,6 +4,8 @@ use App\Http\Controllers\Client\ClientReviewController;
 use App\Http\Controllers\Client\ClientReviews;
 use App\Http\Controllers\Client\ClientJobListingController;
 use App\Http\Controllers\Client\ClientProfileController;
+use App\Http\Controllers\ContractController;
+use App\Http\Controllers\GigController;
 use App\Models\JobApplication;
 use App\Models\JobListing;
 
@@ -61,6 +63,7 @@ Route::prefix('client')
             Route::get('/{jobListing}/applicant/{user}', [ClientJobListingController::class, 'showApplicant'])->name('jobs.applicant');
 
             Route::put('/{application}/accept', [ClientJobListingController::class, 'acceptApplicant'])->name('jobs.applicant.accept');
+            Route::put('/{application}/reject', [ClientJobListingController::class, 'rejectApplicant'])->name('jobs.applicant.reject');
             Route::put('/{jobListing}/complete', [ClientJobListingController::class, 'markJobAsComplete'])->name('jobs.complete');
             Route::put('/{jobListing}/cancel', [ClientJobListingController::class, 'markJobAsCancelled'])->name('jobs.cancel');
         });
@@ -76,56 +79,59 @@ Route::prefix('client')
         // Routes for gigs
         Route::prefix('gigs')->group(function () {
             Route::get('/index', [
-                ClientJobListingController::class,
+                GigController::class,
                 'gigsIndex'
             ])->name('gigs.index');
 
-            Route::get('/open', [
-                ClientJobListingController::class,
-                'openGigJobs'
-            ])->name('gigs.open');
+            Route::get(
+                '/open',
+                [GigController::class, 'openGigJobs']
+            )->name('gigs.open');
 
             Route::get(
                 '/in_progress',
-                [ClientJobListingController::class, 'inProgressGigJobs']
+                [GigController::class, 'inProgressGigJobs']
             )->name('gigs.in_progress');
 
             Route::get(
                 '/cancelled',
-                [ClientJobListingController::class, 'cancelledGigJobs']
+                [GigController::class, 'cancelledGigJobs']
             )->name('gigs.cancelled');
 
             Route::get(
                 '/completed',
-                [ClientJobListingController::class, 'completedGigJobs']
+                [GigController::class, 'completedGigJobs']
             )->name('gigs.completed');
         });
 
         // Routes for contracts
         Route::prefix('contracts')->group(function () {
             Route::get('/index', [
-                ClientJobListingController::class,
+                ContractController::class,
                 'contractsIndex'
             ])->name('contracts.index');
 
             Route::get('/open', [
-                ClientJobListingController::class,
+                ContractController::class,
                 'openContractJobs'
             ])->name('contracts.open');
 
             Route::get('/in_progress', [
-                ClientJobListingController::class,
+                ContractController::class,
                 'inProgressContractJobs'
             ])->name('contracts.in_progress');
 
             Route::get('/cancelled', [
-                ClientJobListingController::class,
+                ContractController::class,
                 'cancelledContractJobs'
             ])->name('contracts.cancelled');
 
             Route::get(
                 '/finished',
-                [ClientJobListingController::class, 'completedContractJobs']
+                [
+                    ContractController::class,
+                    'completedContractJobs'
+                ]
             )->name('contracts.completed');
         });
 

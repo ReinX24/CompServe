@@ -68,6 +68,11 @@
                 </div>
             </div>
 
+            {{-- Add an about section here --}}
+            <div class="border">
+                <p>About Section goes here</p>
+            </div>
+
             {{-- Freelancer and Client Section --}}
             <section id="join-section"
                 {{-- class="relative bg-white dark:bg-gray-800 min-h-screen flex items-center justify-center px-6 py-12"> --}}

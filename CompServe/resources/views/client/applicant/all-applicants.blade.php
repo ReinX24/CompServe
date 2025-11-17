@@ -58,21 +58,45 @@
                                         {{ Str::limit($application->freelancer->name, 40) }}
                                     </a>
                                 </h2>
+
+                                <p>{{ Str::ucfirst($application->status) }}</p>
                             </div>
                         </div>
 
-                        {{-- Accept Applicant --}}
-                        <div class="mt-4">
-                            <form
-                                action="{{ route('client.jobs.applicant.accept', $application) }}"
-                                method="POST">
-                                @csrf
-                                @method('PUT')
-                                <button class="btn btn-success w-full">
-                                    Accept Applicant
-                                </button>
-                            </form>
-                        </div>
+                        {{-- Applicant Status Actions --}}
+                        @if ($application->status === 'rejected')
+                            <button class="btn btn-error w-full mt-4"
+                                disabled>Rejected</button>
+                        @elseif ($application->status === 'accepted')
+                            <button class="btn btn-success w-full mt-4"
+                                disabled>Accepted</button>
+                        @else
+                            {{-- Accept Applicant --}}
+                            <div class="mt-4">
+                                <form
+                                    action="{{ route('client.jobs.applicant.accept', $application) }}"
+                                    method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <button class="btn btn-success w-full">
+                                        Accept Applicant
+                                    </button>
+                                </form>
+                            </div>
+
+                            {{-- Reject Applicant --}}
+                            <div class="mt-2">
+                                <form
+                                    action="{{ route('client.jobs.applicant.reject', $application) }}"
+                                    method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <button class="btn btn-error w-full">
+                                        Reject Applicant
+                                    </button>
+                                </form>
+                            </div>
+                        @endif
 
                         {{-- View Applicant --}}
                         <div class="mt-2">
