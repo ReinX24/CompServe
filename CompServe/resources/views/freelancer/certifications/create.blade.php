@@ -1,36 +1,68 @@
 <x-layouts.app>
-    <div class="container mx-auto p-6 max-w-xl">
-        <h1 class="text-2xl font-bold mb-4">Apply for Certification</h1>
+    <div class="container mx-auto max-w-xl p-6">
 
-        <form action="{{ route('freelancer.certifications.store') }}"
-            method="POST"
-            enctype="multipart/form-data">
-            @csrf
+        <div class="card bg-base-100 shadow-sm">
+            <div class="card-body space-y-4">
 
-            <label class="font-semibold">Certification Type</label>
-            <select name="type"
-                class="select select-bordered w-full mb-4"
-                required>
-                <option value="">Select Certification</option>
-                <option value="NC I">NC I</option>
-                <option value="NC II">NC II</option>
-                <option value="NC III">NC III</option>
-                <option value="NC IV">NC IV</option>
-                <option value="Tech Certification">Tech Certification
-                    (TESDA/DICT/Other)</option>
-            </select>
+                <h1 class="text-3xl font-bold">Apply for Certification</h1>
+                <p class="text-sm text-base-content/70">Submit your certification
+                    details below.</p>
 
-            <label>Description (optional)</label>
-            <textarea name="description"
-                class="textarea textarea-bordered w-full mb-4"></textarea>
+                <form action="{{ route('freelancer.certifications.store') }}"
+                    method="POST"
+                    enctype="multipart/form-data"
+                    class="space-y-4">
+                    @csrf
 
-            <label>Upload Certification Document</label>
-            <input type="file"
-                name="document"
-                class="file-input file-input-bordered w-full mb-4"
-                required>
+                    <!-- Certification Type -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Certification
+                                Type</span>
+                        </label>
+                        <select name="type"
+                            class="select select-bordered w-full"
+                            required>
+                            <option value="">Select Certification</option>
+                            <option value="NC I">NC I</option>
+                            <option value="NC II">NC II</option>
+                            <option value="NC III">NC III</option>
+                            <option value="NC IV">NC IV</option>
+                            <option value="Tech Certification">Tech
+                                Certification (TESDA/DICT/Other)</option>
+                        </select>
+                    </div>
 
-            <button class="btn btn-primary w-full">Submit</button>
-        </form>
+                    <!-- Description -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Description
+                                (optional)</span>
+                        </label>
+                        <textarea name="description"
+                            class="textarea textarea-bordered w-full h-24"
+                            placeholder="Add details or notes"></textarea>
+                    </div>
+
+                    <!-- Upload Document -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Upload
+                                Certification Document</span>
+                        </label>
+                        <input type="file"
+                            name="document"
+                            class="file-input file-input-bordered w-full"
+                            required>
+                    </div>
+
+                    <!-- Submit -->
+                    <button class="btn btn-primary w-full">Submit
+                        Application</button>
+                </form>
+
+            </div>
+        </div>
+
     </div>
 </x-layouts.app>
