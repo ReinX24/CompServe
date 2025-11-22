@@ -24,10 +24,10 @@ class CertificationController extends Controller
         $request->validate([
             'type' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'document' => 'required|file|mimes:pdf,jpg,png,jpeg|max:2048'
+            'document' => 'required|file|mimes:pdf,jpg,png,jpeg|max:5120'
         ]);
 
-        $path = $request->file('document')->store('certifications');
+        $path = $request->file('document')->store('certifications', 'public');
 
         Certification::create([
             'freelancer_id' => Auth::id(),

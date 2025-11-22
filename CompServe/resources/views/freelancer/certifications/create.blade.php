@@ -15,7 +15,7 @@
                     @csrf
 
                     <!-- Certification Type -->
-                    <div class="form-control">
+                    <div class="form-control space-y-3">
                         <label class="label">
                             <span class="label-text font-semibold">Certification
                                 Type</span>
@@ -31,10 +31,15 @@
                             <option value="Tech Certification">Tech
                                 Certification (TESDA/DICT/Other)</option>
                         </select>
+
+                        @error('type')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}
+                            </p>
+                        @enderror
                     </div>
 
                     <!-- Description -->
-                    <div class="form-control">
+                    <div class="form-control space-y-2">
                         <label class="label">
                             <span class="label-text font-semibold">Description
                                 (optional)</span>
@@ -42,10 +47,15 @@
                         <textarea name="description"
                             class="textarea textarea-bordered w-full h-24"
                             placeholder="Add details or notes"></textarea>
+
+                        @error('description')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}
+                            </p>
+                        @enderror
                     </div>
 
                     <!-- Upload Document -->
-                    <div class="form-control">
+                    <div class="form-control space-y-3">
                         <label class="label">
                             <span class="label-text font-semibold">Upload
                                 Certification Document</span>
@@ -54,6 +64,11 @@
                             name="document"
                             class="file-input file-input-bordered w-full"
                             required>
+
+                        @error('document')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}
+                            </p>
+                        @enderror
                     </div>
 
                     <!-- Submit -->
