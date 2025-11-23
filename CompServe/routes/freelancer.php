@@ -46,7 +46,7 @@ Route::prefix('freelancer')
             // Route::get('/rejected', [FreelancerJobListingController::class, 'rejectedJobs'])->name('jobs.rejected');
             // Route::get('/finished', [FreelancerJobListingController::class, 'completedJobs'])->name('jobs.finished');
 
-            Route::get('/{jobListing}', [FreelancerJobListingController::class, 'show'])->name('jobs.show');
+            Route::get('/{jobListing}/', [FreelancerJobListingController::class, 'show'])->name('jobs.show');
 
             // TODO: move to a dedicated controller
             Route::post('/', [FreelancerJobListingController::class, 'applyForJob'])->name('jobs.apply');

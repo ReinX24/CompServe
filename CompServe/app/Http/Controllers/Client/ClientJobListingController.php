@@ -304,6 +304,7 @@ class ClientJobListingController extends Controller
      */
     public function create(Request $request)
     {
+        // TODO: test create and store
         $jobType = $request->query('type', 'contract');
         return view("client.jobs.create-job", compact("jobType"));
     }
@@ -326,11 +327,13 @@ class ClientJobListingController extends Controller
             'deadline' => 'nullable|date|after:today',
             'duration' => 'required|string|in:1 day,3 days,5 days,1 week,1 month,3 months,6 months,1 year',
             'status' => 'nullable|in:open,closed',
+            'duration_type' => 'required|in:gig,contract',
         ]);
 
         // Create job listing
         $jobListing = new JobListing();
         $jobListing->client_id = Auth::user()->id;
+        $jobListing->duration_type = $validated['duration_type'];
         $jobListing->title = $validated['title'];
         $jobListing->description = $validated['description'];
         $jobListing->category = $validated['category'];
@@ -410,6 +413,7 @@ class ClientJobListingController extends Controller
      */
     public function update(Request $request, JobListing $jobListing)
     {
+        // Validate input
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -420,6 +424,8 @@ class ClientJobListingController extends Controller
             'budget' => 'nullable|numeric|min:0',
             'location' => 'nullable|string|max:255',
             'deadline' => 'nullable|date|after:today',
+            'duration_type' => 'required|in:gig,contract',
+            'duration' => 'required|string|in:1 day,3 days,5 days,1 week,1 month,3 months,6 months,1 year', // <-- add this
         ]);
 
         $jobListing->update([
@@ -431,6 +437,8 @@ class ClientJobListingController extends Controller
             'budget' => $validated['budget'] ?? null,
             'location' => $validated['location'] ?? null,
             'deadline' => $validated['deadline'] ?? null,
+            'duration_type' => $validated['duration_type'],
+            'duration' => $validated['duration'],
         ]);
 
         return redirect()

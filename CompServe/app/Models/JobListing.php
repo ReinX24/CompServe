@@ -19,13 +19,14 @@ class JobListing extends Model
         'budget',
         'location',
         'deadline',
-        'duration',
         'status',
+        'duration_type',
+        'duration',
     ];
 
     protected $casts = [
         'skills_required' => 'array',
-        'deadline' => 'date',
+        'deadline' => 'datetime',
     ];
 
     // Relationships

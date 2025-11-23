@@ -12,12 +12,12 @@
             'color' => 'text-secondary',
         ],
         'cancelled' => [
-            'title' => __('Cancelled Jobs'),
+            'title' => __('Cancelled Gigs'),
             'icon' => 'fa-ban',
             'color' => 'text-error',
         ],
         'completed' => [
-            'title' => __('Completed Jobs'),
+            'title' => __('Completed Gigs'),
             'icon' => 'fa-check-circle',
             'color' => 'text-success',
         ],
@@ -45,7 +45,7 @@
             @php
                 $jobsByStatus = $jobs
                     ->where('status', $status)
-                    ->sortByDesc('created_at')
+                    // ->sortByDesc('created_at')
                     ->take(3);
             @endphp
 

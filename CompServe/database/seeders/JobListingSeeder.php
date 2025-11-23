@@ -31,13 +31,12 @@ class JobListingSeeder extends Seeder
                     'status' => 'open',
                 ]);
 
-            // 10 more jobs for another day
             JobListing::factory()
                 ->count(10)
                 ->create([
                     'client_id' => $client->id,
                     'status' => 'open',
-                    'created_at' => Carbon::now()->addDays(10),
+                    'created_at' => Carbon::now(),
                 ]);
 
             foreach ($openJobs as $job) {

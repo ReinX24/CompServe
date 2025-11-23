@@ -28,39 +28,37 @@ class FreelancerJobListingController extends Controller
         // TODO: implement uploading of cover letter functionality
         // Validate request
         $validated = $request->validate([
-            'jobId' => ['required', 'exists:job_listings,id'],
-            'cover_letter' => ['nullable', 'string', 'max:2000'],
+            'jobId' => 'required|integer|exists:job_listings,id',
+            'cover_letter' => 'nullable|string',
         ]);
 
-        // Fetch job
-        $job = JobListing::findOrFail($validated['jobId']);
+        $jobListing = JobListing::find($validated['jobId']);
 
-        // Check if job is still open
-        if ($job->status !== 'open') {
-            return back()->withErrors(['jobId' => 'This job is no longer open for applications.']);
-        }
-
-        // Prevent duplicate applications
-        $alreadyApplied = JobApplication::where('job_id', $job->id)
+        // Check if soft-deleted application exists
+        $existing = JobApplication::withTrashed()
+            ->where('job_id', $jobListing->id)
             ->where('freelancer_id', Auth::id())
-            ->exists();
+            ->first();
 
-        if ($alreadyApplied) {
-            return back()->withErrors(['jobId' => 'You have already applied for this job.']);
+        if ($existing) {
+            // restore if soft deleted
+            $existing->restore();
+
+            // update other fields if needed
+            $existing->cover_letter = $validated['cover_letter'] ?? $existing->cover_letter;
+            $existing->save();
+        } else {
+            // create new
+            JobApplication::create([
+                'job_id' => $jobListing->id,
+                'freelancer_id' => Auth::id(),
+                'client_id' => $jobListing->client_id,
+                'cover_letter' => $validated['cover_letter'] ?? null,
+            ]);
         }
 
-        // Create application
-        JobApplication::create([
-            'job_id' => $job->id,
-            'freelancer_id' => Auth::id(),
-            'client_id' => $job->client_id, // make sure JobListing has client_id field
-            'cover_letter' => $validated['cover_letter'] ?? null,
-        ]);
-
-        // Redirect with success
         return redirect()
-            // ->route('freelancer.jobs.available')
-            ->route('freelancer.jobs.show', $job)
+            ->route('freelancer.jobs.show', $jobListing)
             ->with('success', 'Applied for job successfully!');
     }
 
@@ -76,19 +74,27 @@ class FreelancerJobListingController extends Controller
             ])->first();
 
             // Remove the application
-            $jobApplication->status = "rejected";
+            $jobApplication->status = "cancelled";
             $jobApplication->save();
 
             // Change the job listing to be cancelled
             $jobListing->status = "cancelled";
             $jobListing->save();
+
+            return redirect()->route(
+                'freelancer.jobs.show',
+                $jobListing
+            )->with('success', 'Cancelled job successfully.');
         } else {
             // If the job is not in_progress yet or the user has not been accepted, just delete their application
             // Get the job application with the current user's id and job_listing id
+            // dd("Removing the job application");
             $jobApplication = JobApplication::where([
                 ['freelancer_id', Auth::user()->id],
                 ['job_id', $jobListing->id],
             ])->first();
+
+            // dd($jobApplication);
 
             $jobApplication->delete();
         }

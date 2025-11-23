@@ -33,7 +33,11 @@
         </div>
     @else
         <p class="text-gray-700 dark:text-gray-300">
-            {{ __('You have not posted any jobs yet.') }}
+            @if (Auth::user()->role === 'client')
+                {{ __('You have not posted any gigs yet.') }}
+            @elseif(Auth::user()->role === 'freelancer')
+                {{ __('No gigs found.') }}
+            @endif
         </p>
     @endif
 </x-layouts.app>

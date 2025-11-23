@@ -13,21 +13,10 @@ class ContractController extends Controller
      */
     private function fetchContractsForRole($status = null, $filters = [])
     {
-        // If user is a client → only show THEIR contracts
-        if (Auth::user()->role === "client") {
-            $query = Auth::user()
-                ->jobListings()
-                ->where('duration_type', 'contract');
-        }
+        $query = Auth::user()->role === "client"
+            ? Auth::user()->jobListings()->where('duration_type', 'contract')
+            : JobListing::where('duration_type', 'contract')->whereHas('client');
 
-        // If user is a freelancer → show ALL contracts posted by clients
-        else {
-            $query = JobListing::query()
-                ->where('duration_type', 'contract')
-                ->whereHas('client'); // ensure it belongs to a client
-        }
-
-        // Filter by status (open, completed, etc.)
         if ($status) {
             $query->where('status', $status);
         }
@@ -42,126 +31,176 @@ class ContractController extends Controller
     {
         $filters = $request->only(['search', 'category', 'client', 'location', 'status']);
 
-        $jobs = $this->fetchContractsForRole(null, $filters)->get();
+        // CLIENT → simple return, only their jobs
+        if (Auth::user()->role === 'client') {
+            $jobs = Auth::user()
+                ->jobListings()
+                ->where('duration_type', 'contract')
+                ->filter($filters)
+                ->latest()
+                ->get();
+
+            return view('contracts.all-contracts', compact('jobs'));
+        }
+
+        // FREELANCER → merge all categories (just like gigs)
+        $jobs = collect()
+            ->merge($this->queryOpenContracts($filters)->get())
+            ->merge($this->queryInProgressContracts($filters)->get())
+            ->merge($this->queryCancelledContracts($filters)->get())
+            ->merge($this->queryCompletedContracts($filters)->get())
+            ->unique('id')
+            ->sortByDesc('created_at')
+            ->values();
 
         return view('contracts.all-contracts', compact('jobs'));
     }
 
     /**
-     * Open Contracts Page
+     * Category Pages
      */
     public function openContractJobs(Request $request)
     {
-        $filters = $request->only(['search', 'category', 'client', 'location']);
+        return $this->renderCategory('open', $request, 'contracts.open-contracts');
+    }
 
-        $jobs = $this->fetchContractsForRole('open', $filters)->paginate(6);
+    public function inProgressContractJobs(Request $request)
+    {
+        return $this->renderCategory('in_progress', $request, 'contracts.in-progress-contracts');
+    }
 
-        return view('contracts.open-contracts', compact('jobs'));
+    public function rejectedContractJobs(Request $request)
+    {
+        return $this->renderFreelancerOnly(
+            $request,
+            'rejected',
+            'contracts.rejected-contracts'
+        );
+    }
+
+    public function cancelledContractJobs(Request $request)
+    {
+        return $this->renderFreelancerOrClient(
+            $request,
+            'cancelled',
+            'contracts.cancelled-contracts'
+        );
+    }
+
+    public function completedContractJobs(Request $request)
+    {
+        return $this->renderFreelancerOrClient(
+            $request,
+            'completed',
+            'contracts.completed-contracts'
+        );
     }
 
     /**
-     * In-Progress Contracts Page
+     * Shared Render Helpers (exact copy from GigController)
      */
-    public function inProgressContractJobs(Request $request)
+    private function renderCategory($status, Request $request, $view)
     {
         $filters = $request->only(['search', 'category', 'client', 'location']);
 
-        if (Auth::user()->role === 'client') {
-            // Client: contracts they posted
-            $jobs = Auth::user()
-                ->jobListings()
-                ->where('status', 'in_progress')
-                ->where('duration_type', 'contract')
-                ->filter($filters)
-                ->paginate(6);
-        } else {
-            // Freelancer: contracts where they got accepted
-            $jobs = JobListing::where('status', 'in_progress')
-                ->where('duration_type', 'contract')
-                ->whereHas('applications', function ($q) {
-                    $q->where('freelancer_id', Auth::id())
-                        ->where('status', 'accepted');
-                })
-                ->filter($filters)
-                ->paginate(6);
-        }
+        $jobs = $this->fetchContractsForRole($status, $filters)->paginate(6);
 
-        return view('contracts.in-progress-contracts', compact('jobs'));
+        return view($view, compact('jobs'));
     }
 
-    /**
-     * Rejected Contracts Page
-     */
-    public function rejectedContractJobs(Request $request)
+    private function renderFreelancerOnly(Request $request, $appStatus, $view)
     {
         $filters = $request->only(['search', 'category', 'client', 'location']);
 
         $jobs = JobListing::where('duration_type', 'contract')
+            ->whereHas('applications', function ($q) use ($appStatus) {
+                $q->where('freelancer_id', Auth::id())
+                    ->where('status', $appStatus);
+            })
+            ->filter($filters)
+            ->latest()
+            ->paginate(6);
+
+        return view($view, compact('jobs'));
+    }
+
+    private function renderFreelancerOrClient(Request $request, $status, $view)
+    {
+        $filters = $request->only(['search', 'category', 'client', 'location']);
+
+        if (Auth::user()->role === 'client') {
+            $jobs = Auth::user()
+                ->jobListings()
+                ->where('duration_type', 'contract')
+                ->where('status', $status)
+                ->filter($filters)
+                ->paginate(6);
+
+            return view($view, compact('jobs'));
+        }
+
+        // Dynamically call queryCompletedContracts(), etc.
+        $queryMethod = "query" . ucfirst($status) . "Contracts";
+        $jobs = $this->{$queryMethod}($filters)->paginate(6);
+
+        return view($view, compact('jobs'));
+    }
+
+    /**
+     * Query Helpers (FREELANCER versions)
+     */
+    private function queryOpenContracts($filters)
+    {
+        return JobListing::where('duration_type', 'contract')
+            ->where('status', 'open')
+            ->filter($filters)
+            ->latest();
+    }
+
+    private function queryInProgressContracts($filters)
+    {
+        return JobListing::where('duration_type', 'contract')
+            ->where('status', 'in_progress')
+            ->whereHas('applications', function ($q) {
+                $q->where('freelancer_id', Auth::id())
+                    ->where('status', 'accepted');
+            })
+            ->filter($filters)
+            ->latest();
+    }
+
+    private function queryRejectedContracts($filters)
+    {
+        return JobListing::where('duration_type', 'contract')
             ->whereHas('applications', function ($q) {
                 $q->where('freelancer_id', Auth::id())
                     ->where('status', 'rejected');
             })
             ->filter($filters)
-            ->paginate(6);
-
-        return view('contracts.rejected-contracts', compact('jobs'));
+            ->latest();
     }
 
-    /**
-     * Cancelled Contracts Page
-     */
-    public function cancelledContractJobs(Request $request)
+    private function queryCancelledContracts($filters)
     {
-        $filters = $request->only(['search', 'category', 'client', 'location']);
-
-        if (Auth::user()->role === 'client') {
-            // Client: their cancelled jobs
-            $jobs = Auth::user()
-                ->jobListings()
-                ->where('status', 'cancelled')
-                ->where('duration_type', 'contract')
-                ->filter($filters)
-                ->paginate(6);
-        } else {
-            // Freelancer: cancelled jobs they were accepted into
-            $jobs = JobListing::where('status', 'cancelled')
-                ->where('duration_type', 'contract')
-                ->whereHas('applications', function ($q) {
-                    $q->where('freelancer_id', Auth::id())
-                        ->where('status', 'cancelled');
-                })
-                ->filter($filters)
-                ->paginate(6);
-        }
-
-        return view('contracts.cancelled-contracts', compact('jobs'));
+        return JobListing::where('duration_type', 'contract')
+            ->where('status', 'cancelled')
+            ->whereHas('applications', function ($q) {
+                $q->where('freelancer_id', Auth::id())
+                    ->where('status', 'cancelled');
+            })
+            ->filter($filters)
+            ->latest();
     }
 
-    /**
-     * Completed Contracts Page
-     */
-    public function completedContractJobs(Request $request)
+    private function queryCompletedContracts($filters)
     {
-        $filters = $request->only(['search', 'category', 'client', 'location']);
-
-        if (Auth::user()->role === 'client') {
-            $jobs = Auth::user()
-                ->jobListings()
-                ->where('status', 'completed')
-                ->where('duration_type', 'contract')
-                ->filter($filters)
-                ->paginate(6);
-        } else {
-            $jobs = JobListing::where('status', 'completed')
-                ->where('duration_type', 'contract')
-                ->whereHas('applications', function ($q) {
-                    $q->where('freelancer_id', Auth::id())
-                        ->where('status', 'accepted');
-                })
-                ->filter($filters)
-                ->paginate(6);
-        }
-
-        return view('contracts.completed-contracts', compact('jobs'));
+        return JobListing::where('duration_type', 'contract')
+            ->where('status', 'completed')
+            ->whereHas('applications', function ($q) {
+                $q->where('freelancer_id', Auth::id())
+                    ->where('status', 'accepted');
+            })
+            ->filter($filters)
+            ->latest();
     }
 }

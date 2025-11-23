@@ -105,7 +105,7 @@
         href="{{ route('freelancer.contracts.rejected') }}"
         icon='far-rectangle-xmark'
         :active="request()->routeIs('freelancer.contracts.rejected')">
-        Cancelled Contracts
+        Rejected Contracts
     </x-layouts.sidebar-two-level-link>
     <x-layouts.sidebar-two-level-link
         href="{{ route('freelancer.contracts.cancelled') }}"

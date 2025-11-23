@@ -55,6 +55,7 @@ Route::prefix('client')
             // Route::get('/finished', [ClientJobListingController::class, 'completedJobs'])->name('jobs.completed');
 
             Route::get('/{jobListing}/', [ClientJobListingController::class, 'show'])->name('jobs.show');
+            // Only the freelancer can update the job listing
             Route::get('/{jobListing}/edit', [ClientJobListingController::class, 'edit'])->name('jobs.edit');
             Route::put('/{jobListing}/update', [ClientJobListingController::class, 'update'])->name('jobs.update');
             Route::delete('/{jobListing}/destroy', [ClientJobListingController::class, 'destroy'])->name('jobs.destroy');

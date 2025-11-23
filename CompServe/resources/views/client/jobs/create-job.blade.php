@@ -100,8 +100,12 @@
                     <select name="duration_type"
                         x-model="jobType"
                         class="select select-bordered w-full">
-                        <option value="gig">Gig</option>
-                        <option value="contract">Contract</option>
+                        <option value="gig"
+                            {{ old('duration_type', $jobType ?? '') == 'gig' ? 'selected' : '' }}>
+                            Gig</option>
+                        <option value="contract"
+                            {{ old('duration_type', $jobType ?? '') == 'contract' ? 'selected' : '' }}>
+                            Contract</option>
                     </select>
                 </div>
 

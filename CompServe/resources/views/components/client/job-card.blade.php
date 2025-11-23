@@ -55,10 +55,17 @@
             <p class="text-xs text-base-content/60">
                 Posted {{ $job->created_at->diffForHumans() }}
             </p>
-            <a href="{{ route('client.jobs.show', $job->id) }}"
-                class="btn btn-sm btn-secondary">
-                View
-            </a>
+            @if (Auth::user()->role === 'client')
+                <a href="{{ route('client.jobs.show', $job->id) }}"
+                    class="btn btn-sm btn-secondary">
+                    View
+                </a>
+            @elseif(Auth::user()->role === 'freelancer')
+                <a href="{{ route('freelancer.jobs.show', $job->id) }}"
+                    class="btn btn-sm btn-secondary">
+                    View
+                </a>
+            @endif
         </div>
 
     </div>
