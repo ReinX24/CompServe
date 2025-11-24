@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\Client\ClientJobListingController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\Freelancer\FreelancerReviewController;
@@ -136,3 +137,20 @@ Route::prefix('freelancer')
             )->name('contracts.completed');
         });
     });
+
+Route::middleware('freelancer')->group(function () {
+    Route::get('/freelancer/certifications', [
+        CertificationController::class,
+        'index'
+    ])->name('freelancer.certifications.index');
+
+    Route::get('/freelancer/certifications/create', [
+        CertificationController::class,
+        'create'
+    ])->name('freelancer.certifications.create');
+
+    Route::post('/freelancer/certifications/store', [
+        CertificationController::class,
+        'store'
+    ])->name('freelancer.certifications.store');
+});

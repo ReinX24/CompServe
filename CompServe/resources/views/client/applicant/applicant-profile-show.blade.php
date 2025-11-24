@@ -195,6 +195,9 @@
                     @elseif($applicationInfo->status === 'rejected')
                         <button class="btn btn-error w-full md:w-48 btn-active"
                             disabled>Rejected</button>
+                    @elseif($applicationInfo->status === 'cancelled')
+                        <button class="btn btn-error w-full md:w-48 btn-active"
+                            disabled>Cancelled</button>
                     @endif
                 </div>
             </div>

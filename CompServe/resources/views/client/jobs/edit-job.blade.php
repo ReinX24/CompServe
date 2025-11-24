@@ -210,7 +210,8 @@
                     </select>
                 </div>
 
-                <button class="btn btn-primary w-full">Update Job</button>
+                <button class="btn btn-primary w-full"
+                    x-text="jobType === 'gig' ? 'Update Gig' : 'Update Contract'"></button>
             </form>
 
             {{-- Delete Job --}}

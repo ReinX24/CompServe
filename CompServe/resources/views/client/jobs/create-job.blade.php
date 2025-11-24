@@ -259,9 +259,9 @@
                     @enderror
                 </div>
 
-                <button class="btn btn-primary w-full">Post Job</button>
+                <button class="btn btn-primary w-full"
+                    x-text="jobType === 'gig' ? 'Post Gig' : 'Post Contract'"></button>
             </form>
-
         </div>
     </div>
 </x-layouts.app>

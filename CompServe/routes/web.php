@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\CertificationController;
-use App\Http\Controllers\Client\ClientJobListingController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -40,7 +38,6 @@ require __DIR__ . '/freelancer.php';
 
 require __DIR__ . '/client.php';
 
-
 // Login admin
 Route::get('/admin/login', [AdminController::class, 'loginPage'])->name('admin.login_page');
 Route::post('/admin/login', [AdminController::class, 'loginAdmin'])->name('admin.login_admin');
@@ -62,20 +59,3 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 });
 
 require __DIR__ . '/auth.php';
-
-Route::middleware('freelancer')->group(function () {
-    Route::get('/freelancer/certifications', [
-        CertificationController::class,
-        'index'
-    ])->name('freelancer.certifications.index');
-
-    Route::get('/freelancer/certifications/create', [
-        CertificationController::class,
-        'create'
-    ])->name('freelancer.certifications.create');
-
-    Route::post('/freelancer/certifications/store', [
-        CertificationController::class,
-        'store'
-    ])->name('freelancer.certifications.store');
-});

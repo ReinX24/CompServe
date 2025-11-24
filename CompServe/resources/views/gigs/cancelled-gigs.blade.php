@@ -7,10 +7,15 @@
         </ul>
     </div>
 
-    <x-client.page-header-with-action title="Cancelled Gigs"
-        description="All your cancelled gigs."
-        buttonText="Add Gig"
-        :buttonLink="route('client.jobs.create') . '?type=gig'" />
+    @if (Auth::user()->role === 'client')
+        <x-client.page-header-with-action title="Cancelled Gigs"
+            description="All your cancelled gigs."
+            buttonText="Add Gig"
+            :buttonLink="route('client.jobs.create') . '?type=gig'" />
+    @elseif(Auth::user()->role === 'freelancer')
+        <x-client.page-header-with-action title="Cancelled Gigs"
+            description="All your cancelled gigs." />
+    @endif
 
     @if (Auth::user()->role === 'client')
         <x-client.job-search-form :route="route('client.gigs.cancelled')" />

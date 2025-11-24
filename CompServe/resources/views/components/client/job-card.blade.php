@@ -17,7 +17,7 @@
             <div
                 class="badge badge-outline p-2 text-xs
                 @if ($job->status === 'open') badge-accent
-                @elseif($job->status === 'in_progress') badge-secondary
+                @elseif($job->status === 'in_progress') badge-warning
                 @elseif($job->status === 'cancelled') badge-error
                 @elseif($job->status === 'completed') badge-success @endif">
                 {{ ucfirst(str_replace('_', ' ', $job->status)) }}

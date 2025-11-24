@@ -7,8 +7,15 @@
         </ul>
     </div>
 
-    <x-client.page-header-with-action title="Open Gigs"
-        description="All available open gigs." />
+    @if (Auth::user()->role === 'client')
+        <x-client.page-header-with-action title=" Gigs"
+            description="All available open gigs."
+            buttonText="Add Gig"
+            :buttonLink="route('client.jobs.create') . '?type=gig'" />
+    @elseif(Auth::user()->role === 'freelancer')
+        <x-client.page-header-with-action title="Open Gigs"
+            description="All available open gigs." />
+    @endif
 
     @if (Auth::user()->role === 'client')
         <x-client.job-search-form :route="route('client.gigs.open')" />

@@ -13,298 +13,10 @@ use Illuminate\Support\Facades\Auth;
 class ClientJobListingController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        $jobs = Auth::user()->jobListings;
-
-        return view('client.jobs.all-jobs', compact('jobs'));
-    }
-
-    public function gigsIndex(Request $request)
-    {
-        $filters = $request->only(['search', 'category', 'client', 'location', 'status']);
-
-        $jobs = Auth::user()
-            ->jobListings()
-            ->where('duration_type', 'gig')
-            ->filter($filters)
-            ->get();
-
-        return view('gigs.all-gigs', compact('jobs'));
-    }
-
-    public function contractsIndex(Request $request)
-    {
-        $filters = $request->only(['search', 'category', 'client', 'location', 'status']);
-
-        $jobs = Auth::user()
-            ->jobListings()
-            ->where('duration_type', 'contract')
-            ->filter($filters)
-            ->get();
-
-        return view('contracts.all-contracts', compact('jobs'));
-    }
-
-    public function postedJobs(Request $request)
-    {
-        // dd("posted jobs");
-        $search = $request->input('search');
-        $category = $request->input('category');
-        $client = $request->input('client');
-
-        // Get location from the field
-        $location = $request->input('location');
-
-        $jobs = Auth::user()->jobListings()->where(
-            "status",
-            "open"
-        )
-            ->when($search, function ($query, $search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('title', 'like', '%' . $search . '%')
-                        ->orWhere('description', 'like', '%' . $search . '%');
-                });
-            })
-            ->when($category, function ($query, $category) {
-                $query->where('category', $category);
-            })
-            ->when(
-                $client,
-                fn($q) =>
-                $q->whereHas(
-                    'client',
-                    fn($q2) =>
-                    $q2->where('name', 'like', "%$client%")
-                )
-            )->when($location, function ($query, $location) {
-                $query->where('location', 'like', "%$location%");
-            })->
-            paginate(6);
-
-        return view('client.jobs.available-jobs', compact('jobs'));
-    }
-
-    public function openGigJobs(Request $request)
-    {
-        $filters = $request->only(['search', 'category', 'client', 'location']);
-
-        $jobs = Auth::user()
-            ->jobListings()
-            ->where('status', 'open')
-            ->where('duration_type', 'gig')
-            ->latest()
-            ->filter($filters)
-            ->paginate(6);
-
-        return view('gigs.open-gigs', compact('jobs'));
-    }
-
-    public function openContractJobs(Request $request)
-    {
-        $filters = $request->only(['search', 'category', 'client', 'location']);
-
-        $jobs = Auth::user()
-            ->jobListings()
-            ->where('status', 'open')
-            ->where('duration_type', 'contract')
-            ->filter($filters)
-            ->paginate(6);
-
-        return view('contracts.open-contracts', compact('jobs'));
-    }
-
-    public function inProgressJobs(Request $request)
-    {
-        $search = $request->input('search');
-        $category = $request->input('category');
-        $client = $request->input('client');
-
-        $jobs = Auth::user()->jobListings()->where(
-            "status",
-            "in_progress"
-        )
-            ->when($search, function ($query, $search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('title', 'like', '%' . $search . '%')
-                        ->orWhere('description', 'like', '%' . $search . '%');
-                });
-            })
-            ->when($category, function ($query, $category) {
-                $query->where('category', $category);
-            })
-            ->when(
-                $client,
-                fn($q) =>
-                $q->whereHas(
-                    'client',
-                    fn($q2) =>
-                    $q2->where('name', 'like', "%$client%")
-                )
-            )->
-            paginate(6);
-
-        return view('client.jobs.in-progress-jobs', compact('jobs'));
-    }
-
-    public function inProgressGigJobs(Request $request)
-    {
-        $filters = $request->only(['search', 'category', 'client', 'location']);
-
-        $jobs = Auth::user()
-            ->jobListings()
-            ->where('status', 'in_progress')
-            ->where('duration_type', 'gig')
-            ->filter($filters)
-            ->paginate(6);
-
-        return view('gigs.in-progress-gigs', compact('jobs'));
-    }
-
-    public function inProgressContractJobs(Request $request)
-    {
-        $filters = $request->only(['search', 'category', 'client', 'location']);
-
-        $jobs = Auth::user()
-            ->jobListings()
-            ->where('status', 'in_progress')
-            ->where('duration_type', 'contract')
-            ->filter($filters)
-            ->paginate(6);
-
-        return view('contracts.in-progress-contracts', compact('jobs'));
-    }
-
-    public function cancelledJobs(Request $request)
-    {
-        $search = $request->input('search');
-        $category = $request->input('category');
-        $client = $request->input('client');
-
-        $jobs = Auth::user()->jobListings()->where(
-            "status",
-            "cancelled"
-        )
-            ->when($search, function ($query, $search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('title', 'like', '%' . $search . '%')
-                        ->orWhere('description', 'like', '%' . $search . '%');
-                });
-            })
-            ->when($category, function ($query, $category) {
-                $query->where('category', $category);
-            })
-            ->when(
-                $client,
-                fn($q) =>
-                $q->whereHas(
-                    'client',
-                    fn($q2) =>
-                    $q2->where('name', 'like', "%$client%")
-                )
-            )->
-            paginate(6);
-
-        return view('client.jobs.cancelled-jobs', compact('jobs'));
-    }
-
-    public function cancelledGigJobs(Request $request)
-    {
-        $filters = $request->only(['search', 'category', 'client', 'location']);
-
-        $jobs = Auth::user()
-            ->jobListings()
-            ->where('status', 'cancelled')
-            ->where('duration_type', 'gig')
-            ->filter($filters)
-            ->paginate(6);
-
-        return view('gigs.cancelled-gigs', compact('jobs'));
-    }
-
-    public function cancelledContractJobs(Request $request)
-    {
-        $filters = $request->only(['search', 'category', 'client', 'location']);
-
-        $jobs = Auth::user()
-            ->jobListings()
-            ->where('status', 'cancelled')
-            ->where('duration_type', 'contract')
-            ->filter($filters)
-            ->paginate(6);
-
-        return view('contracts.cancelled-contracts', compact('jobs'));
-    }
-
-    public function completedJobs(Request $request)
-    {
-        $search = $request->input('search');
-        $category = $request->input('category');
-        $client = $request->input('client');
-
-        $jobs = Auth::user()->jobListings()->where(
-            "status",
-            "completed"
-        )
-            ->when($search, function ($query, $search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('title', 'like', '%' . $search . '%')
-                        ->orWhere('description', 'like', '%' . $search . '%');
-                });
-            })
-            ->when($category, function ($query, $category) {
-                $query->where('category', $category);
-            })
-            ->when(
-                $client,
-                fn($q) =>
-                $q->whereHas(
-                    'client',
-                    fn($q2) =>
-                    $q2->where('name', 'like', "%$client%")
-                )
-            )->
-            paginate(6);
-
-        return view('client.jobs.completed-jobs', compact('jobs'));
-    }
-
-    public function completedGigJobs(Request $request)
-    {
-        $filters = $request->only(['search', 'category', 'client', 'location']);
-
-        $jobs = Auth::user()
-            ->jobListings()
-            ->where('status', 'completed')
-            ->where('duration_type', 'gig')
-            ->filter($filters)
-            ->paginate(6);
-
-        return view('gigs.completed-gigs', compact('jobs'));
-    }
-
-    public function completedContractJobs(Request $request)
-    {
-        $filters = $request->only(['search', 'category', 'client', 'location']);
-
-        $jobs = Auth::user()
-            ->jobListings()
-            ->where('status', 'completed')
-            ->where('duration_type', 'contract')
-            ->filter($filters)
-            ->paginate(6);
-
-        return view('contracts.cancelled-contracts', compact('jobs'));
-    }
-
-    /**
      * Show the form for creating a new resource.
      */
     public function create(Request $request)
     {
-        // TODO: test create and store
         $jobType = $request->query('type', 'contract');
         return view("client.jobs.create-job", compact("jobType"));
     }
@@ -382,16 +94,12 @@ class ClientJobListingController extends Controller
             $user = User::findOrFail($applicant->freelancer_id);
 
             return view('client.jobs.show-job', compact('jobListing', 'applicant', 'user'));
-        } else {
-            // TODO: add cancelled jobs here
+        } else if ($jobListing->status === "cancelled") {
             // Get the accepted applicant or the rejected applicant
             $applicant = $jobListing->applications()->where(
                 'status',
-                'accepted'
-            )->orWhere(
-                    'status',
-                    'rejected'
-                )->first();
+                'cancelled'
+            )->first();
 
             // Getting the applicant that has been accepted for the job
             $user = User::findOrFail($applicant->freelancer_id);
@@ -529,14 +237,10 @@ class ClientJobListingController extends Controller
         // Get the related job listing for redirect
         $jobListing = $application->job;
 
-        // return redirect()->route(
-        //     'client.jobs.show',
-        //     $jobListing
-        // )->with('success', 'Rejected applicant!');
-
-        $applications = $jobListing->applications()->with('freelancer')->latest()->get();
-
-        return view('client.applicant.all-applicants', compact('jobListing', 'applications'));
+        return redirect()->route(
+            'client.jobs.show',
+            $jobListing
+        )->with('success', 'Rejeceted applicant!');
     }
 
     public function markJobAsComplete(Request $request, JobListing $jobListing)
@@ -545,7 +249,7 @@ class ClientJobListingController extends Controller
         if ($request->filled('rating')) {
             Review::create([
                 'client_id' => Auth::id(),
-                'freelancer_id' => $request->user_id,
+                'freelancer_id' => $request->freelancer_id,
                 'job_listing_id' => $jobListing->id,
                 'rating' => $request->rating,
                 'comments' => $request->comments,
@@ -554,22 +258,27 @@ class ClientJobListingController extends Controller
 
         // Setting job_listing as complete
         $jobListing->status = "completed";
-
         $jobListing->save();
 
         // Get accepted job application and turn it into complete
-        $jobApplication = $jobListing->applications()->where('status', 'accepted')->first();
+        $jobApplication = $jobListing->applications()->where(
+            'status',
+            'accepted'
+        )->first();
         $jobApplication->status = "completed";
-
         $jobApplication->save();
 
         // Redirect back to page showing job information
-        return redirect()->route('client.jobs.show', $jobListing);
+        return redirect()->route(
+            'client.jobs.show',
+            $jobListing
+        )
+            ->with('success', 'Job completed!');
     }
 
     public function markJobAsCancelled(Request $request, JobListing $jobListing)
     {
-        // Make the accepted job application for the job into rejected
+        // Make the accepted job application for the job into cancelled
         $jobApplication = JobApplication::where([
             ['freelancer_id', $request->freelancer_id],
             ['job_id', $jobListing->id],
@@ -584,6 +293,10 @@ class ClientJobListingController extends Controller
         $jobListing->save();
 
         // Redirect back to page showing job information
-        return redirect()->route('client.jobs.show', $jobListing);
+        return redirect()->route(
+            'client.jobs.show',
+            $jobListing
+        )
+            ->with('success', 'Job cancelled!');
     }
 }

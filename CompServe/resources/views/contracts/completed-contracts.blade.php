@@ -7,10 +7,15 @@
         </ul>
     </div>
 
-    <x-client.page-header-with-action title="Completed Contracts"
-        description="All your completed contracts."
-        buttonText="Add Contract"
-        :buttonLink="route('client.jobs.create') . '?type=contract'" />
+    @if (Auth::user()->role === 'client')
+        <x-client.page-header-with-action title="Completed Contracts"
+            description="All your completed contracts."
+            buttonText="Add Contract"
+            :buttonLink="route('client.jobs.create') . '?type=contract'" />
+    @elseif(Auth::user()->role === 'freelancer')
+        <x-client.page-header-with-action title="Completed Contracts"
+            description="All your completed contracts." />
+    @endif
 
     <x-client.job-search-form :route="route('client.gigs.completed')" />
 

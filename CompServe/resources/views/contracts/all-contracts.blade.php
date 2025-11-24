@@ -33,10 +33,15 @@
         </ul>
     </div>
 
-    <x-client.page-header-with-action title="All Contracts"
-        description="Contracts are long term jobs that can last a month or more."
-        buttonText="Add Contract"
-        :buttonLink="route('client.jobs.create') . '?type=contract'" />
+    @if (Auth::user()->role === 'client')
+        <x-client.page-header-with-action title="All Contracts"
+            description="Contracts are long term jobs that can last a month or more."
+            buttonText="Add Contract"
+            :buttonLink="route('client.jobs.create') . '?type=contract'" />
+    @elseif(Auth::user()->role === 'freelancer')
+        <x-client.page-header-with-action title="All Contracts"
+            description="Contracts are long term jobs that can last a month or more." />
+    @endif
 
     <x-client.job-search-form :route="route('client.contracts.index')" />
 
