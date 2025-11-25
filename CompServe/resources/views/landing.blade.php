@@ -68,7 +68,7 @@
                 </div>
             </div>
 
-            {{-- Add an about section here --}}
+            {{-- About section --}}
             <section id="about"
                 class="min-h-screen flex items-center bg-base-200 px-6 py-16">
 
@@ -92,7 +92,7 @@
                     </p>
 
                     <p
-                        class="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                        class="text-base md:text-lg max-w-3xl mx-auto">
                         We aim to bridge the gap between clients looking for
                         trustworthy tech
                         experts and freelancers seeking new opportunities to

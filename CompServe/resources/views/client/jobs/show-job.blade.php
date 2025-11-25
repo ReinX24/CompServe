@@ -31,15 +31,15 @@
 
         {{-- HEADER --}}
         <div class="mb-6">
-            <h1 class="text-3xl font-bold my-2">{{ $jobListing->title }}</h1>
+            <h1 class="text-3xl font-bold my-2">📝 {{ $jobListing->title }}</h1>
 
             <p class="my-2 text-sm">
-                <span class="font-medium">Category:</span>
+                <span class="font-medium">📂 Category:</span>
                 {{ Str::headline($jobListing->category) }}
             </p>
 
             <p class="text-sm my-2">
-                <span class="font-medium">Posted by:</span>
+                <span class="font-medium">👤 Posted by:</span>
                 {{ $jobListing->client->name }}
             </p>
 
@@ -62,21 +62,18 @@
 
         {{-- DESCRIPTION --}}
         <div class="mb-6">
-            <h2 class="text-xl font-semibold mb-2">Description</h2>
+            <h2 class="text-xl font-semibold mb-2">💬 Description</h2>
             <p class="leading-relaxed">{{ $jobListing->description }}</p>
         </div>
 
         {{-- SKILLS --}}
         @if (!empty($jobListing->skills_required))
             <div class="mb-6">
-                <h2 class="text-xl font-semibold mb-2">Skills Required</h2>
+                <h2 class="text-xl font-semibold mb-2">💡 Skills Required</h2>
                 <div class="flex flex-wrap gap-2">
                     @foreach ($jobListing->skills_required as $skill)
                         <span
-                            class="px-3 py-1 bg-indigo-100 dark:bg-indigo-700
-                                     text-indigo-800 dark:text-indigo-100 rounded-full text-sm">
-                            {{ $skill }}
-                        </span>
+                            class="badge badge-outline border-primary text-primary">{{ $skill }}</span>
                     @endforeach
                 </div>
             </div>
@@ -84,51 +81,50 @@
 
         {{-- JOB DETAILS SECTION --}}
         <div class="mb-6">
-            <h2 class="text-xl font-semibold mb-2">Job Details</h2>
+            <h2 class="text-xl font-semibold mb-2">📌 Job Details</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                 <div>
-                    <p class="text-sm font-semibold">Type</p>
+                    <p class="text-sm font-semibold">🕒 Type</p>
                     <p>{{ $jobListing->duration_type === 'gig' ? 'Gig (Short-term)' : 'Contract (Long-term)' }}
                     </p>
                 </div>
 
                 <div>
-                    <p class="text-sm font-semibold">Duration</p>
+                    <p class="text-sm font-semibold">⏳ Duration</p>
                     <p>{{ $jobListing->duration ?? 'Not specified' }}</p>
                 </div>
 
                 <div>
-                    <p class="text-sm font-semibold">Budget Type</p>
+                    <p class="text-sm font-semibold">💰 Budget Type</p>
                     <p>{{ ucfirst($jobListing->budget_type) }}</p>
                 </div>
 
                 <div>
-                    <p class="text-sm font-semibold">Budget</p>
+                    <p class="text-sm font-semibold">💵 Budget</p>
                     <p class="font-bold">
                         ₱{{ number_format($jobListing->budget, 2) }}</p>
                 </div>
 
                 <div>
-                    <p class="text-sm font-semibold">Location</p>
+                    <p class="text-sm font-semibold">📍 Location</p>
                     <p>{{ $jobListing->location ?? 'Remote' }}</p>
                 </div>
 
                 <div>
-                    <p class="text-sm font-semibold">Deadline</p>
-                    <p>
-                        {{ $jobListing->deadline ? $jobListing->deadline->format('M d, Y') : 'No deadline' }}
+                    <p class="text-sm font-semibold">📅 Deadline</p>
+                    <p>{{ $jobListing->deadline ? $jobListing->deadline->format('M d, Y') : 'No deadline' }}
                     </p>
                 </div>
 
                 <div>
-                    <p class="text-sm font-semibold">Posted On</p>
+                    <p class="text-sm font-semibold">📤 Posted On</p>
                     <p>{{ $jobListing->created_at->format('M d, Y') }}</p>
                 </div>
 
                 <div>
-                    <p class="text-sm font-semibold">Last Updated</p>
+                    <p class="text-sm font-semibold">🔄 Last Updated</p>
                     <p>{{ $jobListing->updated_at->format('M d, Y') }}</p>
                 </div>
 
@@ -164,26 +160,20 @@
 
             @if (Auth::user()->role === 'client')
                 <a href="{{ route('client.jobs.edit', $jobListing) }}"
-                    class="btn btn-primary">
-                    Edit Job
-                </a>
+                    class="btn btn-primary">Edit Job</a>
             @endif
         </div>
 
         {{-- APPLICANTS SECTION --}}
         @if ($jobListing->status === 'open')
             <div>
-                <h2 class="text-xl font-semibold mb-3">Applicants</h2>
+                <h2 class="text-xl font-semibold mb-3">🧑‍💻 Pending Applicants
+                </h2>
 
                 @if ($applicants->isEmpty())
-                    <p>No applicants yet.</p>
+                    <p>No pending applicants.</p>
                 @else
                     <ul class="list bg-base-100 rounded-box shadow-md">
-                        <li
-                            class="p-4 pb-2 text-lg tracking-wide font-semibold">
-                            Pending Applicants
-                        </li>
-
                         @foreach ($applicants as $application)
                             <li
                                 class="list-row p-4 flex flex-col md:flex-row items-start md:items-center md:gap-4 gap-3">
@@ -204,8 +194,7 @@
                                     <p class="font-semibold text-lg">
                                         {{ $application->freelancer->name }}
                                     </p>
-                                    <p class="text-xs opacity-70">
-                                        Applied on
+                                    <p class="text-xs opacity-70">Applied on
                                         {{ $application->created_at->format('M d, Y') }}
                                     </p>
                                 </div>
@@ -215,40 +204,29 @@
                                     class="flex flex-col md:flex-row gap-2 w-full md:w-auto">
                                     <button
                                         class="btn btn-success btn-sm md:btn-md w-full md:w-auto"
-                                        onclick="openAcceptModal({{ $application->id }})">
-                                        Accept
-                                    </button>
-
+                                        onclick="openAcceptModal({{ $application->id }})">Accept</button>
                                     <button
                                         class="btn btn-error btn-sm md:btn-md w-full md:w-auto"
-                                        onclick="openRejectModal({{ $application->id }})">
-                                        Reject
-                                    </button>
-
+                                        onclick="openRejectModal({{ $application->id }})">Reject</button>
                                     @include('client.jobs.partials.application-confirm-modals')
-
                                     <a href="{{ route('client.jobs.applicant', [$jobListing, $application->freelancer_id]) }}"
-                                        class="btn btn-secondary btn-sm md:btn-md w-full md:w-auto">
-                                        View Profile
-                                    </a>
+                                        class="btn btn-secondary btn-sm md:btn-md w-full md:w-auto">View
+                                        Profile</a>
                                 </div>
 
                             </li>
                         @endforeach
                     </ul>
-
                 @endif
 
                 <div class="mt-3">
                     <a href="{{ route('client.jobs.applicants', $jobListing) }}"
-                        class="btn btn-secondary">
-                        View All Applicants
-                    </a>
+                        class="btn btn-secondary">View All Applicants</a>
                 </div>
             </div>
         @endif
 
-        {{-- IN PROGRESS / COMPLETED / CANCELLED sections unchanged except formatting --}}
+        {{-- IN PROGRESS / COMPLETED / CANCELLED --}}
         @if ($jobListing->status === 'in_progress')
             <div
                 class="mt-6 card bg-base-100 shadow-md p-4 flex flex-col md:flex-row items-center gap-4">
@@ -261,23 +239,13 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="flex-1">
-                    <p class="text-lg font-semibold">Accepted Applicant</p>
+                    <p class="text-lg font-semibold">✅ Accepted Applicant</p>
                     <a href="{{ route('client.jobs.applicant', [$jobListing, $user]) }}"
-                        class="link link-primary text-sm md:text-base">
-                        {{ $user->name }}
-                    </a>
+                        class="link link-primary text-sm md:text-base">{{ $user->name }}</a>
                     <p class="text-xs text-gray-500 mt-1">Congratulations! This
                         applicant is now assigned to this job.</p>
                 </div>
-
-                <div class="hidden md:flex">
-                    <span
-                        class="badge badge-success badge-outline">Accepted</span>
-                </div>
-
-                {{-- Review Modal + Mark Complete + Cancel Job as originally included --}}
                 @include('client.jobs.partials.mark-complete-section')
             </div>
         @endif
@@ -294,20 +262,16 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="flex-1">
-                    <p class="text-lg font-semibold">Accepted Applicant</p>
+                    <p class="text-lg font-semibold">🏆 Completed Applicant</p>
                     <a href="{{ route('client.jobs.applicant', [$jobListing, $user]) }}"
-                        class="link link-primary text-sm md:text-base">
-                        {{ $user->name }}
-                    </a>
+                        class="link link-primary text-sm md:text-base">{{ $user->name }}</a>
                     <p class="text-xs text-gray-500 mt-1">Congratulations! This
-                        applicant is now assigned to this job.</p>
+                        applicant has now finished this job.</p>
                 </div>
-
                 <div class="hidden md:flex">
                     <span
-                        class="badge badge-success badge-outline">Accepted</span>
+                        class="badge badge-success badge-outline">Completed</span>
                 </div>
             </div>
         @endif
@@ -324,17 +288,13 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="flex-1">
-                    <p class="text-lg font-semibold">Cancelled Applicant</p>
+                    <p class="text-lg font-semibold">❌ Cancelled Applicant</p>
                     <a href="{{ route('client.jobs.applicant', [$jobListing, $user]) }}"
-                        class="link link-error text-sm md:text-base">
-                        {{ $user->name }}
-                    </a>
+                        class="link link-error text-sm md:text-base">{{ $user->name }}</a>
                     <p class="text-xs text-gray-500 mt-1">This applicant was
                         removed from the job.</p>
                 </div>
-
                 <div class="hidden md:flex">
                     <span
                         class="badge badge-error badge-outline">Cancelled</span>

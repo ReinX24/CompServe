@@ -35,7 +35,9 @@
                 ${{ number_format($job->budget, 2) }}</p>
             <p><span class="font-medium">Type:</span>
                 {{ ucfirst($job->duration_type) }}</p>
-            <p><span class="font-medium">Category:</span> {{ $job->category }}
+            <p>
+                <span class="font-medium">Category:</span>
+                {{ preg_replace('/(?<!^)([A-Z])/', ' $1', $job->category) }}
             </p>
 
             @if ($job->status === 'open')

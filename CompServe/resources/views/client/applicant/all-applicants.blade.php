@@ -21,11 +21,9 @@
     {{-- Page Header --}}
     <div class="flex justify-between items-center mb-8">
         <div>
-            <h1 class="text-3xl font-bold text-base-content">
-                {{ __('Applicants') }}
-            </h1>
+            <h1 class="text-3xl font-bold text-base-content">Applicants</h1>
             <p class="text-base-content/70 mt-1">
-                {{ __("Freelancers who applied for: $jobListing->title") }}
+                Freelancers who applied for: {{ $jobListing->title }}
             </p>
         </div>
     </div>
@@ -36,7 +34,7 @@
 
             @foreach ($applications as $application)
                 <div
-                    class="card bg-base-200 shadow-sm hover:shadow-md transition-all duration-199 border border-base-300">
+                    class="card bg-base-200 shadow-sm hover:shadow-md transition-all duration-200 border border-base-300">
                     <div class="card-body">
 
                         {{-- Applicant --}}
@@ -58,7 +56,6 @@
                                         {{ Str::limit($application->freelancer->name, 40) }}
                                     </a>
                                 </h2>
-
                                 <p>{{ Str::ucfirst($application->status) }}</p>
                             </div>
                         </div>
@@ -73,28 +70,20 @@
                         @else
                             {{-- Accept Applicant --}}
                             <div class="mt-4">
-                                <form
-                                    action="{{ route('client.jobs.applicant.accept', $application) }}"
-                                    method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <button class="btn btn-success w-full">
-                                        Accept Applicant
-                                    </button>
-                                </form>
+                                <button
+                                    onclick="openAcceptModal({{ $application->id }})"
+                                    class="btn btn-success w-full">
+                                    Accept Applicant
+                                </button>
                             </div>
 
                             {{-- Reject Applicant --}}
                             <div class="mt-2">
-                                <form
-                                    action="{{ route('client.jobs.applicant.reject', $application) }}"
-                                    method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <button class="btn btn-error w-full">
-                                        Reject Applicant
-                                    </button>
-                                </form>
+                                <button
+                                    onclick="openRejectModal({{ $application->id }})"
+                                    class="btn btn-error w-full">
+                                    Reject Applicant
+                                </button>
                             </div>
                         @endif
 
@@ -110,7 +99,6 @@
                 </div>
             @endforeach
 
-
         </div>
     @else
         {{-- Empty State --}}
@@ -119,12 +107,14 @@
             <div class="text-6xl opacity-40">
                 <i class="fa-solid fa-users-slash"></i>
             </div>
-            <h3 class="text-xl font-semibold mt-4">
-                No Applicants Found
-            </h3>
+            <h3 class="text-xl font-semibold mt-4">No Applicants Found</h3>
             <p class="text-base-content/70 mt-1 max-w-md">
                 No freelancers have applied to this job listing yet.
             </p>
         </div>
     @endif
+
+    {{-- Reusable Accept/Reject Modals --}}
+    @include('client.jobs.partials.application-confirm-modals')
+
 </x-layouts.app>

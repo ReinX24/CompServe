@@ -5,7 +5,7 @@
 <div class="mb-6">
     <form method="GET"
         action="{{ $route ?? route('freelancer.jobs.available') }}"
-        class="flex flex-col md:flex-row flex-wrap gap-3 items-stretch w-full">
+        class="flex flex-col md:flex-row md:flex-wrap gap-3 items-stretch w-full">
 
         {{-- Search by job --}}
         <input type="text"
@@ -14,7 +14,7 @@
             value="{{ request('search') ?? '' }}"
             class="input input-bordered w-full md:w-64 bg-base-100 dark:bg-base-200" />
 
-        {{-- Status Select (only on client.gigs.index) --}}
+        {{-- Status Select (only on client.gigs.index and client.contracts.index) --}}
         @if (request()->routeIs('client.gigs.index') ||
                 request()->routeIs('client.contracts.index'))
             <select name="status"
@@ -38,31 +38,25 @@
         {{-- Category Select --}}
         <select name="category"
             class="select select-bordered w-full md:w-auto bg-base-100 dark:bg-base-200">
-            <option value="">{{ __('All Categories') }}</option>
+            <option value="">All Categories</option>
             <option value="Hardware"
                 {{ request('category') == 'Hardware' ? 'selected' : '' }}>
-                Hardware
-            </option>
+                Hardware</option>
             <option value="DesktopComputers"
                 {{ request('category') == 'DesktopComputers' ? 'selected' : '' }}>
-                Desktop Computers
-            </option>
+                Desktop Computers</option>
             <option value="LaptopComputers"
                 {{ request('category') == 'LaptopComputers' ? 'selected' : '' }}>
-                Laptop Computers
-            </option>
+                Laptop Computers</option>
             <option value="MobilePhones"
                 {{ request('category') == 'MobilePhones' ? 'selected' : '' }}>
-                Mobile Phones
-            </option>
+                Mobile Phones</option>
             <option value="Accessories"
                 {{ request('category') == 'Accessories' ? 'selected' : '' }}>
-                Computer Accessories
-            </option>
+                Accessories</option>
             <option value="Networking"
                 {{ request('category') == 'Networking' ? 'selected' : '' }}>
-                Networking
-            </option>
+                Networking</option>
         </select>
 
         {{-- Search by client --}}
@@ -79,11 +73,13 @@
             value="{{ request('location') ?? '' }}"
             class="input input-bordered w-full md:w-64 bg-base-100 dark:bg-base-200" />
 
-        {{-- Buttons container --}}
-        <div class="flex gap-2 w-full md:w-auto">
+        {{-- Buttons (auto moves to the far right on desktop) --}}
+        <div
+            class="flex flex-col md:flex-row w-full md:w-auto gap-2 md:ml-auto">
+
             {{-- Submit button --}}
             <button type="submit"
-                class="btn btn-primary w-full md:w-auto gap-2">
+                class="btn btn-primary w-full md:w-auto flex items-center justify-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -94,12 +90,12 @@
                         stroke-linejoin="round"
                         d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
-                <span class="hidden md:inline">Search</span>
+                <span>Search</span>
             </button>
 
             {{-- Reset button --}}
             <a href="{{ $route ?? route('freelancer.jobs.available') }}"
-                class="btn btn-neutral w-full md:w-auto gap-2">
+                class="btn btn-neutral w-full md:w-auto flex items-center justify-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -110,8 +106,10 @@
                         stroke-linejoin="round"
                         d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
-                <span class="hidden md:inline">Reset</span>
+                <span>Reset</span>
             </a>
         </div>
+
     </form>
+
 </div>

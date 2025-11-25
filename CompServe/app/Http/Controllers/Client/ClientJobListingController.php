@@ -192,7 +192,7 @@ class ClientJobListingController extends Controller
 
         $applicationInfo = $jobListing->applications()->where('freelancer_id', $user->id)->first();
 
-        return view('client.applicant.applicant-profile-show', compact('freelancerInfo', 'applicationInfo', 'user', 'averageRating'));
+        return view('client.applicant.applicant-profile-show', compact('freelancerInfo', 'applicationInfo', 'user', 'averageRating', 'jobListing'));
     }
 
     public function acceptApplicant(JobApplication $application)

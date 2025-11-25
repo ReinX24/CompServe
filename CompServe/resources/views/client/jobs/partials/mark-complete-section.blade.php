@@ -1,23 +1,18 @@
-<div class="mt-6 space-y-4">
+<div class="flex flex-col md:flex-row gap-2 w-full md:w-auto">
 
     {{-- Mark Complete Button --}}
-    <button class="btn btn-success btn-block"
-        onclick="mark_complete_modal.showModal()">
-        Mark Job as Complete
+    <button class="btn btn-success btn-sm md:btn-md w-full md:w-auto"
+        onclick="document.getElementById('mark_complete_modal').showModal()">
+        Mark as Complete
     </button>
 
-    {{-- Cancel Job Button --}}
-    <form action="{{ route('client.jobs.cancel', $jobListing) }}"
-        method="POST">
-        @csrf
-        @method('PUT')
-        <input type="hidden"
-            name="freelancer_id"
-            value="{{ $user->id }}">
-        <button class="btn btn-error btn-block">Cancel Job</button>
-    </form>
+    {{-- Cancel Job Button (triggers modal) --}}
+    <button class="btn btn-error btn-sm md:btn-md w-full md:w-auto"
+        onclick="document.getElementById('cancel_job_modal').showModal()">
+        Cancel Job
+    </button>
 
-    {{-- Review Modal --}}
+    {{-- Mark Complete Modal --}}
     <dialog id="mark_complete_modal"
         class="modal">
         <form method="POST"
@@ -64,8 +59,34 @@
                 <button class="btn btn-primary">Submit</button>
                 <button type="button"
                     class="btn"
-                    onclick="mark_complete_modal.close()">Close</button>
+                    onclick="document.getElementById('mark_complete_modal').close()">Close</button>
             </div>
         </form>
     </dialog>
+
+    {{-- Cancel Job Confirmation Modal --}}
+    <dialog id="cancel_job_modal"
+        class="modal">
+        <form method="POST"
+            action="{{ route('client.jobs.cancel', $jobListing) }}"
+            class="modal-box">
+            @csrf
+            @method('PUT')
+            <input type="hidden"
+                name="freelancer_id"
+                value="{{ $user->id }}">
+
+            <h3 class="font-bold text-lg">Cancel Job?</h3>
+            <p class="py-4">Are you sure you want to <strong>cancel this
+                    job</strong> for this applicant?</p>
+
+            <div class="modal-action">
+                <button class="btn btn-error">Yes, Cancel Job</button>
+                <button type="button"
+                    class="btn"
+                    onclick="document.getElementById('cancel_job_modal').close()">Close</button>
+            </div>
+        </form>
+    </dialog>
+
 </div>

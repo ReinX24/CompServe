@@ -1,6 +1,6 @@
 <x-layouts.app>
     <div class="max-w-4xl mx-auto p-6">
-        <div class="card bg-base-100 dark:bg-base-200 shadow-xl">
+        <div class="card bg-base-100 shadow-xl">
             <div class="card-body">
                 <!-- Header -->
                 <div
@@ -19,13 +19,10 @@
                     <!-- Basic Info -->
                     <div>
                         <h1 class="text-3xl font-bold text-base-content">
-                            {{ $user->name ?? Auth::user()->name }}
-                        </h1>
+                            {{ $user->name ?? Auth::user()->name }}</h1>
                         <p class="text-lg text-base-content/70 mt-1">
-                            {{ ucfirst($user->role ?? 'Client') }}
-                        </p>
-                        <p class="text-sm text-base-content/50 mt-1">
-                            Member since
+                            {{ ucfirst($user->role ?? 'Client') }}</p>
+                        <p class="text-sm text-base-content/50 mt-1">Member since
                             {{ ($user->created_at ?? Auth::user()->created_at)->format('F Y') }}
                         </p>
                     </div>
@@ -34,9 +31,8 @@
                 <!-- Company Info -->
                 <div class="mt-6">
                     <h2
-                        class="text-xl font-semibold text-primary border-b border-base-300 pb-2 mb-4">
-                        🏢 Company Information
-                    </h2>
+                        class="text-xl font-semibold text-base-content mb-4 border-b border-base-300 pb-2">
+                        🏢 Company Information</h2>
                     <div class="grid md:grid-cols-2 gap-4 text-base-content/80">
                         <p><span class="font-semibold">Company Name:</span>
                             {{ $profile->company_name ?? 'Not set' }}</p>
@@ -47,14 +43,11 @@
                     </div>
                 </div>
 
-                <div class="divider"></div>
-
                 <!-- Contact Info -->
                 <div class="mt-6">
                     <h2
-                        class="text-xl font-semibold text-primary border-b border-base-300 pb-2 mb-4">
-                        📞 Contact Information
-                    </h2>
+                        class="text-xl font-semibold text-base-content mb-4 border-b border-base-300 pb-2">
+                        📞 Contact Information</h2>
                     <div class="space-y-2 text-base-content/80">
                         <p><span class="font-semibold">Email:</span>
                             {{ $user->email ?? Auth::user()->email }}</p>
@@ -65,27 +58,22 @@
                     </div>
                 </div>
 
-                <div class="divider"></div>
-
                 <!-- About Company -->
                 <div class="mt-6">
                     <h2
-                        class="text-xl font-semibold text-primary border-b border-base-300 pb-2 mb-4">
-                        🧾 About the Company
-                    </h2>
+                        class="text-xl font-semibold text-base-content mb-4 border-b border-base-300 pb-2">
+                        🧾 About the Company</h2>
                     <p class="text-base-content/80 leading-relaxed">
                         {{ $profile->bio ?? 'No company description added yet.' }}
                     </p>
                 </div>
 
-                <!-- Projects (optional) -->
+                <!-- Projects -->
                 @if (!empty($profile->projects))
-                    <div class="divider"></div>
                     <div class="mt-6">
                         <h2
-                            class="text-xl font-semibold text-primary border-b border-base-300 pb-2 mb-4">
-                            🚀 Recent Projects
-                        </h2>
+                            class="text-xl font-semibold text-base-content mb-4 border-b border-base-300 pb-2">
+                            🚀 Recent Projects</h2>
                         <ul
                             class="list-disc list-inside space-y-1 text-base-content/80">
                             @foreach (explode(',', $profile->projects) as $project)
@@ -95,17 +83,12 @@
                     </div>
                 @endif
 
-                <!-- Edit Button -->
+                <!-- Edit & Change Password -->
                 <div class="mt-8 flex justify-end gap-3">
                     <label for="change-password-modal"
-                        class="btn btn-secondary">
-                        Change Password
-                    </label>
-
+                        class="btn btn-secondary">Change Password</label>
                     <a href="{{ route('client.profile.edit') }}"
-                        class="btn btn-primary btn-wide">
-                        Edit Information
-                    </a>
+                        class="btn btn-primary">Edit Information</a>
                 </div>
             </div>
         </div>
@@ -140,11 +123,9 @@
             <form method="POST"
                 action="{{ route('client.profile.changePassword') }}">
                 @csrf
-
                 <div class="form-control mb-3">
-                    <label class="label">
-                        <span class="label-text">Current Password</span>
-                    </label>
+                    <label class="label"><span class="label-text">Current
+                            Password</span></label>
                     <input type="password"
                         name="current_password"
                         class="input input-bordered w-full"
@@ -152,9 +133,8 @@
                 </div>
 
                 <div class="form-control mb-3">
-                    <label class="label">
-                        <span class="label-text">New Password</span>
-                    </label>
+                    <label class="label"><span class="label-text">New
+                            Password</span></label>
                     <input type="password"
                         name="new_password"
                         class="input input-bordered w-full"
@@ -163,9 +143,8 @@
                 </div>
 
                 <div class="form-control mb-3">
-                    <label class="label">
-                        <span class="label-text">Confirm New Password</span>
-                    </label>
+                    <label class="label"><span class="label-text">Confirm New
+                            Password</span></label>
                     <input type="password"
                         name="new_password_confirmation"
                         class="input input-bordered w-full"
@@ -175,9 +154,7 @@
 
                 <div class="modal-action">
                     <button type="submit"
-                        class="btn btn-primary">
-                        Update Password
-                    </button>
+                        class="btn btn-primary">Update Password</button>
                 </div>
             </form>
         </div>

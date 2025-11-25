@@ -7,17 +7,8 @@
         </ul>
     </div>
 
-    <div
-        class="flex flex-col md:flex-row md:justify-between md:items-center mb-8 bg-base-200 dark:bg-base-300 p-5 rounded-xl shadow-sm">
-        <div>
-            <h1 class="text-2xl font-bold text-primary">
-                {{ __('Reviews') }}
-            </h1>
-            <p class="mt-1 text-base-content/70">
-                {{ __('All your reviews from completed jobs.') }}
-            </p>
-        </div>
-    </div>
+    <x-client.page-header-with-action title="Reviews"
+        description="All your reviews from completed jobs." />
 
     @if ($reviews->isEmpty())
         <div class="alert alert-info shadow-md">
@@ -36,8 +27,8 @@
     @else
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach ($reviews as $review)
-                <div class="card bg-base-100 shadow-xl border border-base-300">
-                    <div class="card-body">
+                <div class="card bg-base-100 shadow-sm border border-base-300">
+                    <div class="card-body space-y-2">
                         <!-- Job Title -->
                         <h2
                             class="card-title text-lg font-semibold text-base-content">
@@ -46,14 +37,18 @@
 
                         <!-- Freelancer Info -->
                         <p class="text-sm text-base-content/70">
-                            Reviewed Freelancer:
-                            <span class="font-medium text-base-content">
-                                {{ $review->freelancer->name ?? 'Unknown Freelancer' }}
-                            </span>
+                            <span class="font-semibold">Freelancer:</span>
+                            {{ $review->freelancer->name ?? 'Unknown' }}
+                        </p>
+
+                        <!-- Client Info -->
+                        <p class="text-sm text-base-content/70">
+                            <span class="font-semibold">Reviewed by:</span>
+                            {{ $review->client->name ?? 'Unknown' }}
                         </p>
 
                         <!-- Rating -->
-                        <div class="flex items-center mt-3 space-x-1">
+                        <div class="flex items-center mt-1 space-x-1">
                             @for ($i = 1; $i <= 5; $i++)
                                 @if ($i <= $review->rating)
                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -78,11 +73,17 @@
                             @endfor
                         </div>
 
-                        <!-- Review Meta -->
-                        <div class="mt-3 text-sm text-base-content/60">
-                            <p>Reviewed on
-                                {{ $review->created_at->format('M d, Y') }}</p>
-                        </div>
+                        <!-- Review Comments -->
+                        <p class="text-base-content/80 mt-2">
+                            <span class="font-semibold">Comments:</span>
+                            {{ $review->comments ?? 'No comments provided.' }}
+                        </p>
+
+                        <!-- Review Date -->
+                        <p class="text-xs text-base-content/60 mt-1">
+                            Reviewed on
+                            {{ $review->created_at->format('M d, Y') }}
+                        </p>
                     </div>
                 </div>
             @endforeach
