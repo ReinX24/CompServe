@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Mail\PasswordResetNotificationMail;
+use App\Models\Certification;
 use Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -56,6 +57,9 @@ class AdminController extends Controller
         $jobsCount = JobListing::count();
         $reviewsCount = Review::count();
 
+        // Count pending certifications
+        $pendingCertificationsCount = Certification::where('status', 'pending')->count();
+
         // Get filter type (default = monthly)
         $filterJobs = $request->input('filter_jobs', 'monthly');
         $filterUsers = $request->input('filter_users', 'monthly');
@@ -106,12 +110,14 @@ class AdminController extends Controller
             'usersCount',
             'jobsCount',
             'reviewsCount',
+            'pendingCertificationsCount',
             'jobChartData',
             'userChartData',
             'filterJobs',
             'filterUsers'
         ));
     }
+
 
     public function users()
     {

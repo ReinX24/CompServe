@@ -20,7 +20,6 @@ class JobListingSeeder extends Seeder
         $freelancers = User::where('role', 'freelancer')->pluck('id');
 
         foreach ($clients as $client) {
-
             /** -------------------------
              *  10 Open Jobs + Applicants
              *  ------------------------- */
@@ -72,6 +71,28 @@ class JobListingSeeder extends Seeder
             }
 
             /** -------------------------
+             *  10 In-Progress Jobs with Rejected Applicants
+             *  ------------------------- */
+            $inProgressRejectedJobs = JobListing::factory()
+                ->count(10)
+                ->create([
+                    'client_id' => $client->id,
+                    'status' => 'in_progress',
+                ]);
+
+            foreach ($inProgressRejectedJobs as $job) {
+                $rejectedFreelancerIds = $freelancers->random(rand(1, 2)); // 1 or 2 rejected applicants
+                foreach ($rejectedFreelancerIds as $freelancerId) {
+                    JobApplication::create([
+                        'job_id' => $job->id,
+                        'freelancer_id' => $freelancerId,
+                        'client_id' => $client->id,
+                        'status' => 'rejected',
+                    ]);
+                }
+            }
+
+            /** -------------------------
              *  10 Cancelled Jobs
              *  ------------------------- */
             $cancelledJobs = JobListing::factory()
@@ -87,7 +108,7 @@ class JobListingSeeder extends Seeder
                     'job_id' => $job->id,
                     'freelancer_id' => $rejectedFreelancerId,
                     'client_id' => $client->id,
-                    'status' => 'rejected',
+                    'status' => 'cancelled',
                 ]);
             }
 

@@ -12,11 +12,17 @@ class FreelancerReviewController extends Controller
     public function index()
     {
         $freelancer = Auth::user();
-        // Getting all the reviews related to the current freelancer
-        $reviews = Review::with('jobListing')->where('freelancer_id', $freelancer->id)->get();
-        // Getting the average rating of the reviews
-        $averageRating = $reviews->avg('rating');
 
-        return view('freelancer.reviews', compact('reviews', 'averageRating'));
+        // Paginate reviews (5 per page for example)
+        $reviews = Review::with(['jobListing', 'client', 'freelancer'])
+            ->where('freelancer_id', $freelancer->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(6);
+
+        // Average rating for all reviews (not just current page)
+        $averageRating = Review::where('freelancer_id', $freelancer->id)
+            ->avg('rating');
+
+        return view('freelancer.all-reviews', compact('reviews', 'averageRating'));
     }
 }

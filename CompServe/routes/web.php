@@ -42,9 +42,10 @@ require __DIR__ . '/client.php';
 Route::get('/admin/login', [AdminController::class, 'loginPage'])->name('admin.login_page');
 Route::post('/admin/login', [AdminController::class, 'loginAdmin'])->name('admin.login_admin');
 
+
 // Admin routes
 // TODO: migrate to a separate file
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/users', [AdminController::class, 'users'])->name('users');
     Route::get('/jobs', [AdminController::class, 'jobs'])->name('jobs');

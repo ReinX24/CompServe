@@ -1,11 +1,22 @@
 <x-layouts.app>
+    <div class="breadcrumbs text-sm mb-4">
+        <ul class="text-base-content/70">
+            <li><a href="{{ route('dashboard') }}"
+                    class="hover:text-primary">Dashboard</a></li>
+            <li><a href="{{ route('freelancer.certifications.index') }}"
+                    class="hover:text-primary">Certifications</a></li>
+            <li class="text-primary font-semibold">Create Certification</li>
+        </ul>
+    </div>
+
     <div class="container mx-auto max-w-xl p-6">
 
         <div class="card bg-base-100 shadow-sm">
             <div class="card-body space-y-4">
 
                 <h1 class="text-3xl font-bold">Apply for Certification</h1>
-                <p class="text-sm text-base-content/70">Submit your certification
+                <p class="text-sm text-base-content/70">Submit your
+                    certification
                     details below.</p>
 
                 <form action="{{ route('freelancer.certifications.store') }}"

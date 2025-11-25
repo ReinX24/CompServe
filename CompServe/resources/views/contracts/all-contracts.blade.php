@@ -43,7 +43,11 @@
             description="Contracts are long term jobs that can last a month or more." />
     @endif
 
-    <x-client.job-search-form :route="route('client.contracts.index')" />
+    @if (Auth::user()->role === 'client')
+        <x-client.job-search-form :route="route('client.contracts.index')" />
+    @elseif(Auth::user()->role === 'freelancer')
+        <x-client.job-search-form :route="route('freelancer.contracts.index')" />
+    @endif
 
     @foreach ($statuses as $status => $info)
         @if (!$selectedStatus || $selectedStatus === $status)

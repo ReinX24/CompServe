@@ -50,7 +50,7 @@ Route::prefix('freelancer')
             Route::get('/{jobListing}/', [FreelancerJobListingController::class, 'show'])->name('jobs.show');
 
             // TODO: move to a dedicated controller
-            Route::post('/', [FreelancerJobListingController::class, 'applyForJob'])->name('jobs.apply');
+            Route::post('/{jobListing}/apply', [FreelancerJobListingController::class, 'applyForJob'])->name('jobs.apply');
             // Remove job application for current freelancer user
             Route::delete(
                 '/{jobListing}/destroy',

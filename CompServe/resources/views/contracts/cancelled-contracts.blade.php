@@ -17,7 +17,11 @@
             description="All your cancelled contracts." />
     @endif
 
-    <x-client.job-search-form :route="route('client.contracts.cancelled')" />
+    @if (Auth::user()->role === 'client')
+        <x-client.job-search-form :route="route('client.contracts.cancelled')" />
+    @elseif(Auth::user()->role === 'freelancer')
+        <x-client.job-search-form :route="route('freelancer.contracts.cancelled')" />
+    @endif
 
     @if ($jobs->count())
         <div>

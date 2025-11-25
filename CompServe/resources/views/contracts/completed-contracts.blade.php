@@ -17,7 +17,11 @@
             description="All your completed contracts." />
     @endif
 
-    <x-client.job-search-form :route="route('client.gigs.completed')" />
+    @if (Auth::user()->role === 'client')
+        <x-client.job-search-form :route="route('client.contracts.completed')" />
+    @elseif(Auth::user()->role === 'freelancer')
+        <x-client.job-search-form :route="route('freelancer.contracts.completed')" />
+    @endif
 
     @if ($jobs->count())
         <div>

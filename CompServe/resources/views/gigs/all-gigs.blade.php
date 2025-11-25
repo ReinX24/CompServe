@@ -38,7 +38,11 @@
         buttonText="Add Gig"
         :buttonLink="route('client.jobs.create') . '?type=gig'" />
 
-    <x-client.job-search-form :route="route('client.gigs.index')" />
+    @if (Auth::user()->role === 'client')
+        <x-client.job-search-form :route="route('client.gigs.index')" />
+    @elseif(Auth::user()->role === 'freelancer')
+        <x-client.job-search-form :route="route('freelancer.gigs.index')" />
+    @endif
 
     @foreach ($statuses as $status => $info)
         @if (!$selectedStatus || $selectedStatus === $status)

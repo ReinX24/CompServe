@@ -1,4 +1,14 @@
 <x-layouts.app>
+    <div class="breadcrumbs text-sm mb-4">
+        <ul class="text-base-content/70">
+            <li><a href="{{ route('dashboard') }}"
+                    class="hover:text-primary">Dashboard</a></li>
+            <li><a href="{{ route('freelancer.gigs.index') }}"
+                    class="hover:text-primary">All Gigs</a></li>
+            <li class="text-primary font-semibold">{{ $jobListing->title }}</li>
+        </ul>
+    </div>
+
     <div class="max-w-4xl mx-auto bg-base-200 text-base shadow rounded-lg p-6">
 
         {{-- Success Message --}}
@@ -23,16 +33,11 @@
         {{-- Header: Job Title & Info --}}
         <div class="mb-6">
             <h1 class="text-3xl font-bold my-2">📝 {{ $jobListing->title }}</h1>
-
-            <p class="text-sm my-2">
-                <span class="font-medium">📂 Category:</span>
-                {{ Str::headline($jobListing->category) }}
+            <p class="text-sm my-2"><span class="font-medium">📂
+                    Category:</span> {{ Str::headline($jobListing->category) }}
             </p>
-
-            <p class="text-sm my-2">
-                <span class="font-medium">👤 Posted by:</span>
-                {{ $jobListing->client->name }}
-            </p>
+            <p class="text-sm my-2"><span class="font-medium">👤 Posted
+                    by:</span> {{ $jobListing->client->name }}</p>
 
             @php
                 $statusColors = [
@@ -43,10 +48,24 @@
                 ];
             @endphp
 
+            @php
+                $statusEmoji = [
+                    'open' => '🟢',
+                    'available' => '🟢',
+                    'in_progress' => '⏳',
+                    'pending' => '🕒',
+                    'completed' => '✅',
+                    'cancelled' => '❌',
+                    'on_hold' => '⏸️',
+                    'rejected' => '🚫',
+                ];
+            @endphp
+
             <p class="text-sm font-medium">
                 Status:
                 <span
-                    class="{{ $statusColors[$jobListing->status] ?? 'badge badge-outline' }}">
+                    class="{{ $statusColors[$jobListing->status] ?? 'badge' }}">
+                    {{ $statusEmoji[$jobListing->status] ?? '📌' }}
                     {{ ucfirst(str_replace('_', ' ', $jobListing->status)) }}
                 </span>
             </p>
@@ -115,7 +134,7 @@
 
         {{-- Action Buttons for Freelancer --}}
         <div
-            class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-3 mb-6">
+            class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-3">
             @if (Auth::user()->role === 'freelancer')
                 @php
                     $application = \App\Models\JobApplication::where(
@@ -129,46 +148,101 @@
                 @if ($application)
                     @if ($application->status === 'pending')
                         <button class="btn btn-success"
-                            disabled>🕐 Applied</button>
-                        <form
-                            action="{{ route('freelancer.jobs.removeApplication', $jobListing) }}"
-                            method="POST"
-                            onsubmit="return confirm('Remove your application?');">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-error">❌ Remove</button>
-                        </form>
+                            disabled
+                            onclick="openApplyModal({{ $jobListing->id }})">🕐
+                            Applied</button>
+                        <button class="btn btn-error"
+                            onclick="openRemoveModal({{ $jobListing->id }})">❌
+                            Remove</button>
                     @elseif ($application->status === 'accepted')
                         <button class="btn btn-success"
                             disabled>✅ Accepted</button>
-                        <form
-                            action="{{ route('freelancer.jobs.removeApplication', $jobListing) }}"
-                            method="POST"
-                            onsubmit="return confirm('Cancel your accepted job application?');">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-error">❌ Cancel</button>
-                        </form>
+                        <button class="btn btn-error"
+                            onclick="openRemoveModal({{ $jobListing->id }})">❌
+                            Cancel</button>
                     @elseif ($application->status === 'completed')
                         <button class="btn btn-success"
                             disabled>🏆 Completed</button>
                     @elseif ($application->status === 'rejected')
                         <button class="btn btn-error"
+                            disabled>❌ Rejected</button>
+                    @elseif ($application->status === 'cancelled')
+                        <button class="btn btn-error"
                             disabled>❌ Cancelled</button>
                     @endif
                 @else
-                    <form action="{{ route('freelancer.jobs.apply') }}"
-                        method="POST">
-                        @csrf
-                        <input type="hidden"
-                            name="jobId"
-                            value="{{ $jobListing->id }}">
-                        <button type="submit"
-                            class="btn btn-primary">📝 Apply</button>
-                    </form>
+                    <button class="btn btn-primary"
+                        onclick="openApplyModal({{ $jobListing->id }})">📝
+                        Apply</button>
                 @endif
             @endif
         </div>
 
     </div>
+
+    {{-- Apply Confirmation Modal --}}
+    <dialog id="apply_modal"
+        class="modal">
+        <form method="POST"
+            id="applyForm"
+            class="modal-box">
+            @csrf
+            <input type="hidden"
+                name="jobId"
+                id="applyJobId">
+            <h3 class="font-bold text-lg">Apply for this Job?</h3>
+            <p class="py-4">Are you sure you want to <strong>apply</strong>
+                for this job?</p>
+            <div class="modal-action">
+                <button class="btn btn-primary">Yes, Apply</button>
+                <button type="button"
+                    class="btn"
+                    onclick="closeApplyModal()">Cancel</button>
+            </div>
+        </form>
+    </dialog>
+
+    {{-- Remove / Cancel Confirmation Modal --}}
+    <dialog id="remove_modal"
+        class="modal">
+        <form method="POST"
+            id="removeForm"
+            class="modal-box">
+            @csrf
+            @method('DELETE')
+            <h3 class="font-bold text-lg">Remove Application?</h3>
+            <p class="py-4">Are you sure you want to
+                <strong>remove/cancel</strong> your application?
+            </p>
+            <div class="modal-action">
+                <button class="btn btn-error">Yes, Remove</button>
+                <button type="button"
+                    class="btn"
+                    onclick="closeRemoveModal()">Cancel</button>
+            </div>
+        </form>
+    </dialog>
+
+    <script>
+        function openApplyModal(jobId) {
+            const form = document.getElementById('applyForm');
+            form.action = `/freelancer/jobs/${jobId}/apply`;
+            document.getElementById('apply_modal').showModal();
+        }
+
+        function closeApplyModal() {
+            document.getElementById('apply_modal').close();
+        }
+
+        function openRemoveModal(jobId) {
+            const form = document.getElementById('removeForm');
+            form.action = `/freelancer/jobs/${jobId}/destroy`;
+            document.getElementById('remove_modal').showModal();
+        }
+
+        function closeRemoveModal() {
+            document.getElementById('remove_modal').close();
+        }
+    </script>
+
 </x-layouts.app>

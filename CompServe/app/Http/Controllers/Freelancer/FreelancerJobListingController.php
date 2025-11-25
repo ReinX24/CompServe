@@ -22,17 +22,14 @@ class FreelancerJobListingController extends Controller
         return view('freelancer.jobs.show-job', compact('jobListing'));
     }
 
-    public function applyForJob(Request $request)
+    public function applyForJob(Request $request, JobListing $jobListing)
     {
         // TODO: email the freelancer that they have successfully applied for the job
         // TODO: implement uploading of cover letter functionality
         // Validate request
         $validated = $request->validate([
-            'jobId' => 'required|integer|exists:job_listings,id',
             'cover_letter' => 'nullable|string',
         ]);
-
-        $jobListing = JobListing::find($validated['jobId']);
 
         // Check if soft-deleted application exists
         $existing = JobApplication::withTrashed()

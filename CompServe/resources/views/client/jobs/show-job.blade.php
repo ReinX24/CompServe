@@ -3,8 +3,10 @@
         <ul class="text-base-content/70">
             <li><a href="{{ route('dashboard') }}"
                     class="hover:text-primary">Dashboard</a></li>
-            <li><a href="{{ route('client.gigs.index') }}"
-                    class="hover:text-primary">All Gigs</a></li>
+            <li><a href="{{ url()->previous() }}"
+                    class="hover:text-primary">
+                    ← Back
+                </a></li>
             <li class="text-primary font-semibold">{{ $jobListing->title }}</li>
         </ul>
     </div>
@@ -51,10 +53,25 @@
                     'cancelled' => 'badge badge-error badge-outline',
                 ];
             @endphp
+
+            @php
+                $statusEmoji = [
+                    'open' => '🟢',
+                    'available' => '🟢',
+                    'in_progress' => '⏳',
+                    'pending' => '🕒',
+                    'completed' => '✅',
+                    'cancelled' => '❌',
+                    'on_hold' => '⏸️',
+                    'rejected' => '🚫',
+                ];
+            @endphp
+
             <p class="mt-1 text-sm font-medium">
                 Status:
                 <span
                     class="{{ $statusColors[$jobListing->status] ?? 'badge' }}">
+                    {{ $statusEmoji[$jobListing->status] ?? '📌' }}
                     {{ ucfirst(str_replace('_', ' ', $jobListing->status)) }}
                 </span>
             </p>

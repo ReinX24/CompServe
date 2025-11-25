@@ -16,6 +16,16 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // If not logged in → redirect to admin login
+        if (!Auth::check()) {
+            return redirect()->route('admin.login_page');
+        }
+
+        // If logged in but not admin → block access
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->route('admin.login_page');
+        }
+
         if (Auth::check() && Auth::user()->role === 'admin') {
             return $next($request);
         }

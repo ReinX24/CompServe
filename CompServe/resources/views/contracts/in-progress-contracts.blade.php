@@ -17,7 +17,11 @@
             description="All your in-progress contracts." />
     @endif
 
-    <x-client.job-search-form :route="route('client.gigs.in_progress')" />
+    @if (Auth::user()->role === 'client')
+        <x-client.job-search-form :route="route('client.contracts.in_progress')" />
+    @elseif(Auth::user()->role === 'freelancer')
+        <x-client.job-search-form :route="route('freelancer.contracts.in_progress')" />
+    @endif
 
     @if ($jobs->count())
         <div>

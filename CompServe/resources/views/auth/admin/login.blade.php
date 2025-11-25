@@ -1,8 +1,7 @@
 <x-layouts.auth :title="__('Admin Login')">
 
     <!-- Login Card -->
-    <div
-        class="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden">
+    <div class="rounded-lg shadow-md border overflow-hidden border-primary">
         <div class="p-6">
             <div class="mb-3 flex flex-col items-center space-y-3">
                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -16,7 +15,7 @@
                         d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                 </svg>
 
-                <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                <h1 class="text-2xl font-bold">
                     {{ __('Login Admin Account') }}</h1>
             </div>
 
