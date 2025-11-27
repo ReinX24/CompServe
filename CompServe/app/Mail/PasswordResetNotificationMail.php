@@ -28,6 +28,6 @@ class PasswordResetNotificationMail extends Mailable
     public function build()
     {
         return $this->subject('Your Password Has Been Reset')
-            ->view('emails.password_reset_notification');
+            ->view('emails.password_reset');
     }
 }

@@ -57,6 +57,15 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 
     Route::put('/jobs/{job}', [AdminController::class, 'updateJob'])->name('jobs.update');
     Route::delete('/jobs/{job}', [AdminController::class, 'deleteJob'])->name('jobs.delete');
+
+    Route::get('/email-preview', function () {
+        $user = \App\Models\User::first(); // Example user
+        $newPassword = 'Temp1234!';        // Example password
+
+        return view('emails.password_reset', compact('user', 'newPassword'));
+    });
 });
 
 require __DIR__ . '/auth.php';
+
+// TODO: approval and showing of certifications, simple messaging system

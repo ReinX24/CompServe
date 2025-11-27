@@ -64,13 +64,15 @@
                                 <!-- Edit -->
                                 <button
                                     onclick="document.getElementById('editModal-{{ $job->id }}').showModal()"
-                                    class="btn btn-sm btn-info">✏️ Edit</button>
+                                    class="btn btn-sm btn-primary">✏️
+                                    Edit</button>
 
                                 <!-- Delete -->
                                 <form method="POST"
                                     action="{{ route('admin.jobs.delete', $job) }}">
                                     @csrf @method('DELETE')
-                                    <button class="btn btn-sm btn-error"
+                                    <button
+                                        class="btn btn-outline btn-sm btn-error"
                                         onclick="return confirm('Delete this job?')">❌
                                         Delete</button>
                                 </form>
@@ -148,6 +150,10 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+
+        <div class="mt-4">
+            {{ $jobs->links() }}
         </div>
     </div>
 </x-layouts.app>

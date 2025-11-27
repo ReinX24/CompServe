@@ -5,7 +5,7 @@
             class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
             <h1 class="text-3xl font-bold text-primary">👥 Manage Users</h1>
             <a href="{{ route('freelancer.certifications.create') }}"
-                class="btn btn-primary w-full md:w-auto">
+                class="btn btn-outline btn-primary w-full md:w-auto">
                 ➕ Add User
             </a>
         </div>
@@ -48,7 +48,7 @@
                             <td
                                 class="text-right flex flex-col sm:flex-row sm:justify-end gap-2 mt-2 sm:mt-0">
                                 {{-- Edit --}}
-                                <button class="btn btn-sm btn-info"
+                                <button class="btn btn-sm btn-primary"
                                     onclick="document.getElementById('editModal{{ $user->id }}').showModal()">
                                     ✏️ Edit
                                 </button>
@@ -58,7 +58,7 @@
                                     action="{{ route('admin.users.resetPassword', $user) }}">
                                     @csrf
                                     @method('PUT')
-                                    <button class="btn btn-sm btn-warning"
+                                    <button class="btn btn-sm btn-secondary"
                                         onclick="return confirm('Reset password for {{ $user->name }}?')">
                                         🔑 Reset
                                     </button>
@@ -69,7 +69,8 @@
                                     action="{{ route('admin.users.delete', $user) }}">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-sm btn-error"
+                                    <button
+                                        class="btn btn-outline btn-sm btn-error"
                                         onclick="return confirm('Delete {{ $user->name }}? This cannot be undone.')">
                                         ❌ Delete
                                     </button>
@@ -135,6 +136,10 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+
+        <div class="mt-4">
+            {{ $users->links() }}
         </div>
     </div>
 </x-layouts.app>

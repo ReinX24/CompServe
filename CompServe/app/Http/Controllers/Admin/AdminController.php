@@ -121,7 +121,7 @@ class AdminController extends Controller
 
     public function users()
     {
-        $users = User::all();
+        $users = User::paginate(6);
         return view('admin.users', compact('users'));
     }
 
@@ -167,7 +167,7 @@ class AdminController extends Controller
 
     public function jobs()
     {
-        $jobs = JobListing::with('client')->latest()->get();
+        $jobs = JobListing::with('client')->latest()->paginate(6);
         return view('admin.jobs', compact('jobs'));
     }
 
@@ -196,7 +196,7 @@ class AdminController extends Controller
 
     public function reviews()
     {
-        $reviews = Review::with(['freelancer', 'jobListing'])->latest()->get();
+        $reviews = Review::with(['freelancer', 'jobListing'])->latest()->paginate(6);
         return view('admin.reviews', compact('reviews'));
     }
 }

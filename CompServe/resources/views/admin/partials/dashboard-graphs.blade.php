@@ -12,7 +12,7 @@
                 value="{{ $filterUsers }}">
             <select name="filter_jobs"
                 onchange="this.form.submit()"
-                class="border rounded-md px-3 py-2 bg-base-100 text-base-content">
+                class="select">
                 <option value="daily"
                     {{ $filterJobs == 'daily' ? 'selected' : '' }}>Daily
                 </option>
@@ -46,7 +46,7 @@
                 value="{{ $filterJobs }}">
             <select name="filter_users"
                 onchange="this.form.submit()"
-                class="border rounded-md px-3 py-2 bg-base-100 text-base">
+                class="select">
                 <option value="daily"
                     {{ $filterUsers == 'daily' ? 'selected' : '' }}>Daily
                 </option>

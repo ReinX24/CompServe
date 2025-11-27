@@ -38,5 +38,9 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="mt-4">
+            {{ $reviews->links() }}
+        </div>
     </div>
 </x-layouts.app>
