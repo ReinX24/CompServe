@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\MyEvent;
 use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -69,3 +70,8 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
 require __DIR__ . '/auth.php';
 
 // TODO: approval and showing of certifications, simple messaging system
+
+Route::get('/trigger-my-event', function () {
+    broadcast(new MyEvent('Hello from Laravel!'));
+    return 'Event triggered!';
+});
