@@ -151,20 +151,20 @@
                             disabled
                             onclick="openApplyModal({{ $jobListing->id }})">🕐
                             Applied</button>
-                        <button class="btn btn-error"
+                        <button class="btn btn-outline btn-error"
                             onclick="openRemoveModal({{ $jobListing->id }})">❌
                             Remove</button>
                     @elseif ($application->status === 'accepted')
                         <button class="btn btn-success"
                             disabled>✅ Accepted</button>
-                        <button class="btn btn-error"
+                        <button class="btn btn-outline btn-error"
                             onclick="openRemoveModal({{ $jobListing->id }})">❌
                             Cancel</button>
                     @elseif ($application->status === 'completed')
                         <button class="btn btn-success"
                             disabled>🏆 Completed</button>
                     @elseif ($application->status === 'rejected')
-                        <button class="btn btn-error"
+                        <button class="btn btn-outline btn-error"
                             disabled>❌ Rejected</button>
                     @elseif ($application->status === 'cancelled')
                         <button class="btn btn-error"

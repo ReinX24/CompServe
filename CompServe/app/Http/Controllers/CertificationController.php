@@ -58,11 +58,12 @@ class CertificationController extends Controller
         $cert->save();
 
         // Send email to the user
-        Mail::to($cert->freelancer->email)
-            ->queue(new CertificationStatusChanged(
-                $cert,
-                $cert->status
-            ));
+        // !Not sending an email for now
+        // Mail::to($cert->freelancer->email)
+        //     ->queue(new CertificationStatusChanged(
+        //         $cert,
+        //         $cert->status
+        //     ));
 
         return back()->with('success', 'Certification status updated to ' . $request->status);
     }
@@ -75,7 +76,7 @@ class CertificationController extends Controller
 
         // Send email to the user
         Mail::to($cert->freelancer->email)
-            ->queue(new CertificationStatusChanged(
+            ->send(new CertificationStatusChanged(
                 $cert,
                 'approved'
             ));

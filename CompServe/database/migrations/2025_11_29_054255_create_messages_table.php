@@ -15,11 +15,15 @@ return new class extends Migration {
             $table->unsignedBigInteger('from_id');
             $table->unsignedBigInteger('to_id');
             $table->text('message');
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
-            // optional but recommended
             $table->foreign('from_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('to_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->index(['from_id', 'to_id']);
+            $table->index('to_id');
         });
     }
 

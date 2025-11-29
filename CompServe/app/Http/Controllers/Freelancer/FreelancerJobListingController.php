@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Freelancer;
 
 use App\Http\Controllers\Client\ClientJobListingController;
 use App\Http\Controllers\Controller;
+use App\Mail\JobApplicationCancelled;
+use App\Mail\JobApplicationSubmitted;
 use App\Models\JobApplication;
 use App\Models\JobListing;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mail;
 
 class FreelancerJobListingController extends Controller
 {
@@ -24,28 +27,25 @@ class FreelancerJobListingController extends Controller
 
     public function applyForJob(Request $request, JobListing $jobListing)
     {
-        // TODO: email the freelancer that they have successfully applied for the job
-        // Validate request
         $validated = $request->validate([
             'cover_letter' => 'nullable|string',
         ]);
 
-        // Check if soft-deleted application exists
         $existing = JobApplication::withTrashed()
             ->where('job_id', $jobListing->id)
             ->where('freelancer_id', Auth::id())
             ->first();
 
         if ($existing) {
-            // restore if soft deleted
             $existing->restore();
 
-            // update other fields if needed
-            $existing->cover_letter = $validated['cover_letter'] ?? $existing->cover_letter;
+            $existing->cover_letter = $validated['cover_letter'] ??
+                $existing->cover_letter;
+
             $existing->save();
+            $application = $existing;
         } else {
-            // create new
-            JobApplication::create([
+            $application = JobApplication::create([
                 'job_id' => $jobListing->id,
                 'freelancer_id' => Auth::id(),
                 'client_id' => $jobListing->client_id,
@@ -53,70 +53,64 @@ class FreelancerJobListingController extends Controller
             ]);
         }
 
+        // Send email to freelancer
+        Mail::to($application->freelancer->email)
+            ->queue(new JobApplicationSubmitted(
+                $jobListing,
+                $application
+            ));
+
         return redirect()
             ->route('freelancer.jobs.show', $jobListing)
-            ->with('success', 'Applied for job successfully!');
+            ->with('success', 'Applied for job successfully! An email has been sent.');
     }
 
     public function deleteJobApplication(JobListing $jobListing)
     {
-        // Check if the current job is in progress, if the freelancer chooses to cancel while in progress cancel the listing
-        // If the user has been accepted and they also want to cancel their application
+        $jobApplication = JobApplication::where([
+            ['freelancer_id', Auth::id()],
+            ['job_id', $jobListing->id],
+        ])->first();
+
+        if (!$jobApplication) {
+            return redirect()->back()->with('error', 'Application not found.');
+        }
+
+        // Store before deletion
+        $application = $jobApplication;
+
         if ($jobListing->status === "in_progress") {
-
-            $jobApplication = JobApplication::where([
-                ['freelancer_id', Auth::user()->id],
-                ['job_id', $jobListing->id],
-            ])->first();
-
-            // Remove the application
             $jobApplication->status = "cancelled";
             $jobApplication->save();
 
-            // Change the job listing to be cancelled
             $jobListing->status = "cancelled";
             $jobListing->save();
+
+            // Send email
+            Mail::to($application->freelancer->email)
+                ->queue(new JobApplicationCancelled(
+                    $jobListing,
+                    $application
+                ));
 
             return redirect()->route(
                 'freelancer.jobs.show',
                 $jobListing
-            )->with('success', 'Cancelled job successfully.');
+            )
+                ->with('success', 'Cancelled job successfully.');
         } else {
-            // If the job is not in_progress yet or the user has not been accepted, just delete their application
-            // Get the job application with the current user's id and job_listing id
-            // dd("Removing the job application");
-            $jobApplication = JobApplication::where([
-                ['freelancer_id', Auth::user()->id],
-                ['job_id', $jobListing->id],
-            ])->first();
-
-            // dd($jobApplication);
+            // Send email before deletion
+            Mail::to($application->freelancer->email)
+                ->queue(new JobApplicationCancelled(
+                    $jobListing,
+                    $application
+                ));
 
             $jobApplication->delete();
+
+            return redirect()->route('freelancer.jobs.show', $jobListing)
+                ->with('success', 'Removed application successfully.');
         }
-
-        // dd($jobListing->status);
-        // dd($jobListing->applications()->where('freelancer_id', Auth::user()->id)->first());
-
-        return redirect()->route(
-            'freelancer.jobs.show',
-            $jobListing
-        )->with('success', 'Removed application successfully.');
-    }
-
-    public function edit()
-    {
-
-    }
-
-    public function update()
-    {
-
-    }
-
-    public function destroy()
-    {
-
     }
 
     // TODO: Test search functionalities

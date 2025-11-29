@@ -65,7 +65,9 @@ require __DIR__ . '/auth.php';
 // Route::post('/send-message', [ChatController::class, 'send']);
 
 Route::middleware('auth')->group(function () {
-    Route::post('/chat/send', [ChatController::class, 'send']);
-    Route::get('/chat/{userId}', [ChatController::class, 'showChat']);
+    Route::get('/chat', [ChatController::class, 'conversations'])->name('chat.dashboard');
+    Route::post('/chat/send', [ChatController::class, 'send'])->name('chat.send');
+    Route::get('/chat/{userId}', [ChatController::class, 'showChat'])->name('chat.show');
+    Route::get('/chat', [ChatController::class, 'dashboard'])->name('chat.dashboard');
 });
 

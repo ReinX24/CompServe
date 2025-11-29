@@ -41,8 +41,8 @@
         }
 
         .logo img {
-            height: 16rem;
-            width: 16rem;
+            height: 8rem;
+            width: 8rem;
             object-fit: contain;
             border-radius: 50%;
         }
@@ -239,7 +239,7 @@
 
             <!-- Button -->
             <div style="text-align:center; margin: 2rem 0;">
-                <a href="{{ url('/certifications/' . $certification->id) }}"
+                <a href="{{ Storage::url($certification->document_path) }}"
                     style="background:#3b82f6; padding:12px 20px; color:white; border-radius:8px; text-decoration:none;
         font-weight:bold; display:inline-block;">
                     🔍 View Certification
@@ -253,7 +253,6 @@
                 <p>CompServe © {{ date('Y') }}</p>
                 <p>Automated email — please do not reply.</p>
             </div>
-
 
         </div>
     </div>

@@ -86,4 +86,25 @@ class User extends Authenticatable
     {
         return $this->hasMany(Certification::class, 'freelancer_id');
     }
+
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'from_id');
+    }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'to_id');
+    }
+
+    // Conversations helper
+    public function conversations()
+    {
+        $sentTo = Message::where('from_id', $this->id)->pluck('to_id');
+        $receivedFrom = Message::where('to_id', $this->id)->pluck('from_id');
+
+        $userIds = $sentTo->merge($receivedFrom)->unique();
+
+        return User::whereIn('id', $userIds)->get();
+    }
 }

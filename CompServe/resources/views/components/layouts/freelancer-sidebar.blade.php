@@ -144,6 +144,12 @@
     Reviews
 </x-layouts.sidebar-link>
 
+<x-layouts.sidebar-link href="{{ route('chat.dashboard') }}"
+    icon='fas-comment-alt'
+    :active="request()->routeIs('chat.dashboard')">
+    Chat
+</x-layouts.sidebar-link>
+
 <x-layouts.sidebar-link href="{{ route('freelancer.profile.show') }}"
     icon='fas-person'
     :active="request()->routeIs('freelancer.profile.show')">

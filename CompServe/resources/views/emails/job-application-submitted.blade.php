@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Password Reset Notification</title>
+    <title>Job Application Submitted</title>
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme"
@@ -19,23 +19,19 @@
             background-color: #f3f4f6;
             color: #111827;
             box-sizing: border-box;
-            /* ensures padding doesn’t cause overflow */
         }
 
         .email-card {
             max-width: 28rem;
             width: 100%;
             margin: 0 auto;
-            /* centers the card */
             background-color: #ffffff;
             border-radius: 1rem;
             padding: 2rem;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
             border: 1px solid #e5e7eb;
             box-sizing: border-box;
-            /* include padding in width */
             min-width: 0;
-            /* prevents overflow inside flex containers */
         }
 
         .logo {
@@ -68,16 +64,15 @@
             line-height: 1.6;
         }
 
-        .password-box {
-            background-color: #f3f4f6;
-            border: 1px solid #d1d5db;
-            padding: 1rem;
+        .button {
+            display: inline-block;
+            padding: 0.75rem 1.25rem;
+            background-color: #3b82f6;
+            color: #fff;
             border-radius: 0.5rem;
+            text-decoration: none;
             font-weight: bold;
-            font-size: 1.125rem;
-            color: #111827;
-            margin-bottom: 1.5rem;
-            text-align: center;
+            margin-top: 1rem;
         }
 
         .divider {
@@ -110,10 +105,8 @@
                 box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4);
             }
 
-            .password-box {
-                background-color: #374151;
-                border-color: #4b5563;
-                color: #f3f4f6;
+            .button {
+                background-color: #2563eb;
             }
 
             .divider {
@@ -136,9 +129,9 @@
                 padding: 0.375rem 0.75rem;
             }
 
-            .password-box {
-                font-size: 1rem;
-                padding: 0.75rem;
+            .button {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
             }
         }
     </style>
@@ -155,20 +148,24 @@
             </div>
 
             <!-- Notification Badge -->
-            <div class="notification-badge">🔐 Password Reset</div>
+            <div class="notification-badge">📄 Job Application Submitted</div>
 
             <!-- Greeting -->
-            <p>Hello <strong>{{ $user->name }}</strong> 👋</p>
+            <p>Hello <strong>{{ $application->freelancer->name }}</strong> 👋
+            </p>
 
-            <p>Your password has been reset by an administrator.</p>
+            <p>You have successfully applied for the job:
+                <strong>{{ $jobListing->title }}</strong>.
+            </p>
 
-            <p><strong>Your new temporary password:</strong></p>
+            @if ($application->cover_letter)
+                <p><strong>Your cover letter:</strong></p>
+                <p>{{ $application->cover_letter }}</p>
+            @endif
 
-            <!-- Password Box -->
-            <div class="password-box">{{ $newPassword }}</div>
-
-            <p>Please log in and change your password immediately for security
-                purposes.</p>
+            <!-- View Job Button -->
+            <a href="{{ route('freelancer.jobs.show', $jobListing) }}"
+                class="button">View Job</a>
 
             <div class="divider"></div>
 
