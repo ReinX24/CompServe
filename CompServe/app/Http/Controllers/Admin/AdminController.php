@@ -159,7 +159,7 @@ class AdminController extends Controller
         ]);
 
         // Send an email to the user whenever their password is reset
-        Mail::to($user->email)->send(new
+        Mail::to($user->email)->queue(new
             PasswordResetNotificationMail($user, $newPassword));
 
         return redirect()->back()->with('success', "Password reset successfully. New password: $newPassword");

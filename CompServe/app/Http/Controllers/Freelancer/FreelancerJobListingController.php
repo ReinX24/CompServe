@@ -25,7 +25,6 @@ class FreelancerJobListingController extends Controller
     public function applyForJob(Request $request, JobListing $jobListing)
     {
         // TODO: email the freelancer that they have successfully applied for the job
-        // TODO: implement uploading of cover letter functionality
         // Validate request
         $validated = $request->validate([
             'cover_letter' => 'nullable|string',

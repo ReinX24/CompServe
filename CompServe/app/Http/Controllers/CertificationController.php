@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CertificationStatusChanged;
 use Auth;
 use App\Models\Certification;
 use Illuminate\Http\Request;
+use Mail;
 
 class CertificationController extends Controller
 {
@@ -17,7 +19,6 @@ class CertificationController extends Controller
             $certifications = Certification::latest()->paginate(6);
             return view('admin.certifications', compact('certifications'));
         }
-        // TODO: add sidebar link, test approve and reject functionality, edit action functionality
     }
 
     public function create()
@@ -46,11 +47,39 @@ class CertificationController extends Controller
             ->with('success', 'Certification submitted for verification.');
     }
 
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,approved,rejected',
+        ]);
+
+        $cert = Certification::findOrFail($id);
+        $cert->status = $request->status;
+        $cert->save();
+
+        // Send email to the user
+        Mail::to($cert->freelancer->email)
+            ->queue(new CertificationStatusChanged(
+                $cert,
+                $cert->status
+            ));
+
+        return back()->with('success', 'Certification status updated to ' . $request->status);
+    }
+
     // Approve and reject methods for admin
     public function approve($id)
     {
         $cert = Certification::findOrFail($id);
         $cert->update(['status' => 'approved']);
+
+        // Send email to the user
+        Mail::to($cert->freelancer->email)
+            ->queue(new CertificationStatusChanged(
+                $cert,
+                'approved'
+            ));
+
         return back()->with('success', 'Certification approved.');
     }
 
@@ -58,6 +87,14 @@ class CertificationController extends Controller
     {
         $cert = Certification::findOrFail($id);
         $cert->update(['status' => 'rejected']);
+
+        // Send email to the user
+        Mail::to($cert->freelancer->email)
+            ->queue(new CertificationStatusChanged(
+                $cert,
+                'rejected'
+            ));
+
         return back()->with('success', 'Certification rejected.');
     }
 }

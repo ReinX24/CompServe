@@ -21,3 +21,9 @@
     :active="request()->routeIs('admin.reviews')">
     Reviews
 </x-layouts.sidebar-link>
+
+<x-layouts.sidebar-link href="{{ route('admin.certifications') }}"
+    icon='fas-check-square'
+    :active="request()->routeIs('admin.certifications')">
+    Certifications
+</x-layouts.sidebar-link>
