@@ -10,8 +10,14 @@ class CertificationController extends Controller
 {
     public function index()
     {
-        $certifications = Auth::user()->certifications()->latest()->get();
-        return view('freelancer.certifications.index', compact('certifications'));
+        if (Auth::user()->role === "freelancer") {
+            $certifications = Auth::user()->certifications()->latest()->get();
+            return view('freelancer.certifications.index', compact('certifications'));
+        } else if (Auth::user()->role === "admin") {
+            $certifications = Certification::latest()->paginate(6);
+            return view('admin.certifications', compact('certifications'));
+        }
+        // TODO: add sidebar link, test approve and reject functionality, edit action functionality
     }
 
     public function create()
@@ -38,5 +44,20 @@ class CertificationController extends Controller
 
         return redirect()->route('freelancer.certifications.index')
             ->with('success', 'Certification submitted for verification.');
+    }
+
+    // Approve and reject methods for admin
+    public function approve($id)
+    {
+        $cert = Certification::findOrFail($id);
+        $cert->update(['status' => 'approved']);
+        return back()->with('success', 'Certification approved.');
+    }
+
+    public function reject($id)
+    {
+        $cert = Certification::findOrFail($id);
+        $cert->update(['status' => 'rejected']);
+        return back()->with('success', 'Certification rejected.');
     }
 }

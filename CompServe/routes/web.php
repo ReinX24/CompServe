@@ -2,6 +2,8 @@
 
 use App\Events\MyEvent;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\CertificationController;
+use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -52,6 +54,10 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/jobs', [AdminController::class, 'jobs'])->name('jobs');
     Route::get('/reviews', [AdminController::class, 'reviews'])->name('reviews');
 
+    Route::get('/certifications', [CertificationController::class, 'index'])->name('certifications');
+    Route::post('/certifications/{cert}/approve', [CertificationController::class, 'approve'])->name('certifications.approve');
+    Route::post('/certifications/{cert}/reject', [CertificationController::class, 'reject'])->name('certifications.reject');
+
     Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('users.update');
     Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('users.delete');
     Route::put('/users/{user}/reset-password', [AdminController::class, 'resetPassword'])->name('users.resetPassword');
@@ -71,7 +77,22 @@ require __DIR__ . '/auth.php';
 
 // TODO: approval and showing of certifications, simple messaging system
 
-Route::get('/trigger-my-event', function () {
-    broadcast(new MyEvent('Hello from Laravel!'));
-    return 'Event triggered!';
+// Test route for broadcasting events
+// Route::get('/trigger-my-event', function () {
+//     broadcast(new MyEvent('Hello from Laravel!'));
+//     return 'Event triggered!';
+// });
+
+// Test routes for chat messaging
+// Route::get('/chat', function () {
+//     return view('chat');
+// });
+
+// Route::post('/send-message', [ChatController::class, 'send']);
+
+Route::middleware('auth')->group(function () {
+    Route::post('/chat/send', [ChatController::class, 'send']);
+    Route::get('/chat/{userId}', [ChatController::class, 'showChat']);
+    // Route::get('/chat/messages/{userId}', [ChatController::class, 'fetchMessages']);
 });
+
