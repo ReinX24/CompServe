@@ -52,6 +52,73 @@
                     </p>
                 </div>
 
+                <!-- Certifications -->
+                <div class="mt-6">
+                    <h2
+                        class="text-xl font-semibold text-base-content mb-4 border-b border-base-300 pb-2">
+                        🏅 Certifications</h2>
+
+                    @php
+                        $certifications = $user
+                            ->certifications()
+                            ->where('status', 'approved')
+                            ->get();
+                    @endphp
+
+                    @if ($certifications->isNotEmpty())
+                        <div class="grid gap-4">
+                            @foreach ($certifications as $cert)
+                                <div
+                                    class="card bg-base-200 shadow-sm p-4 flex flex-col md:flex-row justify-between items-start gap-4">
+                                    <div>
+                                        <h3 class="font-semibold text-lg">
+                                            {{ Str::limit($cert->type, 50) }}
+                                        </h3>
+                                        <p class="text-sm text-base-content/70">
+                                            {{ Str::limit($cert->description ?? 'No description provided.', 80) }}
+                                        </p>
+                                        <p
+                                            class="text-xs text-base-content/60 mt-1">
+                                            Uploaded:
+                                            {{ $cert->created_at->format('M d, Y') }}
+                                        </p>
+                                    </div>
+
+                                    <div
+                                        class="flex flex-col md:items-end gap-2">
+                                        {{-- Status Badge --}}
+                                        <div
+                                            class="badge badge-outline p-2 text-xs
+                            {{ match ($cert->status) {
+                                'approved' => 'badge-success',
+                                'pending' => 'badge-warning',
+                                'rejected' => 'badge-error',
+                                default => 'badge-outline',
+                            } }}">
+                                            {{ match ($cert->status) {
+                                                'approved' => '✅ Approved',
+                                                'pending' => '⏳ Pending',
+                                                'rejected' => '❌ Rejected',
+                                                default => ucfirst($cert->status),
+                                            } }}
+                                        </div>
+
+                                        {{-- View Button --}}
+                                        <a href="{{ Storage::url($cert->document_path) }}"
+                                            target="_blank"
+                                            class="btn btn-sm btn-secondary">
+                                            🔍 View
+                                        </a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-base-content/70">No approved
+                            certifications yet.</p>
+                    @endif
+                </div>
+
                 <!-- Skills -->
                 <div class="mt-6">
                     <h2
@@ -145,11 +212,15 @@
                 </div>
 
                 {{-- Change Password and Edit Button --}}
-                <div class="mt-8 flex justify-end gap-3">
+                <div class="mt-8 flex flex-col md:flex-row justify-end gap-3">
                     <label for="change-password-modal"
-                        class="btn btn-secondary">Change Password</label>
+                        class="btn btn-secondary w-full md:w-auto">
+                        Change Password
+                    </label>
                     <a href="{{ route('freelancer.profile.edit') }}"
-                        class="btn btn-primary">Edit Information</a>
+                        class="btn btn-primary w-full md:w-auto">
+                        Edit Information
+                    </a>
                 </div>
             </div>
         </div>

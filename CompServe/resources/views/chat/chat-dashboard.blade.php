@@ -24,10 +24,11 @@
                     <li id="conversation-{{ $user->id }}"
                         data-user-id="{{ $user->id }}">
                         <a href="{{ route('chat.show', $user->id) }}"
-                            class="flex items-center justify-between p-4 bg-base-200 hover:bg text-neutral rounded-lg transition">
+                            class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-base-200 hover:bg-base-300 text-neutral rounded-lg transition gap-2 sm:gap-0">
 
-                            <div class="flex items-center gap-4">
-                                <div class="avatar relative">
+                            <div
+                                class="flex items-center gap-4 w-full sm:w-auto">
+                                <div class="avatar relative flex-shrink-0">
                                     <div
                                         class="w-12 h-12 rounded-full bg-primary text-primary-content flex items-center justify-center font-bold text-lg">
                                         {{ strtoupper(substr($user->name, 0, 2)) }}
@@ -39,26 +40,28 @@
                                     </span>
                                 </div>
 
-                                <div>
-                                    <p class="font-semibold convo-name">
+                                <div class="flex-1 min-w-0">
+                                    <p
+                                        class="font-semibold convo-name truncate">
                                         {{ $user->name }}</p>
 
                                     <p
-                                        class="text-sm truncate w-64 convo-preview">
+                                        class="text-sm truncate w-full convo-preview">
                                         {{ $user->latest_message->from_id === auth()->id() ? 'You: ' : '' }}
                                         {{ $user->latest_message->message ?? '' }}
                                     </p>
                                 </div>
                             </div>
 
-                            <div class="flex flex-col items-end gap-1">
+                            <div
+                                class="flex flex-row sm:flex-col items-center sm:items-end gap-2 mt-2 sm:mt-0">
                                 <span
                                     class="badge badge-error unread-count {{ $user->unread_count > 0 ? '' : 'hidden' }}">
                                     {{ $user->unread_count }}
                                 </span>
 
                                 <span
-                                    class="text-xs text-gray-400 dark:text-gray-500 convo-time">
+                                    class="text-xs text-gray-400 dark:text-gray-500 convo-time truncate">
                                     {{ $user->latest_message->created_at->diffForHumans() }}
                                 </span>
                             </div>

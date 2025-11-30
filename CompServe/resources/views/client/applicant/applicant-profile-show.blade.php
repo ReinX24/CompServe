@@ -2,30 +2,19 @@
     {{-- Breadcrumbs --}}
     <div class="breadcrumbs text-sm mb-6">
         <ul class="text-base-content/70">
-            <li>
-                <a href="{{ route('dashboard') }}"
-                    class="hover:text-primary">
-                    Dashboard
-                </a>
+            <li><a href="{{ route('dashboard') }}"
+                    class="hover:text-primary">Dashboard</a></li>
+            <li><a href="{{ route('client.jobs.show', $jobListing) }}"
+                    class="hover:text-primary">{{ Str::limit($jobListing->title, 20) }}</a>
             </li>
-            <li>
-                <a href="{{ route('client.jobs.show', $jobListing) }}"
-                    class="hover:text-primary">
-                    {{ Str::limit($jobListing->title, 20) }}
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('client.jobs.applicants', $jobListing) }}"
-                    class="hover:text-primary">
-                    All Applicants
-                </a>
-            </li>
+            <li><a href="{{ route('client.jobs.applicants', $jobListing) }}"
+                    class="hover:text-primary">All Applicants</a></li>
             <li class="text-primary font-semibold">{{ $user->name }}</li>
         </ul>
     </div>
 
     <div class="max-w-4xl mx-auto p-6">
-        <div class="card bg-base-200 shadow-sm">
+        <div class="card bg-base-100 shadow-xl">
             <div class="card-body">
 
                 <!-- Header -->
@@ -47,35 +36,15 @@
                         <p class="text-lg text-base-content/70 mt-1">
                             {{ ucfirst($user->role) }}</p>
                         <p class="text-sm text-base-content/60 mt-1">Member
-                            since
-                            {{ $user->created_at->format('F Y') }}</p>
+                            since {{ $user->created_at->format('F Y') }}</p>
                     </div>
-                </div>
-
-                <!-- Average Rating -->
-                <div
-                    class="flex flex-col items-center mb-10 border-b border-base-300 pb-6">
-                    <p class="text-lg font-semibold mb-2 text-gray-700">Average
-                        Rating</p>
-
-                    <div class="rating rating-lg">
-                        @for ($i = 1; $i <= 5; $i++)
-                            <input type="radio"
-                                class="mask mask-star-2 bg-yellow-400"
-                                disabled
-                                {{ $i <= round($averageRating) ? 'checked' : '' }} />
-                        @endfor
-                    </div>
-
-                    <p class="mt-2 text-sm text-gray-500">
-                        {{ number_format($averageRating, 1) }} / 5.0</p>
                 </div>
 
                 <!-- Contact Info -->
                 <div class="mt-6">
                     <h2
-                        class="text-xl font-semibold mb-4 border-b border-base-300 pb-2">
-                        Contact</h2>
+                        class="text-xl font-semibold text-base-content mb-4 border-b border-base-300 pb-2">
+                        📞 Contact</h2>
                     <div class="space-y-2">
                         <p><span class="font-semibold">Email:</span>
                             {{ $user->email }}</p>
@@ -89,19 +58,80 @@
                 <!-- About -->
                 <div class="mt-6">
                     <h2
-                        class="text-xl font-semibold mb-4 border-b border-base-300 pb-2">
-                        About Me</h2>
+                        class="text-xl font-semibold text-base-content mb-4 border-b border-base-300 pb-2">
+                        📝 About Me</h2>
                     <p class="text-base-content/80">
                         {{ $freelancerInfo->about_me ?? 'No description available.' }}
                     </p>
                 </div>
 
+                <!-- Certifications -->
+                <div class="mt-6">
+                    <h2
+                        class="text-xl font-semibold text-base-content mb-4 border-b border-base-300 pb-2">
+                        🏅 Certifications</h2>
+                    @php
+                        $certifications = $user
+                            ->certifications()
+                            ->where('status', 'approved')
+                            ->get();
+                    @endphp
+                    @if ($certifications->isNotEmpty())
+                        <div class="grid gap-4">
+                            @foreach ($certifications as $cert)
+                                <div
+                                    class="card bg-base-200 shadow-sm p-4 flex flex-col md:flex-row justify-between items-start gap-4">
+                                    <div>
+                                        <h3 class="font-semibold text-lg">
+                                            {{ Str::limit($cert->type, 50) }}
+                                        </h3>
+                                        <p class="text-sm text-base-content/70">
+                                            {{ Str::limit($cert->description ?? 'No description provided.', 80) }}
+                                        </p>
+                                        <p
+                                            class="text-xs text-base-content/60 mt-1">
+                                            Uploaded:
+                                            {{ $cert->created_at->format('M d, Y') }}
+                                        </p>
+                                    </div>
+
+                                    <div
+                                        class="flex flex-col md:items-end gap-2">
+                                        <div
+                                            class="badge badge-outline p-2 text-xs
+                                            {{ match ($cert->status) {
+                                                'approved' => 'badge-success',
+                                                'pending' => 'badge-warning',
+                                                'rejected' => 'badge-error',
+                                                default => 'badge-outline',
+                                            } }}">
+                                            {{ match ($cert->status) {
+                                                'approved' => '✅ Approved',
+                                                'pending' => '⏳ Pending',
+                                                'rejected' => '❌ Rejected',
+                                                default => ucfirst($cert->status),
+                                            } }}
+                                        </div>
+
+                                        <a href="{{ Storage::url($cert->document_path) }}"
+                                            target="_blank"
+                                            class="btn btn-sm btn-secondary">🔍
+                                            View</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-base-content/70">No approved
+                            certifications yet.</p>
+                    @endif
+                </div>
+
                 <!-- Skills -->
                 <div class="mt-6">
                     <h2
-                        class="text-xl font-semibold mb-4 border-b border-base-300 pb-2">
-                        Skills</h2>
-
+                        class="text-xl font-semibold text-base-content mb-4 border-b border-base-300 pb-2">
+                        💡 Skills</h2>
                     @if (!empty($freelancerInfo->skills))
                         <div class="flex flex-wrap gap-2">
                             @foreach (explode(',', $freelancerInfo->skills) as $skill)
@@ -117,18 +147,15 @@
                 <!-- Experiences -->
                 <div class="mt-6">
                     <h2
-                        class="text-xl font-semibold mb-4 border-b border-base-300 pb-2">
-                        Experiences</h2>
-
-                    @php
-                        $experiences = $freelancerInfo->experiences ?? [];
-                    @endphp
-
+                        class="text-xl font-semibold text-base-content mb-4 border-b border-base-300 pb-2">
+                        💼 Experiences</h2>
+                    @php $experiences = $freelancerInfo->experiences ?? []; @endphp
                     @if (!empty($experiences))
                         <div class="grid gap-4">
                             @foreach ($experiences as $exp)
                                 <div class="card bg-base-200 shadow-sm p-4">
-                                    <h3 class="font-semibold text-lg">
+                                    <h3
+                                        class="font-semibold text-base-content text-lg">
                                         {{ $exp['job_title'] ?? 'N/A' }}</h3>
                                     <p><span class="font-medium">Company:</span>
                                         {{ $exp['company'] ?? 'N/A' }}</p>
@@ -151,18 +178,15 @@
                 <!-- Education -->
                 <div class="mt-6">
                     <h2
-                        class="text-xl font-semibold mb-4 border-b border-base-300 pb-2">
-                        Education</h2>
-
-                    @php
-                        $education = $freelancerInfo->education ?? [];
-                    @endphp
-
+                        class="text-xl font-semibold text-base-content mb-4 border-b border-base-300 pb-2">
+                        🎓 Education</h2>
+                    @php $education = $freelancerInfo->education ?? []; @endphp
                     @if (!empty($education))
                         <div class="grid gap-4">
                             @foreach ($education as $edu)
                                 <div class="card bg-base-200 shadow-sm p-4">
-                                    <h3 class="font-semibold text-lg">
+                                    <h3
+                                        class="font-semibold text-base-content text-lg">
                                         {{ $edu['degree'] ?? 'N/A' }}</h3>
                                     <p><span class="font-medium">School:</span>
                                         {{ $edu['school'] ?? 'N/A' }}</p>
@@ -191,17 +215,12 @@
                 <div
                     class="mt-10 flex flex-col md:flex-row gap-4 justify-center">
                     @if ($applicationInfo->status === 'pending')
-                        <!-- Opens shared Accept Modal -->
                         <button class="btn btn-success w-full md:w-48"
-                            onclick="openAcceptModal({{ $applicationInfo->id }})">
-                            Accept Applicant
-                        </button>
-
-                        <!-- Opens shared Reject Modal -->
+                            onclick="openAcceptModal({{ $applicationInfo->id }})">Accept
+                            Applicant</button>
                         <button class="btn btn-error btn-outline w-full md:w-48"
-                            onclick="openRejectModal({{ $applicationInfo->id }})">
-                            Reject Applicant
-                        </button>
+                            onclick="openRejectModal({{ $applicationInfo->id }})">Reject
+                            Applicant</button>
                     @elseif ($applicationInfo->status === 'accepted')
                         <button class="btn btn-success w-full md:w-48"
                             disabled>Accepted</button>
@@ -217,9 +236,7 @@
                 {{-- Reusable Accept/Reject Modals --}}
                 @include(
                     'client.jobs.partials.application-confirm-modals',
-                    [
-                        'applicationInfo' => $applicationInfo,
-                    ]
+                    ['applicationInfo' => $applicationInfo]
                 )
 
             </div>
