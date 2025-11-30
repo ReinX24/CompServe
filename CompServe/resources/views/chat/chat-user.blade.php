@@ -49,6 +49,7 @@
     </div>
 
     <script>
+        window.authId = {{ auth()->id() }};
         window.userId = {{ auth()->id() }};
         window.recipientId = {{ $recipient->id }};
         window.recipientName = "{{ $recipient->name }}";

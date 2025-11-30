@@ -1,35 +1,3 @@
-// import './bootstrap';
-
-// // Logged-in user ID from Blade
-// const userId = window.userId;
-
-// window.Echo.private(`chat.${userId}`).listen('.MessageSent', (e) => {
-//     console.log('New message received:', e.message);
-
-//     const log = document.getElementById('log');
-//     if (log) {
-//         log.innerHTML += `<p><strong>User ${e.message.from_id}:</strong> ${e.message.message}</p>`;
-//     }
-// });
-
-// function sendMessage(to_id, message) {
-//     console.log(message);
-
-//     fetch('/send-message', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-//                 .content,
-//         },
-//         body: JSON.stringify({ to_id, message }),
-//     });
-// }
-
-// window.sendMessage = sendMessage;
-
-// import './bootstrap';
-
 document.addEventListener('DOMContentLoaded', () => {
     const chatBox = document.getElementById('chat-box');
     const messageInput = document.getElementById('message-input');
