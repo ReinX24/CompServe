@@ -3,10 +3,13 @@
         <ul class="text-base-content/70">
             <li><a href="{{ route('dashboard') }}"
                     class="hover:text-primary">Dashboard</a></li>
-            <li><a href="{{ url()->previous() }}"
-                    class="hover:text-primary">
-                    ← Back
-                </a></li>
+            @if ($jobListing->duration_type === 'gig')
+                <li><a href="{{ route('client.gigs.index') }}"
+                        class="hover:text-primary">All Gigs</a></li>
+            @elseif($jobListing->duration_type === 'contract')
+                <li><a href="{{ route('client.contracts.index') }}"
+                        class="hover:text-primary">All Contracts</a></li>
+            @endif
             <li class="text-primary font-semibold">{{ $jobListing->title }}</li>
         </ul>
     </div>
@@ -246,7 +249,9 @@
         {{-- IN PROGRESS / COMPLETED / CANCELLED --}}
         @if ($jobListing->status === 'in_progress')
             <div
-                class="mt-6 card bg-base-100 shadow-md p-4 flex flex-col md:flex-row items-center gap-4">
+                class="mt-6 card bg-base-100 shadow-md p-4 flex flex-col md:flex-row items-start gap-4">
+
+                {{-- Avatar --}}
                 <div class="avatar">
                     <div
                         class="w-16 h-16 rounded-full ring ring-warning ring-offset-base-100 ring-offset-2">
@@ -256,18 +261,36 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex-1">
-                    <p class="text-lg font-semibold">✅ Accepted Applicant</p>
+
+                {{-- Name & Status --}}
+                <div class="flex-1 w-full">
+                    <div class="flex items-center gap-2 mb-1">
+                        <p class="text-lg font-semibold">✅ Accepted
+                            Applicant
+                        </p>
+
+                        {{-- Badge --}}
+                        <div class="hidden md:flex">
+                            <span class="badge badge-warning badge-outline">In
+                                Progress</span>
+                        </div>
+                    </div>
+
                     <a href="{{ route('client.jobs.applicant', [$jobListing, $user]) }}"
                         class="link link-primary text-sm md:text-base">{{ $user->name }}</a>
-                    <p class="text-xs text-gray-500 mt-1">Congratulations! This
-                        applicant is now assigned to this job.</p>
+
+                    <p class="text-xs text-gray-500 mt-1">
+                        {{ $jobListing->status === 'completed' ? 'Congratulations! This applicant has now finished this job.' : 'This applicant was removed from the job.' }}
+                    </p>
+
+                    <div class="mt-3 w-full">
+                        @include('client.jobs.partials.mark-complete-section')
+                    </div>
                 </div>
-                @include('client.jobs.partials.mark-complete-section')
             </div>
         @endif
 
-        @if ($jobListing->status === 'completed')
+        {{-- @if ($jobListing->status === 'completed')
             <div
                 class="mt-6 card bg-base-100 shadow-md p-4 flex flex-col md:flex-row items-center gap-4">
                 <div class="avatar">
@@ -291,9 +314,9 @@
                         class="badge badge-success badge-outline">Completed</span>
                 </div>
             </div>
-        @endif
+        @endif --}}
 
-        @if ($jobListing->status === 'cancelled')
+        {{-- @if ($jobListing->status === 'cancelled')
             <div
                 class="mt-6 card bg-base-100 shadow-md p-4 flex flex-col md:flex-row items-center gap-4">
                 <div class="avatar">
@@ -317,7 +340,61 @@
                         class="badge badge-error badge-outline">Cancelled</span>
                 </div>
             </div>
-        @endif
+        @endif --}}
 
+        @if ($jobListing->status === 'completed' || $jobListing->status === 'cancelled')
+            <div
+                class="mt-6 card bg-base-100 shadow-md p-4 flex flex-col md:flex-row items-start gap-4">
+
+                {{-- Avatar --}}
+                <div class="avatar">
+                    <div
+                        class="w-16 h-16 rounded-full {{ $jobListing->status === 'completed' ? 'ring ring-success' : 'ring ring-error' }} ring-offset-base-100 ring-offset-2">
+                        <div
+                            class="flex items-center justify-center w-full h-full {{ $jobListing->status === 'completed' ? 'bg-success text-success-content' : 'bg-error text-error-content' }} text-2xl font-bold">
+                            {{ strtoupper(substr($user->name, 0, 1)) }}
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Name & Status --}}
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <p class="text-lg font-semibold">
+                            {{ $jobListing->status === 'completed' ? '🏆 Completed Applicant' : '❌ Cancelled Applicant' }}
+                        </p>
+                        <span
+                            class="badge {{ $jobListing->status === 'completed' ? 'badge-success badge-outline' : 'badge-error badge-outline' }}">
+                            {{ ucfirst($jobListing->status) }}
+                        </span>
+                    </div>
+
+                    <a href="{{ route('client.jobs.applicant', [$jobListing, $user]) }}"
+                        class="link {{ $jobListing->status === 'completed' ? 'link-primary' : 'link-error' }} text-sm md:text-base">
+                        {{ $user->name }}
+                    </a>
+
+                    <p class="text-xs text-gray-500 mt-1">
+                        {{ $jobListing->status === 'completed' ? 'Congratulations! This applicant has now finished this job.' : 'This applicant was removed from the job.' }}
+                    </p>
+
+                    {{-- REVIEW PANEL --}}
+                    @if ($jobListing->review)
+                        <div class="mt-3">
+                            <h3 class="text-sm font-semibold mb-1">⭐ Client
+                                Review</h3>
+                            <div
+                                class="bg-base-200 p-3 rounded-lg border border-base-300">
+                                <p><strong>Rating:</strong>
+                                    {{ $jobListing->review->rating }} / 5</p>
+                                <p><strong>Comments:</strong>
+                                    {{ $jobListing->review->comments ?? 'No comments provided.' }}
+                                </p>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        @endif
     </div>
 </x-layouts.app>

@@ -23,7 +23,7 @@
 
             <h3 class="font-bold text-lg">Submit Review & Complete Job</h3>
 
-            <textarea name="review"
+            <textarea name="comments"
                 class="textarea textarea-bordered w-full"
                 placeholder="Write your review here..."></textarea>
 
@@ -64,12 +64,12 @@
         </form>
     </dialog>
 
-    {{-- Cancel Job Confirmation Modal --}}
+    {{-- Cancel Job Confirmation Modal with Optional Review --}}
     <dialog id="cancel_job_modal"
         class="modal">
         <form method="POST"
             action="{{ route('client.jobs.cancel', $jobListing) }}"
-            class="modal-box">
+            class="modal-box space-y-4">
             @csrf
             @method('PUT')
             <input type="hidden"
@@ -77,8 +77,38 @@
                 value="{{ $user->id }}">
 
             <h3 class="font-bold text-lg">Cancel Job?</h3>
-            <p class="py-4">Are you sure you want to <strong>cancel this
-                    job</strong> for this applicant?</p>
+            <p>Are you sure you want to <strong>cancel this job</strong> for
+                this applicant?</p>
+
+            {{-- Optional Review --}}
+            <p class="pt-2 font-semibold">Leave a review for the freelancer
+                (optional):</p>
+            <textarea name="comments"
+                class="textarea textarea-bordered w-full"
+                placeholder="Write your review here..."></textarea>
+
+            <div class="rating rating-lg flex justify-center">
+                <input type="radio"
+                    name="rating"
+                    value="1"
+                    class="mask mask-star-2 bg-yellow-400" />
+                <input type="radio"
+                    name="rating"
+                    value="2"
+                    class="mask mask-star-2 bg-yellow-400" />
+                <input type="radio"
+                    name="rating"
+                    value="3"
+                    class="mask mask-star-2 bg-yellow-400" />
+                <input type="radio"
+                    name="rating"
+                    value="4"
+                    class="mask mask-star-2 bg-yellow-400" />
+                <input type="radio"
+                    name="rating"
+                    value="5"
+                    class="mask mask-star-2 bg-yellow-400" />
+            </div>
 
             <div class="modal-action">
                 <button class="btn btn-error">Yes, Cancel Job</button>

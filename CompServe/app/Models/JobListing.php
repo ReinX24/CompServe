@@ -45,6 +45,11 @@ class JobListing extends Model
         return $this->hasMany(JobApplication::class, 'job_id');
     }
 
+    public function review()
+    {
+        return $this->hasOne(Review::class);
+    }
+
     public function scopeFilter($query, array $filters)
     {
         // Search by title or description

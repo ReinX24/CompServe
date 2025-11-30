@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Mail\ApplicantAcceptedMail;
 use App\Mail\ApplicantRejectedMail;
+use App\Mail\JobCancelledMail;
+use App\Mail\JobCompletedMail;
 use App\Models\JobApplication;
 use App\Models\JobListing;
 use App\Models\Review;
@@ -250,7 +252,45 @@ class ClientJobListingController extends Controller
 
     public function markJobAsComplete(Request $request, JobListing $jobListing)
     {
-        // Before marking, set review for the freelancer and the job
+        // Store review
+        $review = null;
+        if ($request->filled('rating')) {
+            $review = Review::create([
+                'client_id' => Auth::id(),
+                'freelancer_id' => $request->freelancer_id,
+                'job_listing_id' => $jobListing->id,
+                'rating' => $request->rating,
+                'comments' => $request->comments,
+            ]);
+        }
+
+        // Set job as complete
+        $jobListing->status = "completed";
+        $jobListing->save();
+
+        // Find accepted application
+        $jobApplication = $jobListing->applications()
+            ->where('status', 'accepted')
+            ->first();
+
+        $jobApplication->status = "completed";
+        $jobApplication->save();
+
+        // Reload job with review relationship
+        $jobListing->load('review');
+
+        // Send completion email
+        Mail::to($jobApplication->freelancer->email)
+            ->queue(new JobCompletedMail($jobListing, $jobApplication));
+
+        return redirect()
+            ->route('client.jobs.show', $jobListing)
+            ->with('success', 'Job completed!');
+    }
+
+    public function markJobAsCancelled(Request $request, JobListing $jobListing)
+    {
+        // Save client review/comments if provided
         if ($request->filled('rating')) {
             Review::create([
                 'client_id' => Auth::id(),
@@ -261,47 +301,32 @@ class ClientJobListingController extends Controller
             ]);
         }
 
-        // Setting job_listing as complete
-        $jobListing->status = "completed";
-        $jobListing->save();
-
-        // Get accepted job application and turn it into complete
-        $jobApplication = $jobListing->applications()->where(
-            'status',
-            'accepted'
-        )->first();
-        $jobApplication->status = "completed";
-        $jobApplication->save();
-
-        // Redirect back to page showing job information
-        return redirect()->route(
-            'client.jobs.show',
-            $jobListing
-        )
-            ->with('success', 'Job completed!');
-    }
-
-    public function markJobAsCancelled(Request $request, JobListing $jobListing)
-    {
-        // Make the accepted job application for the job into cancelled
-        $jobApplication = JobApplication::where([
-            ['freelancer_id', $request->freelancer_id],
-            ['job_id', $jobListing->id],
-        ])->first();
-
-        // Set the job application as cancelled if the job is cancelled
-        $jobApplication->status = "cancelled";
-        $jobApplication->save();
-
+        // Update job status
         $jobListing->status = "cancelled";
-
         $jobListing->save();
 
-        // Redirect back to page showing job information
-        return redirect()->route(
-            'client.jobs.show',
-            $jobListing
-        )
-            ->with('success', 'Job cancelled!');
+        // Update accepted application (if any) to cancelled
+        $jobApplication = $jobListing->applications()
+            ->where('status', 'accepted')
+            ->first();
+
+        if ($jobApplication) {
+            $jobApplication->status = "cancelled";
+            $jobApplication->save();
+
+            // Reload job with review relationship
+            $jobListing->load('review');
+
+            // Send cancellation email to freelancer
+            Mail::to($jobApplication->freelancer->email)
+                ->send(new JobCancelledMail(
+                    $jobListing,
+                    $jobApplication
+                ));
+        }
+
+        return redirect()
+            ->route('client.jobs.show', $jobListing)
+            ->with('success', 'Job cancelled successfully!');
     }
 }

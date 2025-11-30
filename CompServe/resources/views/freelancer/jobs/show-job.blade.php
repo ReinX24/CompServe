@@ -3,32 +3,37 @@
         <ul class="text-base-content/70">
             <li><a href="{{ route('dashboard') }}"
                     class="hover:text-primary">Dashboard</a></li>
-            <li><a href="{{ route('freelancer.gigs.index') }}"
-                    class="hover:text-primary">All Gigs</a></li>
+            @if ($jobListing->duration_type === 'gig')
+                <li><a href="{{ route('freelancer.gigs.index') }}"
+                        class="hover:text-primary">All Gigs</a></li>
+            @elseif($jobListing->duration_type === 'contract')
+                <li><a href="{{ route('freelancer.contracts.index') }}"
+                        class="hover:text-primary">All Contracts</a></li>
+            @endif
             <li class="text-primary font-semibold">{{ $jobListing->title }}</li>
         </ul>
     </div>
 
-    <div class="max-w-4xl mx-auto bg-base-200 text-base shadow rounded-lg p-6">
-
-        {{-- Success Message --}}
-        @session('success')
-            <div class="mb-4">
-                <div role="alert"
-                    class="alert alert-success alert-soft text-lg flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6 shrink-0 stroke-current"
-                        fill="none"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>{{ session('success') }}</span>
-                </div>
+    {{-- Success Message --}}
+    @session('success')
+        <div class="mb-4">
+            <div role="alert"
+                class="alert alert-success alert-soft text-lg flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6 shrink-0 stroke-current"
+                    fill="none"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>{{ session('success') }}</span>
             </div>
-        @endsession
+        </div>
+    @endsession
+
+    <div class="max-w-4xl mx-auto bg-base-200 text-base shadow rounded-lg p-6">
 
         {{-- Header: Job Title & Info --}}
         <div class="mb-6">

@@ -17,9 +17,7 @@ class ChatController extends Controller
         $userIds = Message::where('from_id', $authId)
             ->orWhere('to_id', $authId)
             ->get()
-            ->flatMap(function ($msg) use ($authId) {
-                return [$msg->from_id, $msg->to_id];
-            })
+            ->flatMap(fn($msg) => [$msg->from_id, $msg->to_id])
             ->unique()
             ->filter(fn($id) => $id != $authId)
             ->values();
@@ -46,8 +44,12 @@ class ChatController extends Controller
             return $user;
         });
 
+        // Sort users by latest message timestamp (descending)
+        $users = $users->sortByDesc(fn($u) => $u->latest_message?->created_at)->values();
+
         return view('chat.chat-dashboard', compact('users'));
     }
+
 
     public function send(Request $request)
     {
@@ -81,7 +83,10 @@ class ChatController extends Controller
             ->whereNull('read_at')
             ->update(['read_at' => now()]);
 
-        return view('chat.chat-user', compact('recipient', 'messages'));
+        return view('chat.chat-user', compact(
+            'recipient',
+            'messages'
+        ));
     }
 
     public function conversations()

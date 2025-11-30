@@ -158,6 +158,14 @@ Route::middleware('freelancer')->group(function () {
         'create'
     ])->name('freelancer.certifications.create');
 
+    Route::delete(
+        '/freelancer/certifications/{certification}',
+        [
+            CertificationController::class,
+            'destroy'
+        ]
+    )->name('certifications.destroy');
+
     Route::post('/freelancer/certifications/store', [
         CertificationController::class,
         'store'

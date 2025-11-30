@@ -71,16 +71,16 @@ class JobListingSeeder extends Seeder
             }
 
             /** -------------------------
-             *  10 In-Progress Jobs with Rejected Applicants
+             *  10 Open Jobs with Rejected Applicants
              *  ------------------------- */
-            $inProgressRejectedJobs = JobListing::factory()
+            $openJobsWithRejectedApplicants = JobListing::factory()
                 ->count(10)
                 ->create([
                     'client_id' => $client->id,
-                    'status' => 'in_progress',
+                    'status' => 'open',
                 ]);
 
-            foreach ($inProgressRejectedJobs as $job) {
+            foreach ($openJobsWithRejectedApplicants as $job) {
                 $rejectedFreelancerIds = $freelancers->random(rand(1, 2)); // 1 or 2 rejected applicants
                 foreach ($rejectedFreelancerIds as $freelancerId) {
                     JobApplication::create([

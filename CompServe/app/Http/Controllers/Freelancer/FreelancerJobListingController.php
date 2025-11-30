@@ -60,7 +60,7 @@ class FreelancerJobListingController extends Controller
 
         return redirect()
             ->route('freelancer.jobs.show', $jobListing)
-            ->with('success', 'Applied for job successfully! An email has been sent.');
+            ->with('success', 'Applied for job successfully!');
     }
 
     public function deleteJobApplication(JobListing $jobListing)
