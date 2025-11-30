@@ -4,6 +4,7 @@ use App\Events\MyEvent;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\UserSearchController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -69,5 +70,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/chat/send', [ChatController::class, 'send'])->name('chat.send');
     Route::get('/chat/{userId}', [ChatController::class, 'showChat'])->name('chat.show');
     Route::get('/chat', [ChatController::class, 'dashboard'])->name('chat.dashboard');
+    Route::post('/chat/read', [ChatController::class, 'markAsRead']);
+    Route::get('/users/search', [UserSearchController::class, 'search']);
 });
 

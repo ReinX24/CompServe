@@ -54,6 +54,12 @@
         Open Gigs
     </x-layouts.sidebar-two-level-link>
     <x-layouts.sidebar-two-level-link
+        href="{{ route('freelancer.gigs.applied') }}"
+        icon='fas-right-from-bracket'
+        :active="request()->routeIs('freelancer.gigs.applied')">
+        Applied Gigs
+    </x-layouts.sidebar-two-level-link>
+    <x-layouts.sidebar-two-level-link
         href="{{ route('freelancer.gigs.in_progress') }}"
         icon='fas-envelope-open-text'
         :active="request()->routeIs('freelancer.gigs.in_progress')">
@@ -94,6 +100,12 @@
         icon='far-folder-open'
         :active="request()->routeIs('freelancer.contracts.open')">
         Open Contracts
+    </x-layouts.sidebar-two-level-link>
+    <x-layouts.sidebar-two-level-link
+        href="{{ route('freelancer.contracts.applied') }}"
+        icon='fas-right-from-bracket'
+        :active="request()->routeIs('freelancer.contracts.applied')">
+        Applied Contracts
     </x-layouts.sidebar-two-level-link>
     <x-layouts.sidebar-two-level-link
         href="{{ route('freelancer.contracts.in_progress') }}"

@@ -64,6 +64,31 @@ class ContractController extends Controller
         return $this->renderCategory('open', $request, 'contracts.open-contracts');
     }
 
+    public function appliedOpenContractJobs(Request $request)
+    {
+        $filters = $request->only([
+            'search',
+            'category',
+            'client',
+            'location'
+        ]);
+
+        if (Auth::user()->role !== 'freelancer') {
+            abort(403, 'Only freelancers can view applied contracts.');
+        }
+
+        $jobs = JobListing::where('duration_type', 'contract')
+            ->where('status', 'open') // ⭐ Only OPEN contracts
+            ->whereHas('applications', function ($q) {
+                $q->where('freelancer_id', Auth::id()); // ⭐ User applied
+            })
+            ->filter($filters)
+            ->latest()
+            ->paginate(6);
+
+        return view('contracts.applied-contracts', compact('jobs'));
+    }
+
     public function inProgressContractJobs(Request $request)
     {
         return $this->renderCategory('in_progress', $request, 'contracts.in-progress-contracts');

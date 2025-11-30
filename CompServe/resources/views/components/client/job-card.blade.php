@@ -1,7 +1,7 @@
 @props(['job'])
 
 <div
-    class="card bg-base-200 border border-base-300 shadow-sm hover:shadow-lg hover:scale-[1.02] transition-transform duration-200 ease-in-out">
+    class="card bg-base-200 border border-base-300 shadow-sm hover:shadow-sm hover:scale-[1.01] transition-transform duration-200 ease-in-out">
     <div class="card-body space-y-4">
 
         {{-- Header --}}

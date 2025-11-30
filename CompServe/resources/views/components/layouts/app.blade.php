@@ -6,6 +6,8 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name') }}</title>
+    <meta name="csrf-token"
+        content="{{ csrf_token() }}">
     <script>
         const htmlTag = document.documentElement;
 
@@ -42,10 +44,15 @@
         }
 
         window.setAppearance = setAppearance;
+
+        // This is for presence.js, which shows if the user is online or not
+        window.authId = {{ auth()->id() }};
     </script>
 
-
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    {{-- For showing if the current user is online --}}
+    @vite(['resources/js/presence.js'])
 </head>
 
 <body {{-- class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 antialiased" --}}

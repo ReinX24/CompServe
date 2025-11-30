@@ -10,6 +10,7 @@ class Message extends Model
         'from_id',
         'to_id',
         'message',
+        'read_at'
     ];
 
     public function sender()

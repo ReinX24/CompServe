@@ -48,9 +48,8 @@ Route::prefix('freelancer')
             // Route::get('/finished', [FreelancerJobListingController::class, 'completedJobs'])->name('jobs.finished');
 
             Route::get('/{jobListing}/', [FreelancerJobListingController::class, 'show'])->name('jobs.show');
-
-            // TODO: move to a dedicated controller
             Route::post('/{jobListing}/apply', [FreelancerJobListingController::class, 'applyForJob'])->name('jobs.apply');
+
             // Remove job application for current freelancer user
             Route::delete(
                 '/{jobListing}/destroy',
@@ -82,6 +81,11 @@ Route::prefix('freelancer')
                 '/open',
                 [GigController::class, 'openGigJobs']
             )->name('gigs.open');
+
+            Route::get('/applied', [
+                GigController::class,
+                'appliedOpenGigJobs'
+            ])->name('gigs.applied');
 
             Route::get(
                 '/in_progress',
@@ -115,6 +119,11 @@ Route::prefix('freelancer')
                 ContractController::class,
                 'openContractJobs'
             ])->name('contracts.open');
+
+            Route::get('/applied', [
+                ContractController::class,
+                'appliedOpenContractJobs'
+            ])->name('contracts.applied');
 
             Route::get('/in_progress', [
                 ContractController::class,

@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ApplicantAcceptedMail;
+use App\Mail\ApplicantRejectedMail;
 use App\Models\JobApplication;
 use App\Models\JobListing;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ClientJobListingController extends Controller
 {
@@ -197,50 +200,52 @@ class ClientJobListingController extends Controller
 
     public function acceptApplicant(JobApplication $application)
     {
-        // Change job_application to accepted
+        // 1. Accept the chosen applicant
         $application->status = "accepted";
-
         $application->save();
 
-        // Change jobListing status to in_progress
+        // 2. Set job status to in progress
         $jobListing = JobListing::findOrFail($application->job_id);
-
         $jobListing->status = "in_progress";
-
         $jobListing->save();
 
-        // All job applications for the job that are not the current job application will be rejected
-        $rejectedApplicants = JobApplication::where([
-            ['id', '!=', $application->id],
-            ['job_id', '=', $application->job_id]
-        ])->get();
+        // 3. Reject all other applicants for the same job
+        $rejectedApplicants = JobApplication::where('job_id', $application->job_id)
+            ->where('id', '!=', $application->id)
+            ->get();
 
         foreach ($rejectedApplicants as $applicant) {
             $applicant->status = "rejected";
             $applicant->save();
         }
 
-        // Redirect back to page showing job information
-        return redirect()->route(
-            'client.jobs.show',
-            $jobListing
-        )->with('success', 'Accepted applicant!');
+        // 4. Email the accepted applicant
+        // TODO: make the job viewable by guests but limited interactions
+        Mail::to($application->freelancer->email)
+            ->queue(new ApplicantAcceptedMail(
+                $application
+            ));
+
+        // 5. Redirect
+        return redirect()
+            ->route('client.jobs.show', $jobListing)
+            ->with('success', 'Accepted applicant!');
     }
+
 
     public function rejectApplicant(JobApplication $application)
     {
         // Update application status
-        $application->update([
-            'status' => 'rejected',
-        ]);
+        $application->update(['status' => 'rejected']);
 
-        // Get the related job listing for redirect
-        $jobListing = $application->job;
+        // Send rejection email
+        Mail::to($application->freelancer->email)
+            ->queue(new ApplicantRejectedMail($application));
 
-        return redirect()->route(
-            'client.jobs.show',
-            $jobListing
-        )->with('success', 'Rejeceted applicant!');
+        // Redirect back to job details
+        return redirect()
+            ->route('client.jobs.show', $application->job)
+            ->with('success', 'Rejected applicant!');
     }
 
     public function markJobAsComplete(Request $request, JobListing $jobListing)

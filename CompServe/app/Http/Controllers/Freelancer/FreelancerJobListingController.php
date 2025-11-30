@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Freelancer;
 
-use App\Http\Controllers\Client\ClientJobListingController;
 use App\Http\Controllers\Controller;
 use App\Mail\JobApplicationCancelled;
 use App\Mail\JobApplicationSubmitted;
 use App\Models\JobApplication;
 use App\Models\JobListing;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Mail;
@@ -54,11 +52,11 @@ class FreelancerJobListingController extends Controller
         }
 
         // Send email to freelancer
-        Mail::to($application->freelancer->email)
-            ->queue(new JobApplicationSubmitted(
-                $jobListing,
-                $application
-            ));
+        // Mail::to($application->freelancer->email)
+        //     ->queue(new JobApplicationSubmitted(
+        //         $jobListing,
+        //         $application
+        //     ));
 
         return redirect()
             ->route('freelancer.jobs.show', $jobListing)
@@ -100,11 +98,11 @@ class FreelancerJobListingController extends Controller
                 ->with('success', 'Cancelled job successfully.');
         } else {
             // Send email before deletion
-            Mail::to($application->freelancer->email)
-                ->queue(new JobApplicationCancelled(
-                    $jobListing,
-                    $application
-                ));
+            // Mail::to($application->freelancer->email)
+            //     ->queue(new JobApplicationCancelled(
+            //         $jobListing,
+            //         $application
+            //     ));
 
             $jobApplication->delete();
 
@@ -113,7 +111,6 @@ class FreelancerJobListingController extends Controller
         }
     }
 
-    // TODO: Test search functionalities
     public function availableJobs(Request $request)
     {
         $search = $request->input('search');

@@ -73,7 +73,8 @@
 <x-layouts.sidebar-two-level-link-parent title="Contracts"
     icon='fas-pen-alt'
     :active="request()->routeIs('client.contracts*')">
-    <x-layouts.sidebar-two-level-link href="{{ route('client.contracts.index') }}"
+    <x-layouts.sidebar-two-level-link
+        href="{{ route('client.contracts.index') }}"
         icon='fas-border-all'
         :active="request()->routeIs('client.contracts.index')">
         All Contracts
@@ -108,6 +109,12 @@
     icon='fas-star'
     :active="request()->routeIs('client.reviews')">
     Reviews
+</x-layouts.sidebar-link>
+
+<x-layouts.sidebar-link href="{{ route('chat.dashboard') }}"
+    icon='fas-comment-alt'
+    :active="request()->routeIs('chat.dashboard')">
+    Chat
 </x-layouts.sidebar-link>
 
 <x-layouts.sidebar-link href="{{ route('client.profile.show') }}"

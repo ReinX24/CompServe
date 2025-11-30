@@ -11,26 +11,36 @@ class ChatController extends Controller
 {
     public function dashboard()
     {
-        // Get all users we have messages with
-        $userIds = Message::where('from_id', auth()->id())
-            ->orWhere('to_id', auth()->id())
-            ->pluck('from_id', 'to_id')->flatten()->unique()->filter(function ($id) {
-                return $id != auth()->id();
-            });
+        $authId = auth()->id();
 
+        // Get all user IDs where the logged-in user is either sender or receiver
+        $userIds = Message::where('from_id', $authId)
+            ->orWhere('to_id', $authId)
+            ->get()
+            ->flatMap(function ($msg) use ($authId) {
+                return [$msg->from_id, $msg->to_id];
+            })
+            ->unique()
+            ->filter(fn($id) => $id != $authId)
+            ->values();
+
+        // Fetch the users
         $users = User::whereIn('id', $userIds)->get();
 
         // Add latest message and unread count
-        $users->map(function ($user) {
-            $user->latest_message = Message::where(function ($q) use ($user) {
-                $q->where('from_id', auth()->id())->where('to_id', $user->id);
-            })->orWhere(function ($q) use ($user) {
-                $q->where('from_id', $user->id)->where('to_id', auth()->id());
-            })->latest()->first();
+        $users->map(function ($user) use ($authId) {
+            $user->latest_message = Message::where(function ($q) use ($authId, $user) {
+                $q->where('from_id', $authId)->where('to_id', $user->id);
+            })
+                ->orWhere(function ($q) use ($authId, $user) {
+                    $q->where('from_id', $user->id)->where('to_id', $authId);
+                })
+                ->latest()
+                ->first();
 
             $user->unread_count = Message::where('from_id', $user->id)
-                ->where('to_id', auth()->id())
-                ->where('read_at', null)
+                ->where('to_id', $authId)
+                ->whereNull('read_at')
                 ->count();
 
             return $user;
@@ -38,7 +48,6 @@ class ChatController extends Controller
 
         return view('chat.chat-dashboard', compact('users'));
     }
-
 
     public function send(Request $request)
     {
@@ -57,12 +66,20 @@ class ChatController extends Controller
     {
         $recipient = User::findOrFail($userId);
 
-        // Fetch conversation
+        // Fetch messages
         $messages = Message::where(function ($q) use ($userId) {
-            $q->where('from_id', auth()->id())->where('to_id', $userId);
+            $q->where('from_id', auth()->id())
+                ->where('to_id', $userId);
         })->orWhere(function ($q) use ($userId) {
-            $q->where('from_id', $userId)->where('to_id', auth()->id());
+            $q->where('from_id', $userId)
+                ->where('to_id', auth()->id());
         })->orderBy('created_at', 'asc')->get();
+
+        // Mark received messages as read
+        Message::where('from_id', $userId)
+            ->where('to_id', auth()->id())
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
 
         return view('chat.chat-user', compact('recipient', 'messages'));
     }
@@ -97,5 +114,14 @@ class ChatController extends Controller
         });
 
         return view('chat.chat-dashboard', compact('users'));
+    }
+
+    public function markAsRead(Request $request)
+    {
+        Message::where('id', $request->message_id)
+            ->where('to_id', auth()->id())
+            ->update(['read_at' => now()]);
+
+        return response()->json(['status' => 'ok']);
     }
 }

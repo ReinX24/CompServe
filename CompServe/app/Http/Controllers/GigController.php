@@ -69,6 +69,31 @@ class GigController extends Controller
         return $this->renderCategory('open', $request, 'gigs.open-gigs');
     }
 
+    public function appliedOpenGigJobs(Request $request)
+    {
+        $filters = $request->only([
+            'search',
+            'category',
+            'client',
+            'location'
+        ]);
+
+        if (Auth::user()->role !== 'freelancer') {
+            abort(403, 'Only freelancers can view applied gigs.');
+        }
+
+        $jobs = JobListing::where('duration_type', 'gig')
+            ->where('status', 'open')
+            ->whereHas('applications', function ($q) {
+                $q->where('freelancer_id', Auth::id());
+            })
+            ->filter($filters)
+            ->latest()
+            ->paginate(6);
+
+        return view('gigs.applied-gigs', compact('jobs'));
+    }
+
     public function inProgressGigJobs(Request $request)
     {
         return $this->renderCategory('in_progress', $request, 'gigs.in-progress-gigs');
