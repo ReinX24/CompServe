@@ -85,3 +85,8 @@ Client
 - Reset / forget password X
 - Setup client profile X
 - Create reviews for each job finished by a freelancer X
+
+# TODO: 12/2/2025
+- Manual payment system
+- Filtering of reviews
+- Soft deletes of user for admin side

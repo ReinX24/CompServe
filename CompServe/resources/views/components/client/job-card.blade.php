@@ -55,7 +55,7 @@
         {{-- Concise Job Details --}}
         <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
             <p>💰 <span class="font-medium">Budget:</span>
-                ${{ number_format($job->budget, 2) }}</p>
+                ₱{{ number_format($job->budget, 2) }}</p>
             <p>🕒 <span class="font-medium">Type:</span>
                 {{ ucfirst($job->duration_type) }}</p>
             <p>📂 <span class="font-medium">Category:</span>

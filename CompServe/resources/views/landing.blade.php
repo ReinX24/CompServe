@@ -91,8 +91,7 @@
                         technical assistance.
                     </p>
 
-                    <p
-                        class="text-base md:text-lg max-w-3xl mx-auto">
+                    <p class="text-base md:text-lg max-w-3xl mx-auto">
                         We aim to bridge the gap between clients looking for
                         trustworthy tech
                         experts and freelancers seeking new opportunities to

@@ -4,6 +4,11 @@
     <div class="flex items-center justify-between h-8 px-4 w-full">
         <!-- Left: Sidebar Toggle + Logo -->
         <div class="flex items-center space-x-3">
+            {{-- <a href="/">
+                <img src="{{ asset('images/logo.png') }}"
+                    class="h-12 rounded-full shadow-md">
+            </a> --}}
+
             <button @click="toggleSidebar"
                 class="p-2 rounded-md hover:bg-primary-focus transition focus:outline-none">
                 <svg xmlns="http://www.w3.org/2000/svg"

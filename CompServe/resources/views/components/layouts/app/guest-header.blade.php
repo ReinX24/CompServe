@@ -1,9 +1,23 @@
 <header {{-- class="shadow-sm z-40 fixed top-0 left-0 right-0 border-b border-gray-200 bg-base-100"> --}}
     class="navbar bg-primary text-primary-content shadow-sm z-40 fixed top-0 left-0 right-0">
     <div class="flex items-center justify-between h-8 px-4 w-full">
-        <div class="flex items-center">
+        {{-- <div class="flex items-center">
             <a href="/">
                 <div class="ml-4 font-semibold text-xl text-primary-content">
+                    {{ config('app.name') }}
+                </div>
+            </a>
+        </div> --}}
+
+        {{-- Left: Logo + App Name --}}
+        <div class="flex items-center gap-3">
+            <a href="/">
+                <img src="{{ asset('images/logo.png') }}"
+                    class="h-12 rounded-full shadow-md">
+            </a>
+
+            <a href="/">
+                <div class="font-semibold text-xl text-primary-content">
                     {{ config('app.name') }}
                 </div>
             </a>
