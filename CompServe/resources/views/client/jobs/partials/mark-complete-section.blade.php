@@ -17,6 +17,7 @@
         class="modal">
         <form method="POST"
             action="{{ route('client.jobs.complete', $jobListing) }}"
+            enctype="multipart/form-data"
             class="modal-box space-y-4">
             @csrf
             @method('PUT')
@@ -49,6 +50,26 @@
                     name="rating"
                     value="5"
                     class="mask mask-star-2 bg-yellow-400" />
+            </div>
+
+            {{-- PAYMENT INPUTS --}}
+            <div class="space-y-2">
+                <label class="font-semibold">Payment Price</label>
+                <input type="number"
+                    name="price"
+                    step="0.01"
+                    class="input input-bordered w-full"
+                    placeholder="Enter payment amount"
+                    required />
+            </div>
+
+            <div class="space-y-2">
+                <label class="font-semibold">Upload Proof of Payment</label>
+                <input type="file"
+                    name="proof_of_payment"
+                    accept="image/*,.pdf"
+                    class="file-input file-input-bordered w-full"
+                    required />
             </div>
 
             <input type="hidden"

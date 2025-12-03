@@ -33,7 +33,7 @@
         </div>
     @endsession
 
-    <div class="max-w-4xl mx-auto bg-base-200 text-base shadow rounded-lg p-6">
+    <div class="max-w-4xl mx-auto bg-base-100 text-base shadow rounded-lg p-6">
 
         {{-- Header: Job Title & Info --}}
         <div class="mb-6">

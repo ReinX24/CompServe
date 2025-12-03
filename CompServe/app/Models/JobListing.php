@@ -50,6 +50,11 @@ class JobListing extends Model
         return $this->hasOne(Review::class);
     }
 
+    public function paymentRecord()
+    {
+        return $this->hasOne(PaymentRecord::class, 'job_id');
+    }
+
     public function scopeFilter($query, array $filters)
     {
         // Search by title or description

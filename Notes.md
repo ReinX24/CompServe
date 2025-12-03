@@ -88,6 +88,11 @@ Client
 
 # TODO: 12/2/2025
 
-- Manual payment system
-- Filtering of reviews
+- Manual payment system X
+- Filtering of reviews X
 - Soft deletes of user for admin side
+
+# TODO: 12/3/2025
+
+- When the job is applied but you have been rejected, do not show in applied contracts/gigs
+- When the job is in progress, remove apply button in show button

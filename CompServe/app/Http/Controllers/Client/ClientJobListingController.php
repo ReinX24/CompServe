@@ -9,6 +9,7 @@ use App\Mail\JobCancelledMail;
 use App\Mail\JobCompletedMail;
 use App\Models\JobApplication;
 use App\Models\JobListing;
+use App\Models\PaymentRecord;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -109,7 +110,7 @@ class ClientJobListingController extends Controller
             // Getting the applicant that has been accepted for the job
             $user = User::findOrFail($applicant->freelancer_id);
 
-            return view('gigs.show-gig', compact('jobListing', 'applicant', 'user'));
+            return view('client.jobs.show-job', compact('jobListing', 'applicant', 'user'));
         }
     }
 
@@ -252,41 +253,68 @@ class ClientJobListingController extends Controller
 
     public function markJobAsComplete(Request $request, JobListing $jobListing)
     {
-        // Store review
-        $review = null;
-        if ($request->filled('rating')) {
-            $review = Review::create([
-                'client_id' => Auth::id(),
-                'freelancer_id' => $request->freelancer_id,
-                'job_listing_id' => $jobListing->id,
-                'rating' => $request->rating,
-                'comments' => $request->comments,
-            ]);
-        }
+        // Validate all inputs including payment fields
+        $request->validate([
+            'comments' => 'nullable|string',
+            'rating' => 'required|integer|min:1|max:5',
 
-        // Set job as complete
+            // Payment fields
+            'price' => 'required|numeric|min:1',
+            'proof_of_payment' => 'required|file|mimes:jpg,jpeg,png,pdf|max:4096',
+        ]);
+
+        // Save review
+        $review = Review::create([
+            'client_id' => Auth::id(),
+            'freelancer_id' => $request->freelancer_id,
+            'job_listing_id' => $jobListing->id,
+            'rating' => $request->rating,
+            'comments' => $request->comments,
+        ]);
+
+        // Upload proof of payment
+        $filePath = $request->file('proof_of_payment')
+            ->store('payment_proofs', 'public');
+
+        // Create payment record
+        PaymentRecord::create([
+            'job_id' => $jobListing->id,
+            'client_id' => Auth::id(),
+            'freelancer_id' => $request->freelancer_id,
+            'price' => $request->price,
+            'proof_of_payment' => $filePath,
+            'status' => 'submitted',
+        ]);
+
+        // Mark job as complete
         $jobListing->status = "completed";
         $jobListing->save();
 
-        // Find accepted application
+        // Update accepted application
         $jobApplication = $jobListing->applications()
             ->where('status', 'accepted')
             ->first();
 
-        $jobApplication->status = "completed";
-        $jobApplication->save();
+        if ($jobApplication) {
+            $jobApplication->status = "completed";
+            $jobApplication->save();
+        }
 
-        // Reload job with review relationship
+        // Reload job with review
         $jobListing->load('review');
 
-        // Send completion email
+        // Send job completion email
         Mail::to($jobApplication->freelancer->email)
-            ->queue(new JobCompletedMail($jobListing, $jobApplication));
+            ->queue(new JobCompletedMail(
+                $jobListing,
+                $jobApplication
+            ));
 
         return redirect()
             ->route('client.jobs.show', $jobListing)
-            ->with('success', 'Job completed!');
+            ->with('success', 'Job completed and payment submitted!');
     }
+
 
     public function markJobAsCancelled(Request $request, JobListing $jobListing)
     {

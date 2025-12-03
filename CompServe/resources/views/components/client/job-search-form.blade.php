@@ -12,13 +12,13 @@
             name="search"
             placeholder="🔍 Search by title or description"
             value="{{ request('search') ?? '' }}"
-            class="input input-bordered w-full md:w-64 bg-base-100 dark:bg-base-200" />
+            class="input input-bordered w-full md:w-64 bg-base-100" />
 
         {{-- Status Select (only on client.gigs.index and client.contracts.index) --}}
-        @if (request()->routeIs('client.gigs.index') ||
-                request()->routeIs('client.contracts.index'))
+        {{-- @if (request()->routeIs('client.gigs.index') ||
+                request()->routeIs('client.contracts.index')) --}}
             <select name="status"
-                class="select select-bordered w-full md:w-auto bg-base-100 dark:bg-base-200">
+                class="select select-bordered w-full md:w-auto bg-base-100">
                 <option value="">{{ __('All Status') }}</option>
                 <option value="open"
                     {{ request('status') == 'open' ? 'selected' : '' }}>Open
@@ -33,11 +33,11 @@
                     {{ request('status') == 'cancelled' ? 'selected' : '' }}>
                     Cancelled</option>
             </select>
-        @endif
+        {{-- @endif --}}
 
         {{-- Category Select --}}
         <select name="category"
-            class="select select-bordered w-full md:w-auto bg-base-100 dark:bg-base-200">
+            class="select select-bordered w-full md:w-auto bg-base-100">
             <option value="">All Categories</option>
             <option value="Hardware"
                 {{ request('category') == 'Hardware' ? 'selected' : '' }}>
@@ -64,14 +64,14 @@
             name="client"
             placeholder="👤 Search by client"
             value="{{ request('client') ?? '' }}"
-            class="input input-bordered w-full md:w-64 bg-base-100 dark:bg-base-200" />
+            class="input input-bordered w-full md:w-64 bg-base-100" />
 
         {{-- Search by location --}}
         <input type="text"
             name="location"
             placeholder="📍 Search by location"
             value="{{ request('location') ?? '' }}"
-            class="input input-bordered w-full md:w-64 bg-base-100 dark:bg-base-200" />
+            class="input input-bordered w-full md:w-64 bg-base-100" />
 
         {{-- Buttons (auto moves to the far right on desktop) --}}
         <div

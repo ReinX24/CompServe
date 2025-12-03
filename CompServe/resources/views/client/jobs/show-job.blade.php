@@ -32,7 +32,7 @@
         </div>
     @endsession
 
-    <div class="max-w-4xl mx-auto bg-base-200 text-base shadow rounded-lg p-6">
+    <div class="max-w-4xl mx-auto bg-base-100 text-base shadow rounded-lg p-6">
 
         {{-- HEADER --}}
         <div class="mb-6">
@@ -280,7 +280,7 @@
                         class="link link-primary text-sm md:text-base">{{ $user->name }}</a>
 
                     <p class="text-xs text-gray-500 mt-1">
-                        {{ $jobListing->status === 'completed' ? 'Congratulations! This applicant has now finished this job.' : 'This applicant was removed from the job.' }}
+                        {{ $jobListing->status === 'completed' ? 'Congratulations! This applicant has now finished this job.' : 'This applicant is currently on the job.' }}
                     </p>
 
                     <div class="mt-3 w-full">
@@ -289,58 +289,6 @@
                 </div>
             </div>
         @endif
-
-        {{-- @if ($jobListing->status === 'completed')
-            <div
-                class="mt-6 card bg-base-100 shadow-md p-4 flex flex-col md:flex-row items-center gap-4">
-                <div class="avatar">
-                    <div
-                        class="w-16 h-16 rounded-full ring ring-success ring-offset-base-100 ring-offset-2">
-                        <div
-                            class="flex items-center justify-center w-full h-full bg-success text-success-content text-2xl font-bold">
-                            {{ strtoupper(substr($user->name, 0, 1)) }}
-                        </div>
-                    </div>
-                </div>
-                <div class="flex-1">
-                    <p class="text-lg font-semibold">🏆 Completed Applicant</p>
-                    <a href="{{ route('client.jobs.applicant', [$jobListing, $user]) }}"
-                        class="link link-primary text-sm md:text-base">{{ $user->name }}</a>
-                    <p class="text-xs text-gray-500 mt-1">Congratulations! This
-                        applicant has now finished this job.</p>
-                </div>
-                <div class="hidden md:flex">
-                    <span
-                        class="badge badge-success badge-outline">Completed</span>
-                </div>
-            </div>
-        @endif --}}
-
-        {{-- @if ($jobListing->status === 'cancelled')
-            <div
-                class="mt-6 card bg-base-100 shadow-md p-4 flex flex-col md:flex-row items-center gap-4">
-                <div class="avatar">
-                    <div
-                        class="w-16 h-16 rounded-full ring ring-error ring-offset-base-100 ring-offset-2">
-                        <div
-                            class="flex items-center justify-center w-full h-full bg-error text-error-content text-2xl font-bold">
-                            {{ strtoupper(substr($user->name, 0, 1)) }}
-                        </div>
-                    </div>
-                </div>
-                <div class="flex-1">
-                    <p class="text-lg font-semibold">❌ Cancelled Applicant</p>
-                    <a href="{{ route('client.jobs.applicant', [$jobListing, $user]) }}"
-                        class="link link-error text-sm md:text-base">{{ $user->name }}</a>
-                    <p class="text-xs text-gray-500 mt-1">This applicant was
-                        removed from the job.</p>
-                </div>
-                <div class="hidden md:flex">
-                    <span
-                        class="badge badge-error badge-outline">Cancelled</span>
-                </div>
-            </div>
-        @endif --}}
 
         @if ($jobListing->status === 'completed' || $jobListing->status === 'cancelled')
             <div
@@ -393,6 +341,19 @@
                             </div>
                         </div>
                     @endif
+
+                    @if ($jobListing->paymentRecord)
+                        <div class="mt-4 p-4 bg-base-200 rounded-lg">
+                            <p><strong>Amount:</strong>
+                                ₱{{ number_format($jobListing->paymentRecord->price, 2) }}
+                            </p>
+                            <p><strong>Proof of Payment:</strong></p>
+                            <a class="btn btn-sm btn-secondary"
+                                href="{{ Storage::url($jobListing->paymentRecord->proof_of_payment) }}"
+                                target="_blank">View File</a>
+                        </div>
+                    @endif
+
                 </div>
             </div>
         @endif

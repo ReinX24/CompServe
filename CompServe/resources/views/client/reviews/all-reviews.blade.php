@@ -10,6 +10,76 @@
     <x-client.page-header-with-action title="⭐ Reviews"
         description="All your reviews from completed jobs." />
 
+    <!-- Search + Filters -->
+    <form method="GET"
+        action="{{ route('client.reviews') }}"
+        class="grid grid-cols-1 md:grid-cols-5 gap-4 bg-base-100 p-4 rounded-lg shadow-sm border border-base-300 mb-6">
+
+        <!-- Search -->
+        <div class="md:col-span-2">
+            <label class="form-control w-full">
+                <div class="label">
+                    <span class="label-text font-semibold">Search</span>
+                </div>
+                <input type="text"
+                    name="search"
+                    value="{{ request('search') }}"
+                    placeholder="Search job title, freelancer, or comments..."
+                    class="input input-bordered w-full" />
+            </label>
+        </div>
+
+        <!-- Min Rating -->
+        <div>
+            <label class="form-control w-full">
+                <div class="label">
+                    <span class="label-text font-semibold">Min Rating</span>
+                </div>
+                <select name="min_rating"
+                    class="select select-bordered w-full">
+                    <option value="">Any</option>
+                    @for ($i = 1; $i <= 5; $i++)
+                        <option value="{{ $i }}"
+                            {{ request('min_rating') == $i ? 'selected' : '' }}>
+                            {{ $i }} ★ and above
+                        </option>
+                    @endfor
+                </select>
+            </label>
+        </div>
+
+        <!-- Exact Rating -->
+        <div>
+            <label class="form-control w-full">
+                <div class="label">
+                    <span class="label-text font-semibold">Exact
+                        Rating</span>
+                </div>
+                <select name="rating"
+                    class="select select-bordered w-full">
+                    <option value="">Any</option>
+                    @for ($i = 1; $i <= 5; $i++)
+                        <option value="{{ $i }}"
+                            {{ request('rating') == $i ? 'selected' : '' }}>
+                            {{ $i }} ★ Only
+                        </option>
+                    @endfor
+                </select>
+            </label>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex items-end gap-2">
+            <button type="submit"
+                class="btn btn-primary w-full">Search</button>
+
+            <a href="{{ route('client.reviews') }}"
+                class="btn btn-outline w-full">
+                Reset
+            </a>
+        </div>
+    </form>
+
     @if ($reviews->isEmpty())
         <div class="alert alert-info shadow-md">
             <svg xmlns="http://www.w3.org/2000/svg"
