@@ -7,7 +7,7 @@
         </ul>
     </div>
 
-    <x-client.page-header-with-action title="Reviews"
+    <x-client.page-header-with-action title="⭐ Reviews"
         description="All your reviews from completed jobs." />
 
     @if ($reviews->isEmpty())

@@ -3,16 +3,11 @@
     class="navbar bg-primary text-primary-content shadow-sm z-40 fixed top-0 left-0 right-0">
     <div class="flex items-center justify-between h-8 px-4 w-full">
         <!-- Left: Sidebar Toggle + Logo -->
-        <div class="flex items-center space-x-3">
-            {{-- <a href="/">
-                <img src="{{ asset('images/logo.png') }}"
-                    class="h-12 rounded-full shadow-md">
-            </a> --}}
-
+        <div class="flex items-center space-x-2 sm:space-x-3">
             <button @click="toggleSidebar"
                 class="p-2 rounded-md hover:bg-primary-focus transition focus:outline-none">
                 <svg xmlns="http://www.w3.org/2000/svg"
-                    class="h-6 w-6"
+                    class="h-5 w-5 sm:h-6 sm:w-6"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -22,12 +17,19 @@
                         d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
-
-            <a href="/">
-                <div class="font-semibold text-xl text-primary-content">
-                    {{ config('app.name') }}
-                </div>
-            </a>
+            <div class="flex items-center gap-2 sm:gap-3">
+                <a href="/">
+                    <img src="{{ asset('images/logo.png') }}"
+                        class="h-12 rounded-full shadow-md">
+                </a>
+                <a href="/"
+                    class="hidden xs:block sm:block">
+                    <div
+                        class="font-semibold text-base sm:text-lg md:text-xl text-primary-content">
+                        {{ config('app.name') }}
+                    </div>
+                </a>
+            </div>
         </div>
 
         <!-- Right: Theme Toggle + Profile -->

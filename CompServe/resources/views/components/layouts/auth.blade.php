@@ -51,8 +51,8 @@
     </script>
 </head>
 
-<body {{-- class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 antialiased" --}}
-    class="antialiased"
+<body
+    class="antialiased bg-linear-to-br from-primary/10 via-base-100 to-secondary/10"
     x-data="{
         darkMode: localStorage.getItem('darkMode') === 'true',
         toggleDarkMode() {
@@ -63,11 +63,12 @@
     :class="{ 'dark': darkMode }">
 
     <div class="min-h-screen flex flex-col">
-        <!-- Main Content -->
-        <main class="flex-1 flex items-center justify-center p-6">
-            {{-- Navbar --}}
-            <x-layouts.app.guest-header />
+        {{-- Navbar --}}
+        <x-layouts.app.guest-header />
 
+        <!-- Main Content -->
+        <main
+            class="flex-1 flex items-start justify-center p-6 pt-24 overflow-y-auto">
             <div class="w-full max-w-md">
                 {{ $slot }}
             </div>

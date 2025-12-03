@@ -39,7 +39,7 @@ class JobListingSeeder extends Seeder
                 ]);
 
             foreach ($openJobs as $job) {
-                $applicants = $freelancers->random(rand(1, 2));
+                $applicants = $freelancers->random(rand(2, 3));
                 foreach ($applicants as $freelancerId) {
                     JobApplication::create([
                         'job_id' => $job->id,

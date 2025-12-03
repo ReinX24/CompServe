@@ -8,7 +8,7 @@
     </div>
 
     @if (Auth::user()->role === 'client')
-        <x-client.page-header-with-action title=" Gigs"
+        <x-client.page-header-with-action title="✏️ In-process Gigs"
             description="All your in-progress gigs."
             buttonText="Add Gig"
             :buttonLink="route('client.jobs.create') . '?type=gig'" />

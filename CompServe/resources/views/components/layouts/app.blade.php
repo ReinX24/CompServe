@@ -55,8 +55,8 @@
     @vite(['resources/js/presence.js'])
 </head>
 
-<body {{-- class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 antialiased" --}}
-    class="antialiased"
+<body
+    class="antialiased bg-linear-to-br from-primary/10 via-base-100 to-secondary/10"
     x-data="{
         sidebarOpen: localStorage.getItem('sidebarOpen') === null ? window.innerWidth >= 1024 : localStorage.getItem('sidebarOpen') === 'true',
         toggleSidebar() {
@@ -89,7 +89,6 @@
                     'lg:ml-0': !
                         sidebarOpen // collapsed (if you add a mini mode later)
                 }"
-                {{-- class="flex-1 overflow-auto bg-gray-100 dark:bg-gray-900 content-transition pt-16"> --}}
                 class="flex-1 overflow-auto content-transition pt-20">
                 <div class="p-6">
                     <!-- Success Message -->
@@ -102,40 +101,29 @@
                             x-transition:leave="transition ease-in duration-300"
                             x-transition:leave-start="opacity-100 transform translate-y-0"
                             x-transition:leave-end="opacity-0 transform -translate-y-2"
-                            class="mb-6 bg-green-50 dark:bg-green-900 border-l-4 border-green-500 p-4 rounded-md">
-                            <div class="flex items-center">
-                                <div class="flex-shrink-0">
-                                    <svg class="h-5 w-5 text-green-500 dark:text-green-400"
-                                        xmlns="http://www.w3.org/2000/svg"
+                            class="mb-6 alert alert-success shadow-lg">
+                            <div class="flex items-center w-full">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="stroke-current shrink-0 h-6 w-6"
+                                    fill="none"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span class="flex-1">{{ session('status') }}</span>
+                                <button @click="showStatusMessage = false"
+                                    class="btn btn-sm btn-ghost btn-circle">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-5 w-5"
                                         viewBox="0 0 20 20"
                                         fill="currentColor">
                                         <path fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
                                             clip-rule="evenodd" />
                                     </svg>
-                                </div>
-                                <div class="ml-3">
-                                    <p
-                                        class="text-sm text-green-700 dark:text-green-200">
-                                        {{ session('status') }}</p>
-                                </div>
-                                <div class="ml-auto pl-3">
-                                    <div class="-mx-1.5 -my-1.5">
-                                        <button @click="showStatusMessage = false"
-                                            class="inline-flex rounded-md p-1.5 text-green-500 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                                            <span
-                                                class="sr-only">{{ __('Dismiss') }}</span>
-                                            <svg class="h-5 w-5"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 20 20"
-                                                fill="currentColor">
-                                                <path fill-rule="evenodd"
-                                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
+                                </button>
                             </div>
                         </div>
                     @endsession

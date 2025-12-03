@@ -33,7 +33,7 @@
         </ul>
     </div>
 
-    <x-client.page-header-with-action title="All Gigs"
+    <x-client.page-header-with-action title="✏️ All Gigs"
         description="Gigs are short term jobs that last a week up to a month."
         buttonText="Add Gig"
         :buttonLink="route('client.jobs.create') . '?type=gig'" />

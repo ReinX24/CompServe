@@ -1,11 +1,7 @@
 <x-layouts.app>
 
-    <div class="mb-6">
-        <h1 class="text-2xl font-bold">
-            {{ __('Client Dashboard') }}</h1>
-        <p class="text-gray-600 mt-1">
-            {{ __('Welcome to the dashboard') }}</p>
-    </div>
+    <x-client.page-header-with-action title="📋 {{ __('Client Dashboard') }}"
+        description="Welcome to the dashboard." />
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
 

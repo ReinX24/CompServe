@@ -61,15 +61,31 @@
             <p>📂 <span class="font-medium">Category:</span>
                 {{ preg_replace('/(?<!^)([A-Z])/', ' $1', $job->category) }}</p>
 
-            @if ($job->status === 'open')
-                <p>👥 <span class="font-medium">Applicants:</span>
-                    {{ $job->applicants->count() }}</p>
-            @endif
-
             <p>⏳ <span class="font-medium">Duration:</span>
                 {{ $job->duration ?? 'N/A' }}</p>
             <p class="col-span-2">📍 <span class="font-medium">Location:</span>
                 {{ $job->location ?? 'Remote' }}</p>
+
+            <hr class="col-span-2">
+
+            @if ($job->status === 'open')
+                @php
+                    $pending = $job->applicants
+                        ->where('status', 'pending')
+                        ->count();
+                    $rejected = $job->applicants
+                        ->where('status', 'rejected')
+                        ->count();
+                    $total = $job->applicants->count();
+                @endphp
+
+                <p>🟡 <span class="font-medium">Pending Applicants:</span>
+                    {{ $pending }}</p>
+                <p>❌ <span class="font-medium">Rejected Applicants:</span>
+                    {{ $rejected }}</p>
+                <p>👥 <span class="font-medium">Total Applicants:</span>
+                    {{ $total }}</p>
+            @endif
         </div>
 
         {{-- Footer --}}

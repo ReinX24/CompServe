@@ -7,7 +7,7 @@
         </ul>
     </div>
 
-    <x-client.page-header-with-action title="Rejected Gigs"
+    <x-client.page-header-with-action title="✏️ Rejected Gigs"
         description="All gigs you were rejected from." />
 
     @if (Auth::user()->role === 'client')

@@ -7,7 +7,7 @@
         </ul>
     </div>
 
-    <x-client.page-header-with-action title="Rejected Contracts"
+    <x-client.page-header-with-action title="🖊️ Rejected Contracts"
         description="All contracts you were rejected from." />
 
     @if (Auth::user()->role === 'client')

@@ -23,7 +23,7 @@ class ClientJobListingController extends Controller
     public function create(Request $request)
     {
         $jobType = $request->query('type', 'contract');
-        return view("client.jobs.create-job", compact("jobType"));
+        return view("gigs.create-gig", compact("jobType"));
     }
 
     /**
@@ -109,7 +109,7 @@ class ClientJobListingController extends Controller
             // Getting the applicant that has been accepted for the job
             $user = User::findOrFail($applicant->freelancer_id);
 
-            return view('client.jobs.show-job', compact('jobListing', 'applicant', 'user'));
+            return view('gigs.show-gig', compact('jobListing', 'applicant', 'user'));
         }
     }
 
@@ -118,7 +118,7 @@ class ClientJobListingController extends Controller
      */
     public function edit(JobListing $jobListing)
     {
-        return view('client.jobs.edit-job', compact('jobListing'));
+        return view('gigs.edit-gig', compact('jobListing'));
     }
 
     /**

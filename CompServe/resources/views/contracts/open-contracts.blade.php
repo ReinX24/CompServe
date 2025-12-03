@@ -8,12 +8,12 @@
     </div>
 
     @if (Auth::user()->role === 'client')
-        <x-client.page-header-with-action title="Open Contracts"
+        <x-client.page-header-with-action title="🖊️ Open Contracts"
             description="All your open contracts."
             buttonText="Add Contract"
             :buttonLink="route('client.jobs.create') . '?type=contract'" />
     @elseif(Auth::user()->role === 'freelancer')
-        <x-client.page-header-with-action title="Open Contracts"
+        <x-client.page-header-with-action title="🖊️ Open Contracts"
             description="All your open contracts." />
     @endif
 
