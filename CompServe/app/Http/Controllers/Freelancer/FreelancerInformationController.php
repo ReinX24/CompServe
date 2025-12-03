@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Freelancer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Review;
+use App\Models\User;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,8 +16,29 @@ class FreelancerInformationController extends Controller
         $user = Auth::user();
 
         $freelancerInfo = $user->freelancerInformation;
+        $averageRating = Review::where('freelancer_id', $user->id)
+            ->avg('rating');
 
-        return view('freelancer.profile-show', compact('user', 'freelancerInfo'));
+        return view('freelancer.profile-show', compact(
+            'user',
+            'freelancerInfo',
+            'averageRating'
+        ));
+    }
+
+    public function showPublic(User $user)
+    {
+        $freelancerInfo = $user->freelancerInfo; // If you have a relationship
+        $certifications = $user->certifications()->where('status', 'approved')->get();
+        $averageRating = Review::where('freelancer_id', $user->id)
+            ->avg('rating');
+
+        return view('profiles.freelancer', compact(
+            'user',
+            'freelancerInfo',
+            'certifications',
+            'averageRating'
+        ));
     }
 
     public function edit()

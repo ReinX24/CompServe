@@ -22,7 +22,7 @@
                                     class="w-36 rounded-full ring ring-secondary ring-offset-base-100 ring-offset-4 shadow-xl">
                                     <div
                                         class="flex items-center justify-center w-full h-full bg-gradient-to-br from-secondary to-accent text-secondary-content text-5xl font-bold">
-                                        {{ strtoupper(substr($user->name ?? Auth::user()->name, 0, 1)) }}
+                                        {{ strtoupper(substr($user->name, 0, 1)) }}
                                     </div>
                                 </div>
                             </div>
@@ -32,7 +32,7 @@
                         <div class="flex-1 text-center md:text-left">
                             <h1
                                 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent mb-2">
-                                {{ $user->name ?? Auth::user()->name }}
+                                {{ $user->name }}
                             </h1>
                             <div
                                 class="flex flex-wrap gap-3 justify-center md:justify-start items-center mt-3">
@@ -48,7 +48,7 @@
                                             stroke-width="2"
                                             d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                     </svg>
-                                    {{ ucfirst($user->role ?? 'Client') }}
+                                    {{ ucfirst($user->role) }}
                                 </span>
                                 <span class="badge badge-lg badge-ghost gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +62,7 @@
                                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                     Member since
-                                    {{ ($user->created_at ?? Auth::user()->created_at)->format('F Y') }}
+                                    {{ $user->created_at->format('F Y') }}
                                 </span>
                             </div>
                         </div>
@@ -92,8 +92,7 @@
                                             class="text-xs uppercase opacity-60 mb-1">
                                             Email</p>
                                         <p class="font-medium break-all">
-                                            {{ $user->email ?? Auth::user()->email }}
-                                        </p>
+                                            {{ $user->email }}</p>
                                     </div>
                                 </div>
                                 <div
@@ -158,43 +157,6 @@
                                         </a>
                                     </div>
                                 @endif
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons Card -->
-                    <div
-                        class="card bg-gradient-to-br from-secondary/5 to-accent/5 shadow-xl hover:shadow-2xl transition-shadow duration-300">
-                        <div class="card-body p-5">
-                            <div class="flex flex-col gap-3">
-                                <label for="change-password-modal"
-                                    class="btn btn-secondary btn-block gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="h-5 w-5"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                    </svg>
-                                    Change Password
-                                </label>
-                                <a href="{{ route('client.profile.edit') }}"
-                                    class="btn btn-primary btn-block gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="h-5 w-5"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                    </svg>
-                                    Edit Information
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -329,129 +291,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    {{-- Change password modal --}}
-    <input type="checkbox"
-        id="change-password-modal"
-        class="modal-toggle" />
-    <div class="modal">
-        <div class="modal-box relative max-w-md">
-            <label for="change-password-modal"
-                class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-
-            <h3 class="text-2xl font-bold mb-6 flex items-center gap-2">
-                <span class="text-3xl">🔐</span>
-                Change Password
-            </h3>
-
-            @if ($errors->any())
-                <div class="alert alert-error mb-4 shadow-lg">
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            class="stroke-current flex-shrink-0 h-6 w-6"
-                            fill="none"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <div>
-                            <ul class="list-disc list-inside text-sm">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            @endif
-
-            @if (session('success'))
-                <div class="alert alert-success mb-4 shadow-lg">
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            class="stroke-current flex-shrink-0 h-6 w-6"
-                            fill="none"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span>{{ session('success') }}</span>
-                    </div>
-                </div>
-            @endif
-
-            <form method="POST"
-                action="{{ route('client.profile.changePassword') }}">
-                @csrf
-                <div class="space-y-4">
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold">Current
-                                Password</span>
-                        </label>
-                        <input type="password"
-                            name="current_password"
-                            class="input input-bordered w-full"
-                            required
-                            placeholder="Enter current password">
-                    </div>
-
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold">New
-                                Password</span>
-                        </label>
-                        <input type="password"
-                            name="new_password"
-                            class="input input-bordered w-full"
-                            required
-                            minlength="8"
-                            placeholder="Enter new password">
-                        <label class="label">
-                            <span class="label-text-alt">Must be at least 8
-                                characters</span>
-                        </label>
-                    </div>
-
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold">Confirm New
-                                Password</span>
-                        </label>
-                        <input type="password"
-                            name="new_password_confirmation"
-                            class="input input-bordered w-full"
-                            required
-                            minlength="8"
-                            placeholder="Confirm new password">
-                    </div>
-                </div>
-
-                <div class="modal-action">
-                    <label for="change-password-modal"
-                        class="btn btn-ghost">Cancel</label>
-                    <button type="submit"
-                        class="btn btn-primary gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            class="h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M5 13l4 4L19 7" />
-                        </svg>
-                        Update Password
-                    </button>
-                </div>
-            </form>
         </div>
     </div>
 </x-layouts.app>

@@ -13,12 +13,27 @@ class GigController extends Controller
      */
     private function fetchGigsForRole($status = null, $filters = [])
     {
-        $query = Auth::user()->role === "client"
-            ? Auth::user()->jobListings()->where('duration_type', 'gig')
-            : JobListing::where('duration_type', 'gig')->whereHas('client');
+        // If the user is a client, show all their own gig listings
+        if (Auth::user()->role === "client") {
+            $query = Auth::user()->jobListings()
+                ->where('duration_type', 'gig');
+
+            if ($status) {
+                $query->where('status', $status);
+            }
+
+            return $query->filter($filters)->latest();
+        }
+
+        // If the user is a freelancer — filter by accepted applications
+        $query = JobListing::where('duration_type', 'gig')
+            ->whereHas('applications', function ($q) {
+                $q->where('freelancer_id', Auth::id())
+                    ->where('status', 'accepted'); // Only accepted gig applications
+            });
 
         if ($status) {
-            $query->where('status', $status);
+            $query->where('status', $status); // Gig must still be in-progress
         }
 
         return $query->filter($filters)->latest();
@@ -83,9 +98,10 @@ class GigController extends Controller
         }
 
         $jobs = JobListing::where('duration_type', 'gig')
-            ->where('status', 'open')
+            ->where('status', 'open') // Job listings must still be open
             ->whereHas('applications', function ($q) {
-                $q->where('freelancer_id', Auth::id());
+                $q->where('freelancer_id', Auth::id())
+                    ->where('status', 'pending'); // Only pending applications
             })
             ->filter($filters)
             ->latest()

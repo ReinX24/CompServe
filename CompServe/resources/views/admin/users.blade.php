@@ -28,6 +28,7 @@
                         <th class="text-left">Name</th>
                         <th class="text-left hidden sm:table-cell">Email</th>
                         <th class="text-left">Role</th>
+                        <th class="text-left">Deleted</th>
                         <th class="text-right">Actions</th>
                     </tr>
                 </thead>
@@ -45,37 +46,63 @@
                                     {{ ucfirst($user->role) }}
                                 </span>
                             </td>
+                            <td>
+                                @if ($user->trashed())
+                                    <span
+                                        class="badge badge-error">Deleted</span>
+                                @else
+                                    <span
+                                        class="badge badge-success">Active</span>
+                                @endif
+                            </td>
                             <td
                                 class="text-right flex flex-col sm:flex-row sm:justify-end gap-2 mt-2 sm:mt-0">
-                                {{-- Edit --}}
-                                <button class="btn btn-sm btn-primary"
-                                    onclick="document.getElementById('editModal{{ $user->id }}').showModal()">
-                                    ✏️ Edit
-                                </button>
 
-                                {{-- Reset Password --}}
-                                <form method="POST"
-                                    action="{{ route('admin.users.resetPassword', $user) }}">
-                                    @csrf
-                                    @method('PUT')
-                                    <button class="btn btn-sm btn-secondary"
-                                        onclick="return confirm('Reset password for {{ $user->name }}?')">
-                                        🔑 Reset
-                                    </button>
-                                </form>
+                                {{-- If user is soft deleted → Restore button --}}
+                                @if ($user->trashed())
+                                    <form method="POST"
+                                        action="{{ route('users.restore', $user->id) }}">
+                                        @csrf
+                                        <button class="btn btn-sm btn-success"
+                                            onclick="return confirm('Restore {{ $user->name }}?')">
+                                            ♻️ Restore
+                                        </button>
+                                    </form>
 
-                                {{-- Delete --}}
-                                <form method="POST"
-                                    action="{{ route('admin.users.delete', $user) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button
-                                        class="btn btn-outline btn-sm btn-error"
-                                        onclick="return confirm('Delete {{ $user->name }}? This cannot be undone.')">
-                                        ❌ Delete
+                                    {{-- If user is active → Normal actions --}}
+                                @else
+                                    {{-- Edit --}}
+                                    <button class="btn btn-sm btn-primary"
+                                        onclick="document.getElementById('editModal{{ $user->id }}').showModal()">
+                                        ✏️ Edit
                                     </button>
-                                </form>
+
+                                    {{-- Reset Password --}}
+                                    <form method="POST"
+                                        action="{{ route('admin.users.resetPassword', $user) }}">
+                                        @csrf
+                                        @method('PUT')
+                                        <button class="btn btn-sm btn-secondary"
+                                            onclick="return confirm('Reset password for {{ $user->name }}?')">
+                                            🔑 Reset
+                                        </button>
+                                    </form>
+
+                                    {{-- Delete --}}
+                                    <form method="POST"
+                                        action="{{ route('admin.users.delete', $user) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button
+                                            class="btn btn-outline btn-sm btn-error"
+                                            onclick="return confirm('Delete {{ $user->name }}?')">
+                                            ❌ Delete
+                                        </button>
+                                    </form>
+                                @endif
+
                             </td>
+
                         </tr>
 
                         {{-- Edit Modal --}}

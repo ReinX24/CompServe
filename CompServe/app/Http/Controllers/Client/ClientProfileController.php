@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\ClientProfile;
+use App\Models\User;
 use Auth;
 use Hash;
 use Illuminate\Http\Request;
@@ -16,6 +17,16 @@ class ClientProfileController extends Controller
         $profile = $user->clientProfile;
 
         return view('client.profile-show', compact('user', 'profile'));
+    }
+
+    public function showPublic($userId)
+    {
+        $user = User::with('clientProfile')->findOrFail($userId);
+
+        // For cleaner template use:
+        $profile = $user->clientProfile;
+
+        return view('profiles.client', compact('user', 'profile'));
     }
 
     public function edit()

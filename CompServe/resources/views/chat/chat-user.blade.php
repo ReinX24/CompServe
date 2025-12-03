@@ -2,9 +2,24 @@
 
     <div class="max-w-3xl mx-auto py-6">
 
-        <h2 class="text-2xl font-bold mb-4">
-            Chat with <span class="text-primary">{{ $recipient->name }}</span>
-        </h2>
+        <div class="card bg-base-100 shadow-md p-6 mb-3">
+            <h2 class="text-2xl font-bold mb-2">
+                Chat with <span
+                    class="text-primary">{{ $recipient->name }}</span>
+            </h2>
+
+            @if ($recipient->role === 'client')
+                <a href="{{ route('client.profile', $recipient->id) }}"
+                    class="link link-primary">
+                    View Profile
+                </a>
+            @elseif($recipient->role === 'freelancer')
+                <a href="{{ route('freelancer.profile', $recipient->id) }}"
+                    class="link link-primary">
+                    View Profile
+                </a>
+            @endif
+        </div>
 
         <!-- Chat Box -->
         <div id="chat-box"

@@ -34,3 +34,14 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         return view('emails.password_reset', compact('user', 'newPassword'));
     });
 });
+
+Route::middleware('admin')->group(function () {
+    // Regular user management
+    Route::get('/users', [AdminController::class, 'index'])->name('users.index');
+    Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('users.delete');
+
+    // Trash management
+    Route::get('/users/trash', [AdminController::class, 'indexOnlyTrashed'])->name('users.trash');
+    Route::post('/users/{id}/restore', [AdminController::class, 'restoreUser'])->name('users.restore');
+    Route::delete('/users/{id}/force-delete', [AdminController::class, 'forceDeleteUser'])->name('users.force-delete');
+});

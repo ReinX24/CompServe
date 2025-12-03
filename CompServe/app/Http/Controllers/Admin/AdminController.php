@@ -121,7 +121,7 @@ class AdminController extends Controller
 
     public function users()
     {
-        $users = User::paginate(6);
+        $users = User::withTrashed()->paginate(6);
         return view('admin.users', compact('users'));
     }
 
@@ -138,17 +138,17 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'User information updated successfully.');
     }
 
-    public function deleteUser(User $user)
-    {
-        // prevent deleting own admin account (optional)
-        if (auth()->id() === $user->id) {
-            return redirect()->back()->with('error', 'You cannot delete your own account.');
-        }
+    // public function deleteUser(User $user)
+    // {
+    //     // prevent deleting own admin account (optional)
+    //     if (auth()->id() === $user->id) {
+    //         return redirect()->back()->with('error', 'You cannot delete your own account.');
+    //     }
 
-        $user->delete();
+    //     $user->delete();
 
-        return redirect()->back()->with('success', 'User deleted successfully.');
-    }
+    //     return redirect()->back()->with('success', 'User deleted successfully.');
+    // }
 
     public function resetPassword(User $user)
     {
@@ -198,5 +198,61 @@ class AdminController extends Controller
     {
         $reviews = Review::with(['freelancer', 'jobListing'])->latest()->paginate(6);
         return view('admin.reviews', compact('reviews'));
+    }
+
+    // Soft delete a user
+    public function deleteUser(User $user)
+    {
+        // Prevent deleting own admin account
+        if (auth()->id() === $user->id) {
+            return redirect()->back()->with('error', 'You cannot delete your own account.');
+        }
+
+        $user->delete(); // This is now a soft delete
+        return redirect()->back()->with('success', 'User deleted successfully.');
+    }
+
+    // Restore a soft-deleted user
+    public function restoreUser($id)
+    {
+        $user = User::withTrashed()->findOrFail($id);
+        $user->restore();
+
+        return redirect()->back()->with('success', 'User restored successfully.');
+    }
+
+    // Permanently delete a user (hard delete)
+    public function forceDeleteUser($id)
+    {
+        $user = User::withTrashed()->findOrFail($id);
+
+        // Prevent force deleting own admin account
+        if (auth()->id() === $user->id) {
+            return redirect()->back()->with('error', 'You cannot delete your own account.');
+        }
+
+        $user->forceDelete(); // Permanently deletes from database
+        return redirect()->back()->with('success', 'User permanently deleted.');
+    }
+
+    // Show only active (non-deleted) users
+    public function index()
+    {
+        $users = User::all(); // Only gets non-deleted users
+        return view('users.index', compact('users'));
+    }
+
+    // Show all users including soft-deleted
+    public function indexWithTrashed()
+    {
+        $users = User::withTrashed()->get(); // Gets all users including deleted
+        return view('users.index', compact('users'));
+    }
+
+    // Show only soft-deleted users
+    public function indexOnlyTrashed()
+    {
+        $users = User::onlyTrashed()->get(); // Gets only deleted users
+        return view('users.trash', compact('users'));
     }
 }
