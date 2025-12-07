@@ -35,27 +35,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
     // -------------------------------
-    // Helper: append message to chat
+    // Helper: append message to chat (UPDATED TO MATCH BLADE STYLING)
     // -------------------------------
     function appendMessage(message, isMine, readAt = null) {
         const wrapper = document.createElement('div');
-        wrapper.className = `message ${isMine ? 'from-me text-right' : 'from-them text-left'}`;
+        wrapper.className = `message flex ${isMine ? 'justify-end' : 'justify-start'} animate-fade-in`;
 
-        const status = isMine
-            ? `<div class="text-[10px] opacity-60 mt-1">${readAt ? '✓ Read' : '✓ Sent'}</div>`
-            : '';
+        const currentTime = new Date().toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true,
+        });
 
         wrapper.innerHTML = `
-            <div class="inline-block px-3 py-2 rounded-lg ${
-                isMine
-                    ? 'bg-primary text-primary-content'
-                    : 'bg-secondary text-secondary-content'
-            }">
-                <strong class="block text-xs opacity-80">
-                    ${isMine ? 'Me' : recipientName}
-                </strong>
-                ${message}
-                ${status}
+            <div class="max-w-[75%] ${isMine ? 'items-end' : 'items-start'} flex flex-col gap-1">
+                <!-- Sender Name -->
+                <span class="text-xs text-base-content/60 px-3 font-medium">
+                    ${isMine ? 'You' : recipientName}
+                </span>
+
+                <!-- Message Bubble -->
+                <div class="group relative">
+                    <div class="px-4 py-3 rounded-2xl shadow-sm ${
+                        isMine
+                            ? 'bg-linear-to-br from-primary to-primary/90 text-primary-content rounded-br-sm'
+                            : 'bg-base-100 text-base-content border-2 border-base-200 rounded-bl-sm'
+                    }">
+                        <p class="text-sm leading-relaxed wrap-break-word">
+                            ${message}
+                        </p>
+                    </div>
+
+                    <!-- Timestamp & Status -->
+                    <div class="flex items-center gap-2 mt-1 px-3 ${isMine ? 'justify-end' : 'justify-start'}">
+                        <span class="text-[10px] text-base-content/50">
+                            ${currentTime}
+                        </span>
+                    </div>
+                </div>
             </div>
         `;
 
@@ -121,6 +138,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         messageInput.value = '';
+
+        // Reset textarea height after sending
+        messageInput.style.height = '44px';
     }
 
     // send button click
@@ -132,10 +152,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // enter key to send
+    // enter key to send (already handled in blade template, but keeping for compatibility)
     if (messageInput) {
         messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendBtn.click();
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendBtn.click();
+            }
         });
     }
 

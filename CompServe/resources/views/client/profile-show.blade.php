@@ -1,4 +1,13 @@
 <x-layouts.app>
+
+    <div class="breadcrumbs text-sm mb-4">
+        <ul class="text-base-content/70">
+            <li><a href="{{ route('dashboard') }}"
+                    class="hover:text-primary">Dashboard</a></li>
+            <li class="text-primary font-semibold">Profile</li>
+        </ul>
+    </div>
+
     <div
         class="min-h-screen bg-linear-to-br from-base-200 via-base-100 to-base-200 py-12 px-4">
         <div class="max-w-5xl mx-auto">

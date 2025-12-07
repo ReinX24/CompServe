@@ -81,7 +81,32 @@ class GigController extends Controller
      */
     public function openGigJobs(Request $request)
     {
-        return $this->renderCategory('open', $request, 'gigs.open-gigs');
+        $filters = $request->only(['search', 'category', 'client', 'location']);
+
+        // CLIENT VIEW - show their own open gigs
+        if (Auth::user()->role === 'client') {
+            $jobs = Auth::user()
+                ->jobListings()
+                ->where('duration_type', 'gig')
+                ->where('status', 'open')
+                ->filter($filters)
+                ->latest()
+                ->paginate(6);
+
+            return view('gigs.open-gigs', compact('jobs'));
+        }
+
+        // FREELANCER VIEW - show open gigs they have NOT applied to
+        $jobs = JobListing::where('duration_type', 'gig')
+            ->where('status', 'open')
+            ->whereDoesntHave('applications', function ($q) {
+                $q->where('freelancer_id', Auth::id());
+            })
+            ->filter($filters)
+            ->latest()
+            ->paginate(6);
+
+        return view('gigs.open-gigs', compact('jobs'));
     }
 
     public function appliedOpenGigJobs(Request $request)
@@ -201,8 +226,12 @@ class GigController extends Controller
      */
     private function queryOpenGigs($filters)
     {
+        // For "All Gigs" page - show open gigs NOT applied to
         return JobListing::where('duration_type', 'gig')
             ->where('status', 'open')
+            ->whereDoesntHave('applications', function ($q) {
+                $q->where('freelancer_id', Auth::id());
+            })
             ->filter($filters)
             ->latest();
     }

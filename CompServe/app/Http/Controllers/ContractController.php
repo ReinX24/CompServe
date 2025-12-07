@@ -13,12 +13,27 @@ class ContractController extends Controller
      */
     private function fetchContractsForRole($status = null, $filters = [])
     {
-        $query = Auth::user()->role === "client"
-            ? Auth::user()->jobListings()->where('duration_type', 'contract')
-            : JobListing::where('duration_type', 'contract')->whereHas('client');
+        // If the user is a client, show all their own contract listings
+        if (Auth::user()->role === "client") {
+            $query = Auth::user()->jobListings()
+                ->where('duration_type', 'contract');
+
+            if ($status) {
+                $query->where('status', $status);
+            }
+
+            return $query->filter($filters)->latest();
+        }
+
+        // If the user is a freelancer — filter by accepted applications
+        $query = JobListing::where('duration_type', 'contract')
+            ->whereHas('applications', function ($q) {
+                $q->where('freelancer_id', Auth::id())
+                    ->where('status', 'accepted'); // Only accepted contract applications
+            });
 
         if ($status) {
-            $query->where('status', $status);
+            $query->where('status', $status); // Contract must still be in the specified status
         }
 
         return $query->filter($filters)->latest();
@@ -31,7 +46,9 @@ class ContractController extends Controller
     {
         $filters = $request->only(['search', 'category', 'client', 'location', 'status']);
 
-        // CLIENT → simple return, only their jobs
+        /** -----------------------------------
+         * CLIENT VIEW
+         * ----------------------------------*/
         if (Auth::user()->role === 'client') {
             $jobs = Auth::user()
                 ->jobListings()
@@ -43,12 +60,15 @@ class ContractController extends Controller
             return view('contracts.all-contracts', compact('jobs'));
         }
 
-        // FREELANCER → merge all categories (just like gigs)
+        /** -----------------------------------
+         * FREELANCER VIEW
+         * ----------------------------------*/
         $jobs = collect()
             ->merge($this->queryOpenContracts($filters)->get())
             ->merge($this->queryInProgressContracts($filters)->get())
             ->merge($this->queryCancelledContracts($filters)->get())
             ->merge($this->queryCompletedContracts($filters)->get())
+            ->merge($this->queryRejectedContracts($filters)->get()) // rejected belongs ONLY to freelancer
             ->unique('id')
             ->sortByDesc('created_at')
             ->values();
@@ -57,11 +77,36 @@ class ContractController extends Controller
     }
 
     /**
-     * Category Pages
+     * Individual category pages
      */
     public function openContractJobs(Request $request)
     {
-        return $this->renderCategory('open', $request, 'contracts.open-contracts');
+        $filters = $request->only(['search', 'category', 'client', 'location']);
+
+        // CLIENT VIEW - show their own open contracts
+        if (Auth::user()->role === 'client') {
+            $jobs = Auth::user()
+                ->jobListings()
+                ->where('duration_type', 'contract')
+                ->where('status', 'open')
+                ->filter($filters)
+                ->latest()
+                ->paginate(6);
+
+            return view('contracts.open-contracts', compact('jobs'));
+        }
+
+        // FREELANCER VIEW - show open contracts they have NOT applied to
+        $jobs = JobListing::where('duration_type', 'contract')
+            ->where('status', 'open')
+            ->whereDoesntHave('applications', function ($q) {
+                $q->where('freelancer_id', Auth::id());
+            })
+            ->filter($filters)
+            ->latest()
+            ->paginate(6);
+
+        return view('contracts.open-contracts', compact('jobs'));
     }
 
     public function appliedOpenContractJobs(Request $request)
@@ -78,9 +123,10 @@ class ContractController extends Controller
         }
 
         $jobs = JobListing::where('duration_type', 'contract')
-            ->where('status', 'open') // ⭐ Only OPEN contracts
+            ->where('status', 'open') // Job listings must still be open
             ->whereHas('applications', function ($q) {
-                $q->where('freelancer_id', Auth::id()); // ⭐ User applied
+                $q->where('freelancer_id', Auth::id())
+                    ->where('status', 'pending'); // Only pending applications
             })
             ->filter($filters)
             ->latest()
@@ -122,13 +168,14 @@ class ContractController extends Controller
     }
 
     /**
-     * Shared Render Helpers (exact copy from GigController)
+     * Helper: Render contract pages for client/freelancer
      */
     private function renderCategory($status, Request $request, $view)
     {
         $filters = $request->only(['search', 'category', 'client', 'location']);
 
-        $jobs = $this->fetchContractsForRole($status, $filters)->paginate(6);
+        $jobs = $this->fetchContractsForRole($status, $filters)
+            ->paginate(6);
 
         return view($view, compact('jobs'));
     }
@@ -159,25 +206,32 @@ class ContractController extends Controller
                 ->where('duration_type', 'contract')
                 ->where('status', $status)
                 ->filter($filters)
+                ->latest()
                 ->paginate(6);
 
             return view($view, compact('jobs'));
         }
 
-        // Dynamically call queryCompletedContracts(), etc.
-        $queryMethod = "query" . ucfirst($status) . "Contracts";
-        $jobs = $this->{$queryMethod}($filters)->paginate(6);
+        // FREELANCER
+        $method = "query" . ucfirst($status) . "Contracts";
+
+        $jobs = $this->{$method}($filters)
+            ->paginate(6);
 
         return view($view, compact('jobs'));
     }
 
     /**
-     * Query Helpers (FREELANCER versions)
+     * Query Helpers (Freelancer)
      */
     private function queryOpenContracts($filters)
     {
+        // For "All Contracts" page - show open contracts NOT applied to
         return JobListing::where('duration_type', 'contract')
             ->where('status', 'open')
+            ->whereDoesntHave('applications', function ($q) {
+                $q->where('freelancer_id', Auth::id());
+            })
             ->filter($filters)
             ->latest();
     }
@@ -223,7 +277,7 @@ class ContractController extends Controller
             ->where('status', 'completed')
             ->whereHas('applications', function ($q) {
                 $q->where('freelancer_id', Auth::id())
-                    ->where('status', 'accepted');
+                    ->where('status', 'completed');
             })
             ->filter($filters)
             ->latest();

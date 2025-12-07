@@ -13,10 +13,9 @@
     <!-- Search + Filters -->
     <form method="GET"
         action="{{ route('client.reviews') }}"
-        class="grid grid-cols-1 md:grid-cols-5 gap-4 bg-base-100 p-4 rounded-lg shadow-sm border border-base-300 mb-6">
-
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 bg-base-100 p-4 rounded-lg shadow-sm border border-base-300 mb-6">
         <!-- Search -->
-        <div class="md:col-span-2">
+        <div class="lg:col-span-2">
             <label class="form-control w-full">
                 <div class="label">
                     <span class="label-text font-semibold">Search</span>
@@ -24,7 +23,7 @@
                 <input type="text"
                     name="search"
                     value="{{ request('search') }}"
-                    placeholder="Search job title, freelancer, or comments..."
+                    placeholder="Search job title, freelancer..."
                     class="input input-bordered w-full" />
             </label>
         </div>
@@ -41,7 +40,7 @@
                     @for ($i = 1; $i <= 5; $i++)
                         <option value="{{ $i }}"
                             {{ request('min_rating') == $i ? 'selected' : '' }}>
-                            {{ $i }} ★ and above
+                            {{ $i }} ★+
                         </option>
                     @endfor
                 </select>
@@ -52,8 +51,7 @@
         <div>
             <label class="form-control w-full">
                 <div class="label">
-                    <span class="label-text font-semibold">Exact
-                        Rating</span>
+                    <span class="label-text font-semibold">Exact Rating</span>
                 </div>
                 <select name="rating"
                     class="select select-bordered w-full">
@@ -61,7 +59,7 @@
                     @for ($i = 1; $i <= 5; $i++)
                         <option value="{{ $i }}"
                             {{ request('rating') == $i ? 'selected' : '' }}>
-                            {{ $i }} ★ Only
+                            {{ $i }} ★
                         </option>
                     @endfor
                 </select>
@@ -69,12 +67,13 @@
         </div>
 
         <!-- Buttons -->
-        <div class="flex items-end gap-2">
+        <div class="lg:col-span-2 flex items-end gap-2">
             <button type="submit"
-                class="btn btn-primary w-full">Search</button>
-
+                class="btn btn-primary flex-1">
+                Search
+            </button>
             <a href="{{ route('client.reviews') }}"
-                class="btn btn-outline w-full">
+                class="btn btn-outline flex-1">
                 Reset
             </a>
         </div>

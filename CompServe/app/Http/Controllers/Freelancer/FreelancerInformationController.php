@@ -35,7 +35,7 @@ class FreelancerInformationController extends Controller
         $averageRating = Review::where('freelancer_id', $user->id)
             ->avg('rating');
 
-        return view('profiles.freelancer', compact(
+        return view('freelancer.profile-show', compact(
             'user',
             'freelancerInfo',
             'certifications',

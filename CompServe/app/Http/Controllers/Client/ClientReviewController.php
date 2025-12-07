@@ -17,7 +17,6 @@ class ClientReviewController extends Controller
         // Search functionality
         if ($request->filled('search')) {
             $search = $request->search;
-
             $query->where(function ($q) use ($search) {
                 $q->whereHas('freelancer', function ($u) use ($search) {
                     $u->where('name', 'LIKE', "%{$search}%");
@@ -29,14 +28,14 @@ class ClientReviewController extends Controller
             });
         }
 
-        // Filter: show only X-star reviews (1,2,3,4,5)
-        if ($request->filled('stars_exact')) {
-            $query->where('rating', $request->stars_exact);
+        // Filter: show only exact rating (1,2,3,4,5)
+        if ($request->filled('rating')) {
+            $query->where('rating', $request->rating);
         }
 
-        // Sort: show X stars and above
-        if ($request->filled('stars_min')) {
-            $query->where('rating', '>=', $request->stars_min);
+        // Filter: show minimum rating and above
+        if ($request->filled('min_rating')) {
+            $query->where('rating', '>=', $request->min_rating);
         }
 
         // Pagination

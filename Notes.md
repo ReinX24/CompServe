@@ -90,9 +90,9 @@ Client
 
 - Manual payment system X
 - Filtering of reviews X
-- Soft deletes of user for admin side
+- Soft deletes of user for admin side X
 
 # TODO: 12/3/2025
 
-- When the job is applied but you have been rejected, do not show in applied contracts/gigs
-- When the job is in progress, remove apply button in show button
+- When the job is applied but you have been rejected, do not show in applied contracts/gigs X
+- When the job is in progress, remove apply button in show button X
