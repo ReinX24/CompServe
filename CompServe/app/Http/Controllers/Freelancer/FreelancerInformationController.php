@@ -16,12 +16,14 @@ class FreelancerInformationController extends Controller
         $user = Auth::user();
 
         $freelancerInfo = $user->freelancerInformation;
+        $certifications = $user->certifications()->where('status', 'approved')->get();
         $averageRating = Review::where('freelancer_id', $user->id)
             ->avg('rating');
 
         return view('freelancer.profile-show', compact(
             'user',
             'freelancerInfo',
+            'certifications',
             'averageRating'
         ));
     }

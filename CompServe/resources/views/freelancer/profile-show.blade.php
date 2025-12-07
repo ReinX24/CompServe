@@ -1,12 +1,12 @@
 <x-layouts.app>
     <div
-        class="min-h-screen bg-gradient-to-br from-base-200 via-base-100 to-base-200 py-12 px-4">
+        class="min-h-screen bg-linear-to-br from-base-200 via-base-100 to-base-200 py-12 px-4">
         <div class="max-w-5xl mx-auto">
             <!-- Profile Header Card with Gradient -->
             <div
-                class="card bg-gradient-to-br from-primary/10 via-base-100 to-secondary/10 shadow-2xl mb-6 overflow-hidden">
+                class="card bg-linear-to-br from-primary/10 via-base-100 to-secondary/10 shadow-2xl mb-6 overflow-hidden">
                 <div
-                    class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-secondary to-accent">
+                    class="absolute top-0 left-0 w-full h-2 bg-linear-to-r from-primary via-secondary to-accent">
                 </div>
 
                 <div class="card-body p-8">
@@ -15,13 +15,13 @@
                         <!-- Enhanced Avatar with Glow Effect -->
                         <div class="relative group">
                             <div
-                                class="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-full blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-300">
+                                class="absolute inset-0 bg-linear-to-r from-primary to-secondary rounded-full blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-300">
                             </div>
                             <div class="avatar relative">
                                 <div
                                     class="w-36 rounded-full ring ring-primary ring-offset-base-100 ring-offset-4 shadow-xl">
                                     <div
-                                        class="flex items-center justify-center w-full h-full bg-gradient-to-br from-primary to-secondary text-primary-content text-5xl font-bold">
+                                        class="flex items-center justify-center w-full h-full bg-linear-to-br from-primary to-secondary text-primary-content text-5xl font-bold">
                                         {{ strtoupper(substr($user->name ?? Auth::user()->name, 0, 1)) }}
                                     </div>
                                 </div>
@@ -31,7 +31,7 @@
                         <!-- Profile Info -->
                         <div class="flex-1 text-center md:text-left">
                             <h1
-                                class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
+                                class="text-4xl md:text-5xl font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
                                 {{ $user->name }}
                             </h1>
                             <div
@@ -132,18 +132,6 @@
                                         </p>
                                     </div>
                                 </div>
-                                <div
-                                    class="flex items-start gap-3 p-3 rounded-lg hover:bg-base-200 transition-colors">
-                                    <span class="text-xl">🕒</span>
-                                    <div class="flex-1">
-                                        <p
-                                            class="text-xs uppercase opacity-60 mb-1">
-                                            Last Active</p>
-                                        <p class="font-medium">
-                                            {{ $user->updated_at->diffForHumans() }}
-                                        </p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -174,41 +162,43 @@
                     </div>
 
                     <!-- Action Buttons Card -->
-                    <div
-                        class="card bg-gradient-to-br from-primary/5 to-secondary/5 shadow-xl hover:shadow-2xl transition-shadow duration-300">
-                        <div class="card-body p-5">
-                            <div class="flex flex-col gap-3">
-                                <label for="change-password-modal"
-                                    class="btn btn-secondary btn-block gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="h-5 w-5"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                    </svg>
-                                    Change Password
-                                </label>
-                                <a href="{{ route('freelancer.profile.edit') }}"
-                                    class="btn btn-primary btn-block gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="h-5 w-5"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                    </svg>
-                                    Edit Information
-                                </a>
+                    @if (Auth::user()->id === $user->id)
+                        <div
+                            class="card bg-linear-to-br from-primary/5 to-secondary/5 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                            <div class="card-body p-5">
+                                <div class="flex flex-col gap-3">
+                                    <label for="change-password-modal"
+                                        class="btn btn-secondary btn-block gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="h-5 w-5"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                        </svg>
+                                        Change Password
+                                    </label>
+                                    <a href="{{ route('freelancer.profile.edit') }}"
+                                        class="btn btn-primary btn-block gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="h-5 w-5"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+                                        Edit Information
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
 
                 <!-- Right Column - Main Content -->
@@ -239,18 +229,11 @@
                                 Certifications
                             </h2>
 
-                            @php
-                                $certifications = $user
-                                    ->certifications()
-                                    ->where('status', 'approved')
-                                    ->get();
-                            @endphp
-
                             @if ($certifications->isNotEmpty())
                                 <div class="space-y-4">
                                     @foreach ($certifications as $cert)
                                         <div
-                                            class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-base-200 to-base-300 p-5 hover:shadow-lg transition-all duration-300">
+                                            class="group relative overflow-hidden rounded-xl bg-linear-to-br from-base-200 to-base-300 p-5 hover:shadow-lg transition-all duration-300">
                                             <div
                                                 class="flex flex-col md:flex-row justify-between items-start gap-4">
                                                 <div class="flex-1">
@@ -393,7 +376,7 @@
                                 <div class="space-y-4">
                                     @foreach ($education as $edu)
                                         <div
-                                            class="bg-gradient-to-br from-base-200 to-base-300 rounded-lg p-5 hover:shadow-md transition-all">
+                                            class="bg-linear-to-br from-base-200 to-base-300 rounded-lg p-5 hover:shadow-md transition-all">
                                             <div
                                                 class="flex items-start gap-3">
                                                 <span
@@ -464,7 +447,7 @@
                 <div class="alert alert-error mb-4 shadow-lg">
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            class="stroke-current flex-shrink-0 h-6 w-6"
+                            class="stroke-current shrink-0 h-6 w-6"
                             fill="none"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round"
@@ -487,7 +470,7 @@
                 <div class="alert alert-success mb-4 shadow-lg">
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            class="stroke-current flex-shrink-0 h-6 w-6"
+                            class="stroke-current shrink-0 h-6 w-6"
                             fill="none"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round"

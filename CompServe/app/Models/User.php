@@ -68,7 +68,7 @@ class User extends Authenticatable
 
     public function clientProfile()
     {
-        return $this->hasOne(ClientProfile::class);
+        return $this->hasOne(ClientInformation::class);
     }
 
     // Posted job listings for clients

@@ -4,15 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ClientProfile extends Model
+class ClientInformation extends Model
 {
     protected $fillable = [
         'user_id',
-        'company_name',
+        'about_me',
         'contact_number',
-        'website',
-        'bio',
-        'location',
+        'facebook',
+        'instagram',
+        'linkedin',
+        'twitter'
     ];
 
     public function user()

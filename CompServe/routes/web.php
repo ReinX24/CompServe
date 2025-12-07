@@ -4,7 +4,7 @@ use App\Events\MyEvent;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\ChatController;
-use App\Http\Controllers\Client\ClientProfileController;
+use App\Http\Controllers\Client\ClientInformationController;
 use App\Http\Controllers\Freelancer\FreelancerInformationController;
 use App\Http\Controllers\UserSearchController;
 use Illuminate\Support\Facades\Auth;
@@ -76,7 +76,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/search', [UserSearchController::class, 'search']);
 });
 
-Route::get('/client/{userId}', [ClientProfileController::class, 'showPublic'])
+Route::get('/client/{userId}', [ClientInformationController::class, 'showPublic'])
     ->name('client.profile');
 
 Route::get('/freelancer/{user}', [FreelancerInformationController::class, 'showPublic'])

@@ -3,7 +3,7 @@
 use App\Http\Controllers\Client\ClientReviewController;
 use App\Http\Controllers\Client\ClientReviews;
 use App\Http\Controllers\Client\ClientJobListingController;
-use App\Http\Controllers\Client\ClientProfileController;
+use App\Http\Controllers\Client\ClientInformationController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\GigController;
 use App\Models\JobApplication;
@@ -73,9 +73,9 @@ Route::prefix('client')
         Route::get('/reviews', [ClientReviewController::class, 'reviews'])->name('reviews');
 
         // ClientProfile
-        Route::get('/profile', [ClientProfileController::class, 'show'])->name('profile.show');
-        Route::get('/profile/edit', [ClientProfileController::class, 'edit'])->name('profile.edit');
-        Route::post('/profile/update', [ClientProfileController::class, 'update'])->name('profile.update');
+        Route::get('/profile', [ClientInformationController::class, 'show'])->name('profile.show');
+        Route::get('/profile/edit', [ClientInformationController::class, 'edit'])->name('profile.edit');
+        Route::post('/profile/update', [ClientInformationController::class, 'update'])->name('profile.update');
 
         // Routes for gigs
         Route::prefix('gigs')->group(function () {
@@ -137,5 +137,5 @@ Route::prefix('client')
         });
 
         // Reset password
-        Route::post('/profile/change-password', [ClientProfileController::class, 'changePassword'])->name('profile.changePassword');
+        Route::post('/profile/change-password', [ClientInformationController::class, 'changePassword'])->name('profile.changePassword');
     });
