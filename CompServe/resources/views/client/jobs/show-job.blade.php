@@ -356,6 +356,5 @@
 
                 </div>
             </div>
-        @endif
     </div>
 </x-layouts.app>

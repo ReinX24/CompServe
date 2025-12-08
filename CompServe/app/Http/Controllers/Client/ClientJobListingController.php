@@ -24,7 +24,7 @@ class ClientJobListingController extends Controller
     public function create(Request $request)
     {
         $jobType = $request->query('type', 'contract');
-        return view("gigs.create-gig", compact("jobType"));
+        return view("jobs.create-job", compact("jobType"));
     }
 
     /**
@@ -119,7 +119,7 @@ class ClientJobListingController extends Controller
      */
     public function edit(JobListing $jobListing)
     {
-        return view('gigs.edit-gig', compact('jobListing'));
+        return view('jobs.edit-job', compact('jobListing'));
     }
 
     /**
