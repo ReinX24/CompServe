@@ -27,12 +27,12 @@
                                     <h2
                                         class="text-2xl font-bold text-base-content flex items-center gap-2">
                                         {{ $recipient->name }}
-                                        <div
+                                        {{-- <div
                                             class="badge badge-success badge-sm gap-1">
                                             <span
                                                 class="w-2 h-2 bg-success rounded-full animate-pulse"></span>
                                             Online
-                                        </div>
+                                        </div> --}}
                                     </h2>
                                     <p
                                         class="text-sm text-base-content/60 mt-1">

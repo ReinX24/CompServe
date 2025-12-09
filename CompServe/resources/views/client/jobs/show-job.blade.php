@@ -353,8 +353,8 @@
                                 target="_blank">View File</a>
                         </div>
                     @endif
-
                 </div>
             </div>
+        @endif
     </div>
 </x-layouts.app>

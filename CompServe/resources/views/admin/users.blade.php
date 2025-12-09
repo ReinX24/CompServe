@@ -4,10 +4,10 @@
         <div
             class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
             <h1 class="text-3xl font-bold text-primary">👥 Manage Users</h1>
-            <a href="{{ route('freelancer.certifications.create') }}"
+            {{-- <a href="{{ route('freelancer.certifications.create') }}"
                 class="btn btn-outline btn-primary w-full md:w-auto">
                 ➕ Add User
-            </a>
+            </a> --}}
         </div>
 
         <!-- Alerts -->
