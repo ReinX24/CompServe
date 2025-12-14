@@ -8,6 +8,7 @@ use App\Models\User;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Storage;
 
 class FreelancerInformationController extends Controller
 {
@@ -80,6 +81,8 @@ class FreelancerInformationController extends Controller
             'education.*.start_year' => ['nullable', 'integer', 'digits:4'],
             'education.*.end_year' => ['nullable', 'integer', 'digits:4', 'gte:education.*.start_year'],
             'education.*.awards' => ['nullable', 'string', 'max:1000'],
+
+            'profile_photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
         ]);
 
         // Update the user's own table (users.name)
@@ -105,6 +108,21 @@ class FreelancerInformationController extends Controller
             $user->freelancerInformation->update($freelancerData);
         } else {
             $user->freelancerInformation()->create($freelancerData);
+        }
+
+        // Update profile photo (users table)
+        if ($request->hasFile('profile_photo')) {
+
+            if ($user->profile_photo) {
+                Storage::disk('public')->delete($user->profile_photo);
+            }
+
+            $path = $request->file('profile_photo')
+                ->store('profile-photos', 'public');
+
+            $user->update([
+                'profile_photo' => $path,
+            ]);
         }
 
         return redirect()->route('freelancer.profile.show')

@@ -6,8 +6,39 @@
 
         <form action="{{ route('client.profile.update') }}"
             method="POST"
-            class="space-y-6">
+            class="space-y-6"
+            enctype="multipart/form-data">
             @csrf
+            @method('PUT')
+
+            <!-- Profile Photo -->
+            <div class="flex flex-col items-center justify-center gap-6">
+                <!-- Avatar Preview -->
+                <div class="avatar">
+                    <div
+                        class="w-32 rounded-full ring ring-secondary ring-offset-base-100 ring-offset-4 overflow-hidden">
+
+                        @if ($user->profile_photo)
+                            <img src="{{ asset('storage/' . $user->profile_photo) }}"
+                                class="w-full h-full object-cover" />
+                        @else
+                            <div
+                                class="flex items-center justify-center w-full h-full
+                           bg-linear-to-br from-secondary to-accent
+                           text-secondary-content text-4xl font-bold">
+                                {{ strtoupper(substr($user->name, 0, 1)) }}
+                            </div>
+                        @endif
+
+                    </div>
+                </div>
+
+                <!-- File Input -->
+                <input type="file"
+                    name="profile_photo"
+                    class="file-input file-input-bordered w-full" />
+            </div>
+
 
             <!-- Name -->
             <div class="form-control">
@@ -16,7 +47,7 @@
                     name="name"
                     class="input input-bordered w-full"
                     placeholder="Enter your name"
-                    value="{{ old('name', $user->name ?? '') }}">
+                    value="{{ old('name', Auth::user()->name ?? '') }}">
             </div>
 
             <!-- About Me -->

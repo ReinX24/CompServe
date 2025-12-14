@@ -26,16 +26,30 @@
                             <div
                                 class="absolute inset-0 bg-linear-to-r from-secondary to-accent rounded-full blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-300">
                             </div>
+
                             <div class="avatar relative">
                                 <div
-                                    class="w-36 rounded-full ring ring-secondary ring-offset-base-100 ring-offset-4 shadow-xl">
-                                    <div
-                                        class="flex items-center justify-center w-full h-full bg-linear-to-br from-secondary to-accent text-secondary-content text-5xl font-bold">
-                                        {{ strtoupper(substr($user->name ?? Auth::user()->name, 0, 1)) }}
-                                    </div>
+                                    class="w-36 rounded-full ring ring-secondary ring-offset-base-100 ring-offset-4 shadow-xl overflow-hidden">
+
+                                    @if (!empty($user->profile_photo))
+                                        <!-- Profile Photo -->
+                                        <img src="{{ asset('storage/' . $user->profile_photo) }}"
+                                            alt="{{ $user->name }} profile photo"
+                                            class="w-full h-full object-cover" />
+                                    @else
+                                        <!-- Fallback Initial -->
+                                        <div
+                                            class="flex items-center justify-center w-full h-full
+                           bg-linear-to-br from-secondary to-accent
+                           text-secondary-content text-5xl font-bold">
+                                            {{ strtoupper(substr($user->name ?? Auth::user()->name, 0, 1)) }}
+                                        </div>
+                                    @endif
+
                                 </div>
                             </div>
                         </div>
+
 
                         <!-- Profile Info -->
                         <div class="flex-1 text-center md:text-left">
@@ -366,7 +380,7 @@
                 </div>
             @endif
 
-            @if (session('success'))
+            {{-- @if (session('success'))
                 <div class="alert alert-success mb-4 shadow-lg">
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -381,7 +395,7 @@
                         <span>{{ session('success') }}</span>
                     </div>
                 </div>
-            @endif
+            @endif --}}
 
             <form method="POST"
                 action="{{ route('client.profile.changePassword') }}">

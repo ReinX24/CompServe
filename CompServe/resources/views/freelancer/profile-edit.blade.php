@@ -11,9 +11,48 @@
 
         <form action="{{ route('freelancer.profile.update') }}"
             method="POST"
-            class="space-y-6">
+            class="space-y-6"
+            enctype="multipart/form-data">
             @csrf
             @method('PUT')
+
+            <div x-data="{
+                preview: '{{ $user->profile_photo ? asset('storage/' . $user->profile_photo) : null }}'
+            }"
+                class="flex flex-col items-center gap-4">
+                <!-- Avatar Preview -->
+                <div class="avatar">
+                    <div
+                        class="w-36 rounded-full ring ring-primary ring-offset-base-100 ring-offset-4 overflow-hidden shadow-xl">
+
+                        <template x-if="preview">
+                            <img :src="preview"
+                                class="w-full h-full object-cover"
+                                alt="Profile Photo" />
+                        </template>
+
+                        <template x-if="!preview">
+                            <div
+                                class="flex items-center justify-center w-full h-full
+                           bg-linear-to-br from-primary to-secondary
+                           text-primary-content text-5xl font-bold">
+                                {{ strtoupper(substr($user->name, 0, 1)) }}
+                            </div>
+                        </template>
+
+                    </div>
+                </div>
+
+                <!-- File Input -->
+                <input type="file"
+                    name="profile_photo"
+                    class="file-input file-input-bordered w-full"
+                    accept="image/*"
+                    @change="
+            if (preview) URL.revokeObjectURL(preview);
+            preview = URL.createObjectURL($event.target.files[0])
+        " />
+            </div>
 
             <!-- Name -->
             <div class="form-control">

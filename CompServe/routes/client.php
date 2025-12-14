@@ -75,7 +75,7 @@ Route::prefix('client')
         // ClientProfile
         Route::get('/profile', [ClientInformationController::class, 'show'])->name('profile.show');
         Route::get('/profile/edit', [ClientInformationController::class, 'edit'])->name('profile.edit');
-        Route::post('/profile/update', [ClientInformationController::class, 'update'])->name('profile.update');
+        Route::put('/profile/update', [ClientInformationController::class, 'update'])->name('profile.update');
 
         // Routes for gigs
         Route::prefix('gigs')->group(function () {
