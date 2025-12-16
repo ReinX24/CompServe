@@ -46,7 +46,7 @@
                         {{ __('Email Address') }}
                     </label>
                     <label
-                        class="input input-primary w-full {{ $errors->has('email') ? 'input-error' : '' }} hover:input-primary focus-within:input-primary transition-all">
+                        class="input w-full {{ $errors->has('email') ? 'input-error' : 'input-primary' }} hover:input-primary focus-within:input-primary transition-all">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -80,6 +80,22 @@
                             <span>{{ $message }}</span>
                         </div>
                     @enderror
+
+                    @error('role')
+                        <div role="alert"
+                            class="alert alert-error shadow-lg animate-fade-in">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="stroke-current shrink-0 h-5 w-5"
+                                fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>{{ $message }}</span>
+                        </div>
+                    @enderror
                 </div>
 
                 {{-- Password input --}}
@@ -88,7 +104,7 @@
                         {{ __('Password') }}
                     </label>
                     <label
-                        class="input input-primary w-full {{ $errors->has('password') ? 'input-error' : '' }} hover:input-primary focus-within:input-primary transition-all">
+                        class="input w-full {{ $errors->has('password') ? 'input-error' : 'input-primary' }} hover:input-primary focus-within:input-primary transition-all">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
