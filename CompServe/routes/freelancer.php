@@ -19,7 +19,10 @@ Route::prefix('freelancer')
     ->name('freelancer.')
     ->group(function () {
         Route::get('/dashboard', function () {
-            $availableJobsCount = JobListing::where('status', 'open')->count();
+            $availableJobsCount = JobListing::where(
+                'status',
+                'open'
+            )->count();
 
             $appliedJobsCount = JobApplication::with('job') // eager load job relationship
                 ->where([
@@ -36,7 +39,12 @@ Route::prefix('freelancer')
                 ->where('status', 'completed')
                 ->count();
 
-            return view('freelancer.dashboard', compact('availableJobsCount', 'appliedJobsCount', 'currentJobsCount', 'completedJobsCount'));
+            return view('freelancer.dashboard', compact(
+                'availableJobsCount',
+                'appliedJobsCount',
+                'currentJobsCount',
+                'completedJobsCount'
+            ));
         })->name('dashboard');
 
         Route::prefix('jobs')->group(function () {
@@ -47,8 +55,15 @@ Route::prefix('freelancer')
             // Route::get('/rejected', [FreelancerJobListingController::class, 'rejectedJobs'])->name('jobs.rejected');
             // Route::get('/finished', [FreelancerJobListingController::class, 'completedJobs'])->name('jobs.finished');
 
-            Route::get('/{jobListing}/', [FreelancerJobListingController::class, 'show'])->name('jobs.show');
-            Route::post('/{jobListing}/apply', [FreelancerJobListingController::class, 'applyForJob'])->name('jobs.apply');
+            Route::get('/{jobListing}/', [
+                FreelancerJobListingController::class,
+                'show'
+            ])->name('jobs.show');
+
+            Route::post('/{jobListing}/apply', [
+                FreelancerJobListingController::class,
+                'applyForJob'
+            ])->name('jobs.apply');
 
             // Remove job application for current freelancer user
             Route::delete(

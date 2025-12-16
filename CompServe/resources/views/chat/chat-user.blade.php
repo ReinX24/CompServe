@@ -13,13 +13,18 @@
                             <!-- Recipient Info -->
                             <div class="flex items-center gap-4">
                                 <!-- Avatar -->
-                                <div class="avatar avatar-placeholder">
+                                <div class="avatar relative avatar-placeholder">
                                     <div
                                         class="w-14 h-14 rounded-full bg-linear-to-br from-primary to-secondary text-primary-content ring ring-primary/20 ring-offset-2 ring-offset-base-100">
                                         <span class="text-xl font-bold">
                                             {{ strtoupper(substr($recipient->name, 0, 1)) }}
                                         </span>
                                     </div>
+
+                                    <!-- ONLINE STATUS DOT -->
+                                    <span id="user-status-{{ $recipient->id }}"
+                                        class="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-gray-400 border-[3px] border-base-100 transition-colors duration-200">
+                                    </span>
                                 </div>
 
                                 <!-- Name & Status -->
@@ -27,12 +32,6 @@
                                     <h2
                                         class="text-2xl font-bold text-base-content flex items-center gap-2">
                                         {{ $recipient->name }}
-                                        {{-- <div
-                                            class="badge badge-success badge-sm gap-1">
-                                            <span
-                                                class="w-2 h-2 bg-success rounded-full animate-pulse"></span>
-                                            Online
-                                        </div> --}}
                                     </h2>
                                     <p
                                         class="text-sm text-base-content/60 mt-1">

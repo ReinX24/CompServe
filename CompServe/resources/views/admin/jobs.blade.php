@@ -1,159 +1,215 @@
 <x-layouts.app>
-    <div class="container mx-auto px-4 md:px-6 py-6">
-        <!-- Page Header -->
-        <div
-            class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
-            <h1 class="text-3xl font-bold text-primary">💼 Manage Job Listings
-            </h1>
-            {{-- <a href="{{ route('admin.jobs.create') }}"
-                class="btn btn-primary w-full md:w-auto">
-                ➕ Add Job
-            </a> --}}
-        </div>
+    <div
+        class="min-h-screen bg-linear-to-br from-base-200 via-base-100 to-base-200 py-8 px-4">
+        <div class="max-w-7xl mx-auto">
 
-        <!-- Alerts -->
-        @session('success')
-            <div class="mb-4">
-                <div role="alert"
-                    class="alert alert-success alert-soft text-lg shadow-md flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6 shrink-0 stroke-current"
-                        fill="none"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>{{ session('success') }}</span>
+            <!-- Page Header -->
+            <div class="mb-8">
+                <div
+                    class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-primary/10 p-3 rounded-xl">
+                            💼
+                        </div>
+                        <div>
+                            <h1
+                                class="text-4xl font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
+                                Jobs
+                            </h1>
+                            <p class="text-base-content/70 text-sm mt-1">
+                                View and manage all job listings
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Stats -->
+                    <div
+                        class="stats shadow-lg bg-base-100 border-2 border-base-300">
+                        <div class="stat py-3 px-4">
+                            <div class="stat-title text-xs">Total Jobs</div>
+                            <div class="stat-value text-2xl text-primary">
+                                {{ $jobs->total() }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        @endsession
 
-        <!-- Jobs Table -->
-        <div class="overflow-x-auto">
-            <table class="table w-full rounded-lg shadow-sm">
-                <thead class="bg-base-200">
-                    <tr>
-                        <th>#</th>
-                        <th>Title</th>
-                        <th class="hidden sm:table-cell">Client</th>
-                        <th>Status</th>
-                        <th class="hidden md:table-cell">Budget</th>
-                        <th class="text-right">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($jobs as $job)
-                        <tr class="hover:bg-base-100 transition-colors">
-                            <td class="whitespace-normal">{{ $job->id }}
-                            </td>
-                            <td class="whitespace-normal font-semibold">
-                                {{ $job->title }}</td>
-                            <td class="whitespace-normal hidden sm:table-cell">
-                                {{ $job->client->name ?? 'N/A' }}</td>
-                            <td>
-                                <span class="badge badge-outline badge-primary">
-                                    {{ ucfirst($job->status) }}
-                                </span>
-                            </td>
-                            <td class="whitespace-normal hidden md:table-cell">
-                                ${{ number_format($job->budget, 2) }}</td>
-                            <td
-                                class="text-right flex flex-col sm:flex-row sm:justify-end gap-2 mt-2 sm:mt-0">
-                                <!-- Edit -->
-                                <button
-                                    onclick="document.getElementById('editModal-{{ $job->id }}').showModal()"
-                                    class="btn btn-sm btn-primary">✏️
-                                    Edit</button>
+            <!-- Alerts -->
+            @if (session('success'))
+                <div
+                    class="alert alert-success mb-6 shadow-lg border-2 border-success/20">
+                    <span>{{ session('success') }}</span>
+                </div>
+            @endif
 
-                                <!-- Delete -->
-                                <form method="POST"
-                                    action="{{ route('admin.jobs.delete', $job) }}">
-                                    @csrf @method('DELETE')
-                                    <button
-                                        class="btn btn-outline btn-sm btn-error"
-                                        onclick="return confirm('Delete this job?')">❌
-                                        Delete</button>
-                                </form>
+            <!-- Jobs Table Card -->
+            <div class="card bg-base-100 shadow-xl border-2 border-base-300">
+                <div class="card-body p-0">
 
-                                <!-- Edit Modal -->
-                                <dialog id="editModal-{{ $job->id }}"
-                                    class="modal">
-                                    <div class="modal-box max-w-md">
-                                        <h3 class="font-bold text-lg mb-4">Edit
-                                            Job</h3>
-                                        <form method="POST"
-                                            action="{{ route('admin.jobs.update', $job) }}"
-                                            class="space-y-3">
-                                            @csrf @method('PUT')
+                    <!-- Desktop Table -->
+                    <div class="hidden lg:block overflow-x-auto">
+                        <table class="table table-zebra">
+                            <thead class="bg-base-200">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Job Details</th>
+                                    <th>Client</th>
+                                    <th>Status</th>
+                                    <th class="text-right">Budget</th>
+                                    <th class="text-right">Actions</th>
+                                </tr>
+                            </thead>
 
-                                            <div>
-                                                <label class="label"><span
-                                                        class="label-text">Title</span></label>
-                                                <input type="text"
-                                                    name="title"
-                                                    value="{{ $job->title }}"
-                                                    class="input input-bordered w-full"
-                                                    required>
+                            <tbody>
+                                @forelse ($jobs as $job)
+                                    <tr
+                                        class="hover:bg-base-200/50 transition-colors">
+                                        <td class="font-mono text-sm">
+                                            <span
+                                                class="badge badge-ghost badge-sm">
+                                                {{ $job->id }}
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <div class="font-bold">
+                                                {{ $job->title }}</div>
+                                            <div
+                                                class="text-sm text-base-content/60 line-clamp-1">
+                                                {{ $job->description }}
                                             </div>
+                                        </td>
 
-                                            <div>
-                                                <label class="label"><span
-                                                        class="label-text">Description</span></label>
-                                                <textarea name="description"
-                                                    class="textarea textarea-bordered w-full"
-                                                    required>{{ $job->description }}</textarea>
+                                        <td>
+                                            <div
+                                                class="flex items-center gap-3">
+                                                <div
+                                                    class="avatar avatar-placeholder">
+                                                    <div
+                                                        class="bg-primary text-primary-content rounded-full w-10">
+                                                        <span
+                                                            class="text-sm font-bold">
+                                                            {{ substr($job->client->name ?? 'N', 0, 1) }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="font-semibold">
+                                                    {{ $job->client->name ?? 'N/A' }}
+                                                </div>
                                             </div>
+                                        </td>
 
-                                            <div>
-                                                <label class="label"><span
-                                                        class="label-text">Budget</span></label>
-                                                <input type="number"
-                                                    name="budget"
-                                                    value="{{ $job->budget }}"
-                                                    class="input input-bordered w-full">
-                                            </div>
+                                        <td>
+                                            @php
+                                                $statusMap = [
+                                                    'open' => 'badge-success',
+                                                    'in_progress' =>
+                                                        'badge-warning',
+                                                    'completed' => 'badge-info',
+                                                    'cancelled' =>
+                                                        'badge-error',
+                                                ];
+                                            @endphp
 
-                                            <div>
-                                                <label class="label"><span
-                                                        class="label-text">Status</span></label>
-                                                <select name="status"
-                                                    class="select select-bordered w-full">
-                                                    <option value="open"
-                                                        @selected($job->status === 'open')>
-                                                        Open</option>
-                                                    <option value="in_progress"
-                                                        @selected($job->status === 'in_progress')>
-                                                        In Progress</option>
-                                                    <option value="cancelled"
-                                                        @selected($job->status === 'cancelled')>
-                                                        Cancelled</option>
-                                                    <option value="completed"
-                                                        @selected($job->status === 'completed')>
-                                                        Completed</option>
-                                                </select>
-                                            </div>
+                                            <span
+                                                class="badge {{ $statusMap[$job->status] ?? 'badge-ghost' }}">
+                                                {{ ucfirst(str_replace('_', ' ', $job->status)) }}
+                                            </span>
+                                        </td>
 
-                                            <div class="modal-action">
+                                        <td
+                                            class="text-right font-bold text-success">
+                                            ${{ number_format($job->budget, 2) }}
+                                        </td>
+
+                                        <td class="text-right">
+                                            <div class="flex justify-end gap-2">
                                                 <button
-                                                    class="btn btn-primary">Save</button>
-                                                <button type="button"
-                                                    onclick="document.getElementById('editModal-{{ $job->id }}').close()"
-                                                    class="btn">Cancel</button>
+                                                    onclick="document.getElementById('editModal-{{ $job->id }}').showModal()"
+                                                    class="btn btn-sm btn-primary">
+                                                    Edit
+                                                </button>
+
+                                                <form method="POST"
+                                                    action="{{ route('admin.jobs.delete', $job) }}">
+                                                    @csrf @method('DELETE')
+                                                    <button
+                                                        class="btn btn-sm btn-error"
+                                                        onclick="return confirm('Delete this job?')">
+                                                        Delete
+                                                    </button>
+                                                </form>
                                             </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6"
+                                            class="text-center py-12 text-base-content/60">
+                                            No jobs found
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Mobile Cards -->
+                    <div class="lg:hidden p-4 space-y-4">
+                        @foreach ($jobs as $job)
+                            <div
+                                class="card bg-base-200 border-2 border-base-300 shadow-lg">
+                                <div class="card-body p-4">
+                                    <h3 class="font-bold">{{ $job->title }}
+                                    </h3>
+                                    <p
+                                        class="text-sm text-base-content/60 line-clamp-2">
+                                        {{ $job->description }}
+                                    </p>
+
+                                    <div
+                                        class="flex items-center justify-between mt-3">
+                                        <span class="badge badge-outline">
+                                            {{ ucfirst($job->status) }}
+                                        </span>
+                                        <span class="font-bold text-success">
+                                            ${{ number_format($job->budget, 2) }}
+                                        </span>
+                                    </div>
+
+                                    <div class="mt-3 flex gap-2">
+                                        <button
+                                            onclick="document.getElementById('editModal-{{ $job->id }}').showModal()"
+                                            class="btn btn-sm btn-primary flex-1">
+                                            Edit
+                                        </button>
+
+                                        <form method="POST"
+                                            action="{{ route('admin.jobs.delete', $job) }}"
+                                            class="flex-1">
+                                            @csrf @method('DELETE')
+                                            <button
+                                                class="btn btn-sm btn-error w-full">
+                                                Delete
+                                            </button>
                                         </form>
                                     </div>
-                                </dialog>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
 
-        <div class="mt-4">
-            {{ $jobs->links() }}
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            @if ($jobs->hasPages())
+                <div class="mt-6 flex justify-center">
+                    {{ $jobs->links() }}
+                </div>
+            @endif
+
         </div>
     </div>
 </x-layouts.app>

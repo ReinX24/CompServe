@@ -70,10 +70,17 @@
 
                     @if ($jobs->where('status', $status)->count() > 3)
                         <div class="mt-4 text-right">
-                            <a href="{{ route('client.gigs.' . $status) }}"
-                                class="link {{ $info['color'] }}">
-                                {{ __('See more ' . strtolower($info['title']) . ' →') }}
-                            </a>
+                            @if (Auth::user()->role === 'client')
+                                <a href="{{ route('client.gigs.' . $status) }}"
+                                    class="link {{ $info['color'] }}">
+                                    {{ __('See more ' . strtolower($info['title']) . ' →') }}
+                                </a>
+                            @elseif(Auth::user()->role === 'freelancer')
+                                <a href="{{ route('freelancer.gigs.' . $status) }}"
+                                    class="link {{ $info['color'] }}">
+                                    {{ __('See more ' . strtolower($info['title']) . ' →') }}
+                                </a>
+                            @endif
                         </div>
                     @endif
                 @else

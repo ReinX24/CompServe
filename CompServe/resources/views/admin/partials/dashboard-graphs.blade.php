@@ -196,6 +196,13 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+    function formatWeeklyLabel(label) {
+        // Expecting format: YYYYWW (e.g. 202550)
+        labelStr = label.toString();
+        labelStr = labelStr.slice(0, 4) + ' • Week ' + labelStr.slice(4);
+        return labelStr;
+    }
+
     // Job Listings Chart
     const jobCtx = document.getElementById('jobsChart').getContext('2d');
     const jobData = @json($jobChartData);
@@ -210,10 +217,12 @@
         ((jobCounts[jobCounts.length - 1] - jobCounts[0]) / Math.max(jobCounts[
             0], 1) * 100).toFixed(1) : 0;
 
-    console.log(jobPeak);
+    document.getElementById('jobPeakPeriod').textContent = jobPeak ?
+        ('{{ $filterJobs }}' === 'weekly' ?
+            formatWeeklyLabel(jobPeak.label) :
+            jobPeak.label) :
+        '--';
 
-    document.getElementById('jobPeakPeriod').textContent = jobPeak ? jobPeak
-        .label : '--';
     document.getElementById('jobTotalCount').textContent = jobTotal;
     document.getElementById('jobAverage').textContent = jobAvg;
     document.getElementById('jobTrend').textContent = jobTrendValue > 0 ?
@@ -223,7 +232,11 @@
     new Chart(jobCtx, {
         type: 'bar',
         data: {
-            labels: jobData.map(item => item.label),
+            labels: jobData.map(item =>
+                '{{ $filterJobs }}' === 'weekly' ?
+                formatWeeklyLabel(item.label) :
+                item.label
+            ),
             datasets: [{
                 label: 'Job Listings',
                 data: jobData.map(item => item.count),
@@ -314,8 +327,12 @@
         ((userCounts[userCounts.length - 1] - userCounts[0]) / Math.max(
             userCounts[0], 1) * 100).toFixed(1) : 0;
 
-    document.getElementById('userPeakPeriod').textContent = userPeak ? userPeak
-        .label : '--';
+    document.getElementById('userPeakPeriod').textContent = userPeak ?
+        ('{{ $filterUsers }}' === 'weekly' ?
+            formatWeeklyLabel(userPeak.label) :
+            userPeak.label) :
+        '--';
+
     document.getElementById('userTotalCount').textContent = userTotal;
     document.getElementById('userAverage').textContent = userAvg;
     document.getElementById('userGrowth').textContent = userGrowthValue > 0 ?
@@ -325,7 +342,11 @@
     new Chart(userCtx, {
         type: 'line',
         data: {
-            labels: userData.map(item => item.label),
+            labels: userData.map(item =>
+                '{{ $filterUsers }}' === 'weekly' ?
+                formatWeeklyLabel(item.label) :
+                item.label
+            ),
             datasets: [{
                 label: 'Registered Users',
                 data: userData.map(item => item.count),

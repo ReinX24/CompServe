@@ -133,7 +133,7 @@
                                 <!-- Avatar -->
                                 <div class="avatar relative shrink-0">
                                     <div
-                                        class="w-14 h-14 rounded-full bg-gradient-to-br from-primary via-primary to-secondary text-primary-content flex items-center justify-center font-bold text-lg shadow-md group-hover:shadow-lg transition-shadow">
+                                        class="w-14 h-14 rounded-full bg-linear-to-br from-primary via-primary to-secondary text-primary-content flex items-center justify-center font-bold text-lg shadow-md group-hover:shadow-lg transition-shadow">
                                         {{ strtoupper(substr($user->name, 0, 2)) }}
                                     </div>
                                     <!-- ONLINE STATUS DOT -->
