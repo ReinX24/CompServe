@@ -20,7 +20,7 @@
     @if (Auth::user()->role === 'client')
         <x-client.job-search-form :route="route('client.gigs.open')" />
     @elseif(Auth::user()->role === 'freelancer')
-        <x-client.job-search-form :route="route('freelancer.gigs.open')" />
+        <x-client.job-search-form :route="route('freelancer.gigs.applied')" />
     @endif
 
     @if ($jobs->count())

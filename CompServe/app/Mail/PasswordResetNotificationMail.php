@@ -28,6 +28,12 @@ class PasswordResetNotificationMail extends Mailable
     public function build()
     {
         return $this->subject('Your Password Has Been Reset')
-            ->markdown('emails.password_reset');
+            ->markdown('emails.password_reset')
+            ->withSymfonyMessage(function ($message) {
+                $message->embedFromPath(
+                    public_path('images/logo.png'),
+                    'logo'
+                );
+            });
     }
 }

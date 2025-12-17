@@ -2,7 +2,7 @@
 
 {{-- LOGO --}}
 <div style="text-align:center; margin-bottom: 20px;">
-    <img src="{{ asset('images/logo.png') }}"
+    <img src="cid:logo"
          alt="CompServe Logo"
          style="height: 100px; border-radius: 50%;">
 </div>
@@ -52,7 +52,7 @@ Your certification request has been reviewed.
     ];
 @endphp
 
-<div style="padding:12px; border-radius:8px; text-align:center; font-weight:bold; margin: 15px 0; {{ $statusColors[$status] ?? '' }}">
+<div style="padding:12px; border-radius:8px; text-align:center; font-weight:bold; margin: 15px 0; {{ $statusColors[(string)$status] ?? '' }}">
     {{ ucfirst($status) }}
 </div>
 

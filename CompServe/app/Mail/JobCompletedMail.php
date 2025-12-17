@@ -29,7 +29,14 @@ class JobCompletedMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('🎉 Job Completed: ' . $this->jobListing->title)
-            ->markdown('emails.applicants.job-completed');
+        return $this->subject('🎉 Job Completed: ' .
+            $this->jobListing->title)
+            ->markdown('emails.applicants.job-completed')
+            ->withSymfonyMessage(function ($message) {
+                $message->embedFromPath(
+                    public_path('images/logo.png'),
+                    'logo'
+                );
+            });
     }
 }

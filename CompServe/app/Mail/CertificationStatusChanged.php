@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Symfony\Component\Mime\Email;
 
 class CertificationStatusChanged extends Mailable
 {
@@ -22,17 +23,15 @@ class CertificationStatusChanged extends Mailable
         $this->status = $status;
     }
 
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'Your Certification Status Has Been Updated'
-        );
-    }
-
-    public function content(): Content
-    {
-        return new Content(
-            markdown: 'emails.certification-status'
-        );
+        return $this->subject('Your Certification Status Has Been Updated')
+            ->markdown('emails.certification-status')
+            ->withSymfonyMessage(function ($message) {
+                $message->embedFromPath(
+                    public_path('images/logo.png'),
+                    'logo'
+                );
+            });
     }
 }

@@ -104,7 +104,7 @@ class CertificationController extends Controller
 
         // Send email to the user
         Mail::to($cert->freelancer->email)
-            ->send(new CertificationStatusChanged(
+            ->queue(new CertificationStatusChanged(
                 $cert,
                 'approved'
             ));

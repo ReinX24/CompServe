@@ -64,13 +64,13 @@
         {{-- Review Section --}}
         <div class="space-y-4">
             <div class="form-control">
-                <label class="label">
-                    <span class="label-text font-semibold">Your Review
-                        Comments</span>
-                </label>
-                <textarea name="comments"
-                    class="textarea textarea-bordered h-24"
-                    placeholder="Share your experience working with this freelancer..."></textarea>
+                <fieldset class="fieldset">
+                    <legend class="fieldset-legend font-semibold">Your Review
+                        Comments</legend>
+                    <textarea name="comments"
+                        class="textarea textarea-bordered h-24"
+                        placeholder="Share your experience working with this freelancer..."></textarea>
+                </fieldset>
             </div>
 
             <div class="form-control">
@@ -200,16 +200,14 @@
         <div class="space-y-4">
             <div class="divider">Leave a Review (Optional)</div>
 
-            <div class="form-control">
-                <label class="label">
-                    <span class="label-text font-semibold">Review
-                        Comments</span>
-                    <span class="label-text-alt">Optional</span>
-                </label>
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend font-semibold">Your Review
+                    Comments</legend>
                 <textarea name="comments"
                     class="textarea textarea-bordered h-24"
-                    placeholder="Share your feedback about this freelancer..."></textarea>
-            </div>
+                    placeholder="Share your experience working with this freelancer..."></textarea>
+                <div class="label">Optional</div>
+            </fieldset>
 
             <div class="form-control">
                 <label class="label">

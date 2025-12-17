@@ -2,7 +2,7 @@
 
 {{-- Logo --}}
 <div style="text-align:center; margin-bottom: 20px;">
-    <img src="{{ asset('images/logo.png') }}"
+    <img src="cid:logo"
          alt="CompServe Logo"
          style="height: 90px; object-fit: contain; border-radius: 50%;">
 </div>

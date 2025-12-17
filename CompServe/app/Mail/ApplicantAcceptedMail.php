@@ -30,6 +30,12 @@ class ApplicantAcceptedMail extends Mailable
     public function build()
     {
         return $this->subject('Congratulations! Your Application Was Accepted')
-            ->markdown('emails.applicants.accepted');
+            ->markdown('emails.applicants.accepted')
+            ->withSymfonyMessage(function ($message) {
+                $message->embedFromPath(
+                    public_path('images/logo.png'),
+                    'logo'
+                );
+            });
     }
 }

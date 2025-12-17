@@ -2,7 +2,7 @@
 
 {{-- LOGO --}}
 <div style="text-align:center; margin-bottom: 20px;">
-    <img src="{{ asset('images/logo.png') }}" alt="CompServe Logo" style="height: 90px; border-radius: 50%;">
+    <img src="cid:logo" alt="CompServe Logo" style="height: 90px; border-radius: 50%;">
 </div>
 
 # 🎉 Congratulations, {{ $application->freelancer->name }}!

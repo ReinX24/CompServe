@@ -29,7 +29,14 @@ class JobCancelledMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('⚠ Job Cancelled: ' . $this->jobListing->title)
-            ->markdown('emails.applicants.job-cancelled');
+        return $this->subject('⚠ Job Cancelled: ' .
+            $this->jobListing->title)
+            ->markdown('emails.applicants.job-cancelled')
+            ->withSymfonyMessage(function ($message) {
+                $message->embedFromPath(
+                    public_path('images/logo.png'),
+                    'logo'
+                );
+            });
     }
 }

@@ -30,6 +30,12 @@ class ApplicantRejectedMail extends Mailable
     public function build()
     {
         return $this->subject('Application Status Update')
-            ->markdown('emails.applicants.rejected');
+            ->markdown('emails.applicants.rejected')
+            ->withSymfonyMessage(function ($message) {
+                $message->embedFromPath(
+                    public_path('images/logo.png'),
+                    'logo'
+                );
+            });
     }
 }

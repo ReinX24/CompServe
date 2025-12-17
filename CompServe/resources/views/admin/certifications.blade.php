@@ -63,7 +63,7 @@
                                         </td>
 
                                         <td class="font-semibold">
-                                            {{ $cert->user->name ?? 'N/A' }}
+                                            {{ $cert->freelancer->name ?? 'N/A' }}
                                         </td>
 
                                         <td>
