@@ -13,7 +13,7 @@
             buttonText="Add Gig"
             :buttonLink="route('client.jobs.create') . '?type=gig'" />
     @elseif(Auth::user()->role === 'freelancer')
-        <x-client.page-header-with-action title="In-progress Gigs"
+        <x-client.page-header-with-action title="✏️ In-process Gigs"
             description="All your in-progress gigs." />
     @endif
 

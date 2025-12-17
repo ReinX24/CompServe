@@ -63,7 +63,7 @@
         href="{{ route('freelancer.gigs.in_progress') }}"
         icon='fas-envelope-open-text'
         :active="request()->routeIs('freelancer.gigs.in_progress')">
-        In Progress Jobs
+        In Progress Gigs
     </x-layouts.sidebar-two-level-link>
     <x-layouts.sidebar-two-level-link
         href="{{ route('freelancer.gigs.rejected') }}"
