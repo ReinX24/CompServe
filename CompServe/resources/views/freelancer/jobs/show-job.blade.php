@@ -455,7 +455,166 @@
 
             </div>
         </div>
+        @if ($jobListing->status === 'completed' || $jobListing->status === 'cancelled')
+            <div
+                class="card bg-base-100 shadow-xl border {{ $application->status === 'completed' ? 'border-success' : 'border-error' }}">
+                <div class="card-body">
+                    <h2
+                        class="card-title text-2xl mb-4 flex items-center gap-2">
+                        <span
+                            class="text-2xl">{{ $jobListing->status === 'completed' ? '🏆' : '❌' }}</span>
+                        Job
+                        {{ ucfirst($jobListing->status) }}
+                    </h2>
 
+                    <div class="flex flex-col md:flex-row items-start gap-6">
+                        {{-- Avatar --}}
+                        <div class="avatar self-center md:self-start">
+                            <div
+                                class="w-20 h-20 rounded-full ring {{ $jobListing->status === 'completed' ? 'ring-success' : 'ring-error' }} ring-offset-base-100 ring-offset-2">
+                                <div
+                                    class="flex items-center justify-center w-full h-full {{ $jobListing->status === 'completed' ? 'bg-success text-success-content' : 'bg-error text-error-content' }} text-3xl font-bold">
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Info --}}
+                        <div class="flex-1 w-full">
+                            <div
+                                class="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
+                                <h3 class="text-xl font-bold">
+                                    {{ $jobListing->status === 'completed' ? 'Completed by' : 'Cancelled Freelancer' }}
+                                </h3>
+                                <div
+                                    class="badge {{ $jobListing->status === 'completed' ? 'badge-success' : 'badge-error' }} badge-lg">
+                                    {{ ucfirst($jobListing->status) }}
+                                </div>
+                            </div>
+
+                            <p
+                                class="{{ $jobListing->status === 'completed' ? 'link-primary' : 'link-error' }} text-lg font-semibold mb-2 inline-block">
+                                {{ Auth::user()->name }}
+                            </p>
+
+                            <div
+                                class="alert {{ $jobListing->status === 'completed' ? 'alert-success' : 'alert-error' }} mt-3">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    class="stroke-current shrink-0 w-6 h-6">
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                    </path>
+                                </svg>
+                                <span>{{ $jobListing->status === 'completed' ? 'Congratulations! This freelancer has completed your job.' : 'This freelancer was removed from the job.' }}</span>
+                            </div>
+
+                            {{-- Review Section --}}
+                            @if ($jobListing->review)
+                                <div class="card bg-base-200 shadow-sm mt-4">
+                                    <div class="card-body">
+                                        <h3
+                                            class="card-title text-lg flex items-center gap-2">
+                                            <span>⭐</span>
+                                            Your Review
+                                        </h3>
+                                        <div class="space-y-2">
+                                            <div
+                                                class="flex items-center gap-2">
+                                                <span
+                                                    class="font-semibold">Rating:</span>
+                                                <div class="rating rating-sm">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        <input type="radio"
+                                                            class="mask mask-star-2 bg-yellow-400"
+                                                            disabled
+                                                            {{ $i <= $jobListing->review->rating ? 'checked' : '' }} />
+                                                    @endfor
+                                                </div>
+                                                <span
+                                                    class="text-sm font-bold">{{ $jobListing->review->rating }}
+                                                    /
+                                                    5</span>
+                                            </div>
+                                            @if ($jobListing->review->comments)
+                                                <div>
+                                                    <span
+                                                        class="font-semibold">Comments:</span>
+                                                    <p
+                                                        class="text-sm mt-1 text-base-content/80">
+                                                        {{ $jobListing->review->comments }}
+                                                    </p>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+
+                            {{-- Payment Record Section --}}
+                            @if ($jobListing->paymentRecord)
+                                <div class="card bg-base-200 shadow-sm mt-4">
+                                    <div class="card-body">
+                                        <h3
+                                            class="card-title text-lg flex items-center gap-2">
+                                            <span>💰</span>
+                                            Payment
+                                            Information
+                                        </h3>
+                                        <div class="space-y-3">
+                                            <div
+                                                class="stat bg-base-100 rounded-lg">
+                                                <div
+                                                    class="stat-title text-xs">
+                                                    Amount
+                                                    Paid
+                                                </div>
+                                                <div
+                                                    class="stat-value text-success text-2xl">
+                                                    ₱{{ number_format($jobListing->paymentRecord->price, 2) }}
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <p class="font-semibold mb-2">
+                                                    Proof of
+                                                    Payment:
+                                                </p>
+                                                <a href="{{ Storage::url($jobListing->paymentRecord->proof_of_payment) }}"
+                                                    target="_blank"
+                                                    class="btn btn-secondary gap-2">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        class="h-5 w-5"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        stroke="currentColor">
+                                                        <path
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                        <path
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                    </svg>
+                                                    View
+                                                    Proof of
+                                                    Payment
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 
     {{-- Apply Confirmation Modal --}}

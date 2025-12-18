@@ -15,7 +15,11 @@ class FreelancerInformation extends Model
         'about_me',
         'skills',
         'experiences',
-        'education'
+        'education',
+        'facebook',
+        'instagram',
+        'linkedin',
+        'twitter'
     ];
 
     protected $casts = [

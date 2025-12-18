@@ -470,21 +470,22 @@
                         </div>
 
                         <div class="divider"></div>
-                        <a href="{{ route('client.jobs.applicants', $jobListing) }}"
-                            class="btn btn-outline btn-secondary btn-block gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                class="h-5 w-5"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                            View All Applicants
-                        </a>
                     @endif
+                    {{-- Link to go to all the applicants  --}}
+                    <a href="{{ route('client.jobs.applicants', $jobListing) }}"
+                        class="btn btn-outline btn-secondary btn-block gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="h-5 w-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        View All Applicants
+                    </a>
                 </div>
             </div>
         @endif
@@ -533,7 +534,7 @@
                                 </div>
                             </div>
 
-                            <a href="{{ route('client.jobs.applicant', [$jobListing, $user]) }}"
+                            <a href="{{ route('freelancer.profile', $user->id) }}"
                                 class="link link-primary text-lg font-semibold mb-2 inline-block">
                                 {{ $user->name }}
                             </a>
@@ -600,7 +601,7 @@
                                 </div>
                             </div>
 
-                            <a href="{{ route('client.jobs.applicant', [$jobListing, $user]) }}"
+                            <a href="{{ route('freelancer.profile', $user->id) }}"
                                 class="link {{ $jobListing->status === 'completed' ? 'link-primary' : 'link-error' }} text-lg font-semibold mb-2 inline-block">
                                 {{ $user->name }}
                             </a>

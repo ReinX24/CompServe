@@ -82,6 +82,11 @@ class FreelancerInformationController extends Controller
             'education.*.end_year' => ['nullable', 'integer', 'digits:4', 'gte:education.*.start_year'],
             'education.*.awards' => ['nullable', 'string', 'max:1000'],
 
+            'facebook' => 'nullable|string|max:255',
+            'instagram' => 'nullable|string|max:255',
+            'linkedin' => 'nullable|string|max:255',
+            'twitter' => 'nullable|string|max:255',
+
             'profile_photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
         ]);
 
