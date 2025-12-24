@@ -6,6 +6,7 @@
     'review' => 'This freelancer did an amazing job! Highly recommended.',
     'date' => '2025-01-01',
     'verified' => false,
+    'reviewjob' => null
 ])
 
 <div
@@ -104,6 +105,12 @@
         <div class="bg-base-200/50 rounded-lg p-4">
             <p class="text-sm text-base-content/70 leading-relaxed">
                 {{ $review }}
+            </p>
+        </div>
+
+        <div class="bg-base-200/50 rounded-lg p-4">
+            <p class="text-sm text-base-content/70 leading-relaxed">
+                {{ $reviewjob->title }}
             </p>
         </div>
 

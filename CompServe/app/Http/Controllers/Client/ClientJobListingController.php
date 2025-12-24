@@ -52,6 +52,7 @@ class ClientJobListingController extends Controller
         $jobListing = new JobListing();
         $jobListing->client_id = Auth::user()->id;
         $jobListing->duration_type = $validated['duration_type'];
+        $jobListing->duration = $validated['duration'];
         $jobListing->title = $validated['title'];
         $jobListing->description = $validated['description'];
         $jobListing->category = $validated['category'];

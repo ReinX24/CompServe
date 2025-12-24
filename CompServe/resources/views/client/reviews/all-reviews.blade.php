@@ -96,9 +96,12 @@
     @else
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach ($reviews as $review)
-                <x-client.review-card :avatar="$review->freelancer->profile_photo ?? null"
-                    :name="$review->client->name ?? 'Unknown'"
-                    role="Client"
+                {{-- {{ dd($review->freelancer) }} --}}
+                {{-- <x-client.review-card :avatar="asset('storage/' . $review->freelancer->profile_photo) ?? null" --}}
+                <x-client.review-card :avatar="null"
+                    :reviewjob="$review->jobListing"
+                    :name="$review->freelancer->name ?? 'Unknown'"
+                    role="Freelancer"
                     :rating="$review->rating"
                     :review="$review->comments ?? 'No comments provided.'"
                     :date="$review->created_at" />
