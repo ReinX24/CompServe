@@ -4,11 +4,13 @@ use App\Events\MyEvent;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\CheckupChatbotController;
 use App\Http\Controllers\Client\ClientInformationController;
 use App\Http\Controllers\Freelancer\FreelancerInformationController;
 use App\Http\Controllers\UserSearchController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use OpenAI\Laravel\Facades\OpenAI;
 
 Route::get('/test', function () {
     return view('test');
@@ -81,3 +83,26 @@ Route::get('/client/{userId}', [ClientInformationController::class, 'showPublic'
 
 Route::get('/freelancer/{user}', [FreelancerInformationController::class, 'showPublic'])
     ->name('freelancer.profile');
+
+// Chatbot routes - accessible to authenticated clients
+Route::middleware(['auth'])->group(function () {
+    Route::get('/chatbot', [CheckupChatbotController::class, 'index'])->name('chatbot.index');
+    Route::post('/chatbot/chat', [CheckupChatbotController::class, 'chat'])->name('chatbot.chat');
+    Route::post('/chatbot/start-new', [CheckupChatbotController::class, 'startNew'])->name('chatbot.start-new');
+});
+
+Route::get('/test-openai', function () {
+    try {
+        OpenAI::responses()->create([
+            'model' => 'gpt-4.1-mini',
+            'input' => 'ping',
+        ]);
+
+        return 'Connected (unexpected success)';
+    } catch (\OpenAI\Exceptions\ErrorException $e) {
+        return response()->json([
+            'status' => $e->getCode(),   // 429 or 403 is GOOD here
+            'message' => $e->getMessage(),
+        ]);
+    }
+});
