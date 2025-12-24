@@ -8,6 +8,7 @@ use App\Http\Controllers\CheckupChatbotController;
 use App\Http\Controllers\Client\ClientInformationController;
 use App\Http\Controllers\Freelancer\FreelancerInformationController;
 use App\Http\Controllers\UserSearchController;
+use Gemini\Laravel\Facades\Gemini;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use OpenAI\Laravel\Facades\OpenAI;
@@ -104,5 +105,19 @@ Route::get('/test-openai', function () {
             'status' => $e->getCode(),   // 429 or 403 is GOOD here
             'message' => $e->getMessage(),
         ]);
+    }
+});
+
+Route::get('/test-gemini', function () {
+    try {
+        $result = Gemini::generativeModel(model: 'gemini-2.5-flash')
+            ->generateContent('How many bones are in a human body?');
+
+        return 'Connected! Response: ' . $result->text();
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 500,
+            'message' => $e->getMessage(),
+        ], 500);
     }
 });

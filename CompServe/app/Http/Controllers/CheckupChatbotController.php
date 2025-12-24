@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use OpenAI\Laravel\Facades\OpenAI;
+use Gemini\Laravel\Facades\Gemini;
 
 class CheckupChatbotController extends Controller
 {
@@ -31,29 +31,24 @@ class CheckupChatbotController extends Controller
         // Build the system prompt for the troubleshooting assistant
         $systemPrompt = $this->getSystemPrompt();
 
-        // Prepare messages for OpenAI
-        $messages = [
-            ['role' => 'system', 'content' => $systemPrompt]
-        ];
+        // Prepare the full conversation for Gemini
+        $fullConversation = $systemPrompt . "\n\n";
 
         // Add conversation history
         foreach ($conversationHistory as $msg) {
-            $messages[] = $msg;
+            $role = $msg['role'] === 'user' ? 'User' : 'Assistant';
+            $fullConversation .= "{$role}: {$msg['content']}\n\n";
         }
 
         // Add current user message
-        $messages[] = ['role' => 'user', 'content' => $userMessage];
+        $fullConversation .= "User: {$userMessage}\n\nAssistant:";
 
         try {
-            // Call OpenAI API
-            $result = OpenAI::chat()->create([
-                'model' => 'gpt-3.5-turbo',
-                'messages' => $messages,
-                'max_tokens' => 500,
-                'temperature' => 0.7,
-            ]);
+            // Call Gemini API
+            $result = Gemini::generativeModel(model: 'gemini-2.5-flash')
+                ->generateContent($fullConversation);
 
-            $assistantMessage = $result->choices[0]->message->content;
+            $assistantMessage = trim($result->text());
 
             // Check if troubleshooting is complete
             $isComplete = $this->checkIfComplete($assistantMessage);
