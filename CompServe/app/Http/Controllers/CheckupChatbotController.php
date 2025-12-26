@@ -4,32 +4,36 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Gemini\Laravel\Facades\Gemini;
+use Illuminate\Support\Facades\Auth;
 
 class CheckupChatbotController extends Controller
 {
     /**
      * Display the chatbot interface
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('chatbot.index');
+        $mode = Auth::user()->role;
+
+        return view('chatbot.index', compact('mode'));
     }
 
     /**
-     * Handle chatbot conversation
+     * Handle chatbot conversation with streaming
      */
     public function chat(Request $request)
     {
         $request->validate([
             'message' => 'required|string|max:1000',
-            'conversation_history' => 'nullable|array'
+            'conversation_history' => 'nullable|array',
+            'mode' => 'required|in:client,freelancer'
         ]);
 
         $userMessage = $request->input('message');
         $conversationHistory = $request->input('conversation_history', []);
 
         // Build the system prompt for the troubleshooting assistant
-        $systemPrompt = $this->getSystemPrompt();
+        $systemPrompt = $this->getSystemPrompt($request->mode);
 
         // Prepare the full conversation for Gemini
         $fullConversation = $systemPrompt . "\n\n";
@@ -44,26 +48,57 @@ class CheckupChatbotController extends Controller
         $fullConversation .= "User: {$userMessage}\n\nAssistant:";
 
         try {
-            // Call Gemini API
-            $result = Gemini::generativeModel(model: 'gemini-2.5-flash')
-                ->generateContent($fullConversation);
+            $model = config('gemini.model', 'gemini-2.5-flash');
 
-            $assistantMessage = trim($result->text());
+            // Call Gemini API with streaming
+            $stream = Gemini::generativeModel(model: $model)
+                ->streamGenerateContent($fullConversation);
 
-            // Check if troubleshooting is complete
-            $isComplete = $this->checkIfComplete($assistantMessage);
+            // Return streaming response
+            return response()->stream(function () use ($stream, $conversationHistory, $userMessage) {
+                $fullText = '';
 
-            return response()->json([
-                'success' => true,
-                'message' => $assistantMessage,
-                'is_complete' => $isComplete,
-                'conversation_history' => array_merge(
-                    $conversationHistory,
-                    [
-                        ['role' => 'user', 'content' => $userMessage],
-                        ['role' => 'assistant', 'content' => $assistantMessage]
-                    ]
-                )
+                foreach ($stream as $response) {
+                    $text = $response->text();
+                    $fullText .= $text;
+
+                    echo "data: " . json_encode([
+                        'chunk' => $text,
+                        'done' => false
+                    ]) . "\n\n";
+
+                    if (ob_get_level() > 0) {
+                        ob_flush();
+                    }
+                    flush();
+                }
+
+                // Check if complete
+                $isComplete = $this->checkIfComplete($fullText);
+
+                // Send final message with metadata
+                echo "data: " . json_encode([
+                    'chunk' => '',
+                    'done' => true,
+                    'full_text' => trim($fullText),
+                    'is_complete' => $isComplete,
+                    'conversation_history' => array_merge(
+                        $conversationHistory,
+                        [
+                            ['role' => 'user', 'content' => $userMessage],
+                            ['role' => 'assistant', 'content' => trim($fullText)]
+                        ]
+                    )
+                ]) . "\n\n";
+
+                if (ob_get_level() > 0) {
+                    ob_flush();
+                }
+                flush();
+            }, 200, [
+                'Cache-Control' => 'no-cache',
+                'Content-Type' => 'text/event-stream',
+                'X-Accel-Buffering' => 'no'
             ]);
 
         } catch (\Exception $e) {
@@ -78,9 +113,18 @@ class CheckupChatbotController extends Controller
     /**
      * Get the system prompt for the chatbot
      */
-    private function getSystemPrompt()
+    private function getSystemPrompt(string $mode = 'client')
     {
-        return "You are a helpful technical support assistant for CompServe, a freelancing platform for technicians.
+        return $mode === 'freelancer'
+            ? $this->freelancerPrompt()
+            : $this->clientPrompt();
+    }
+
+    public function clientPrompt()
+    {
+        return "You are CompServe's Client Assistant name CompBot.
+
+You are a helpful technical support assistant for CompServe, a freelancing platform for technicians.
 
 Your job is to help clients troubleshoot their technical issues before they post a job listing.
 
@@ -104,21 +148,66 @@ Focus on common computer/device issues like:
 - Basic troubleshooting (restart, updates, cables)";
     }
 
+    public function freelancerPrompt()
+    {
+        return "
+You are CompServe's Freelancer Assistant name CompBot.
+
+Your goal is to help freelancers find relevant gigs or contracts.
+
+Your behavior:
+1. Greet the freelancer professionally.
+2. Ask about their primary skills (hardware, networking, software, mobile, etc).
+3. Ask about experience level (beginner, intermediate, expert).
+4. Ask preferred job type (gig or contract).
+5. Ask availability (urgent, flexible).
+6. Summarize their profile.
+7. Recommend suitable gigs or contracts.
+8. Encourage them to apply.
+
+When ready to recommend gigs, say EXACTLY:
+'RECOMMENDATION: Show matching gigs.'
+
+Keep responses concise (2–3 sentences).
+Be professional and opportunity-focused.";
+    }
+
     /**
      * Check if the troubleshooting is complete
      */
-    private function checkIfComplete($message)
+    private function checkIfComplete(string $message): bool
     {
-        $completionPhrases = [
-            'RECOMMENDATION: Post a job listing',
-            'you should post a job listing',
-            'recommend posting a job',
-            'problem is resolved',
-            'issue is fixed',
-            'glad it\'s working'
+        $role = Auth::user()->role ?? 'client';
+
+        $completionPhrasesByRole = [
+            'client' => [
+                'RECOMMENDATION: Post a job listing',
+                'you should post a job listing',
+                'recommend posting a job',
+                'post a job listing',
+                'post a job',
+                'find a freelancer',
+                'problem is resolved',
+                'issue is fixed',
+                'glad it\'s working',
+            ],
+
+            'freelancer' => [
+                'RECOMMENDATION: Search for available gigs',
+                'you can now search for gigs',
+                'browse available contracts',
+                'apply to this job',
+                'start applying to gigs',
+                'this contract matches your skills',
+                'you are ready to accept work',
+                'session complete',
+            ],
         ];
 
-        foreach ($completionPhrases as $phrase) {
+        $phrases = $completionPhrasesByRole[$role]
+            ?? $completionPhrasesByRole['client'];
+
+        foreach ($phrases as $phrase) {
             if (stripos($message, $phrase) !== false) {
                 return true;
             }
@@ -132,9 +221,16 @@ Focus on common computer/device issues like:
      */
     public function startNew()
     {
-        return response()->json([
-            'success' => true,
-            'message' => "Hi! I'm here to help troubleshoot your technical issue. Can you describe the problem you're experiencing?"
-        ]);
+        if (Auth::user()->role === "freelancer") {
+            return response()->json([
+                'success' => true,
+                'message' => "Hi! 👋 I'm here to support you as a freelancer. Need help finding jobs, managing projects, or boosting your profile?"
+            ]);
+        } else if (Auth::user()->role === "client") {
+            return response()->json([
+                'success' => true,
+                'message' => "Hi! I'm here to help troubleshoot your technical issue. Can you describe the problem you're experiencing?"
+            ]);
+        }
     }
 }

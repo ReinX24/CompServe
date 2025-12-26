@@ -55,6 +55,12 @@ Route::prefix('freelancer')
             // Route::get('/rejected', [FreelancerJobListingController::class, 'rejectedJobs'])->name('jobs.rejected');
             // Route::get('/finished', [FreelancerJobListingController::class, 'completedJobs'])->name('jobs.finished');
 
+            Route::post(
+                '/{jobListing}/summarize',
+                [FreelancerJobListingController::class, 'summarize']
+            )
+                ->name('jobs.summarize');
+
             Route::get('/{jobListing}/', [
                 FreelancerJobListingController::class,
                 'show'

@@ -167,3 +167,9 @@
     :active="request()->routeIs('freelancer.profile.show')">
     Profile
 </x-layouts.sidebar-link>
+
+<x-layouts.sidebar-link href="{{ route('chatbot.index') }}"
+    icon='fas-robot'
+    :active="request()->routeIs('chatbot.index')">
+    CompBot AI
+</x-layouts.sidebar-link>
