@@ -5,7 +5,7 @@ use Gemini\Laravel\Facades\Gemini;
 use OpenAI\Laravel\Facades\OpenAI;
 
 // Chatbot routes - accessible to authenticated clients
-// TODO: add summarize functionality when showing gig or contract
+// TODO: add ai functionality where it summarizes the profile of the client or freelancer
 // TODO: test chatbot for client and freelancer
 Route::middleware(['auth'])->group(function () {
     Route::get('/chatbot', [CheckupChatbotController::class, 'index'])->name('chatbot.index');
