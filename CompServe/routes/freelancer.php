@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AiSummaryController;
 use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\Client\ClientJobListingController;
 use App\Http\Controllers\ContractController;
@@ -54,12 +55,6 @@ Route::prefix('freelancer')
             // Route::get('/current', [FreelancerJobListingController::class, 'currentJobs'])->name('jobs.current');
             // Route::get('/rejected', [FreelancerJobListingController::class, 'rejectedJobs'])->name('jobs.rejected');
             // Route::get('/finished', [FreelancerJobListingController::class, 'completedJobs'])->name('jobs.finished');
-
-            Route::post(
-                '/{jobListing}/summarize',
-                [FreelancerJobListingController::class, 'summarize']
-            )
-                ->name('jobs.summarize');
 
             Route::get('/{jobListing}/', [
                 FreelancerJobListingController::class,

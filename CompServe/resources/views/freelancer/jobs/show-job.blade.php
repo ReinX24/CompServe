@@ -52,7 +52,7 @@
     <div class="max-w-5xl mx-auto space-y-6">
 
         {{-- AI Summary Section --}}
-        @include('freelancer.jobs.partials.ai-summary')
+        @include('jobs.partials.ai-summary')
 
         {{-- Main Job Card --}}
         <div class="card bg-base-100 shadow-xl border border-base-300">

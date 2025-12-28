@@ -51,6 +51,9 @@
 
     <div class="max-w-6xl mx-auto space-y-6">
 
+        {{-- AI Summary Section --}}
+        @include('jobs.partials.ai-summary')
+
         {{-- Main Job Card --}}
         <div class="card bg-base-100 shadow-xl border border-base-300">
             <div class="card-body">

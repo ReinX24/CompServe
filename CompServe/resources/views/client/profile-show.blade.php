@@ -358,6 +358,11 @@
                             </div>
                         </div>
                     </div>
+
+                    {{-- Ai summary --}}
+                    @if (Auth::check() && Auth::id() !== $user->id)
+                        @include('partials.ai-profile-analysis')
+                    @endif
                 </div>
             </div>
         </div>

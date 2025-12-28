@@ -2,6 +2,7 @@
 
 use App\Events\MyEvent;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\AiSummaryController;
 use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CheckupChatbotController;
@@ -77,6 +78,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/chat', [ChatController::class, 'dashboard'])->name('chat.dashboard');
     Route::post('/chat/read', [ChatController::class, 'markAsRead']);
     Route::get('/users/search', [UserSearchController::class, 'search']);
+
+    Route::post(
+        '/{jobListing}/summarize',
+        [AiSummaryController::class, 'summarize']
+    )
+        ->name('jobs.summarize');
+
+    Route::post('/profile/{user}/analyze', [ProfileController::class, 'analyzeProfile'])
+        ->name('profile.analyze');
 });
 
 Route::get('/client/{userId}', [ClientInformationController::class, 'showPublic'])
