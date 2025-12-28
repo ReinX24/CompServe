@@ -11,7 +11,7 @@
                     AI Summary
                 </span>
             </h2>
-            <div class="badge badge-primary badge-lg gap-2 shadow-md">
+            {{-- <div class="badge badge-primary badge-lg gap-2 shadow-md">
                 <svg xmlns="http://www.w3.org/2000/svg"
                     class="h-4 w-4"
                     fill="none"
@@ -23,7 +23,7 @@
                         d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
                 Powered by Gemini
-            </div>
+            </div> --}}
         </div>
 
         <!-- Summary Content with Enhanced Styling -->

@@ -31,7 +31,6 @@ class FreelancerInformation extends Model
     // DONE: add skills
     // DONE: add experience
     // DONE: add education
-    // TODO: add certifications (TO BE VERIFIED BY ADMIN)
 
     public function user(): BelongsTo
     {

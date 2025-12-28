@@ -388,6 +388,26 @@
 
                 <!-- Right Column - Main Content -->
                 <div class="md:col-span-2 space-y-6">
+
+                    {{-- Ai summary --}}
+                    @if (Auth::check())
+                        <div
+                            class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300 mb-6">
+                            <div class="card-body">
+                                <h2
+                                    class="card-title text-2xl mb-4 flex items-center gap-2">
+                                    <span class="text-3xl">🤖</span>
+                                    @if (Auth::id() === $user->id)
+                                        My Profile Analysis
+                                    @else
+                                        Profile Analysis
+                                    @endif
+                                </h2>
+                                @include('partials.ai-profile-analysis')
+                            </div>
+                        </div>
+                    @endif
+
                     <!-- About Section -->
                     <div
                         class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">

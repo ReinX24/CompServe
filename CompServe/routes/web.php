@@ -2,7 +2,7 @@
 
 use App\Events\MyEvent;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\AiSummaryController;
+use App\Http\Controllers\AiAnalyzerController;
 use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CheckupChatbotController;
@@ -81,11 +81,14 @@ Route::middleware('auth')->group(function () {
 
     Route::post(
         '/{jobListing}/summarize',
-        [AiSummaryController::class, 'summarize']
+        [AiAnalyzerController::class, 'summarize']
     )
         ->name('jobs.summarize');
 
-    Route::post('/profile/{user}/analyze', [ProfileController::class, 'analyzeProfile'])
+    Route::post('/profile/{user}/analyze', [
+        AiAnalyzerController::class,
+        'analyzeProfile'
+    ])
         ->name('profile.analyze');
 });
 

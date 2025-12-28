@@ -109,4 +109,9 @@ class User extends Authenticatable
 
         return User::whereIn('id', $userIds)->get();
     }
+
+    public function receivedReviews()
+    {
+        return $this->hasMany(Review::class, 'freelancer_id');
+    }
 }

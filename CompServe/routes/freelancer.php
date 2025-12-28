@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AiSummaryController;
+use App\Http\Controllers\AiAnalyzerController;
 use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\Client\ClientJobListingController;
 use App\Http\Controllers\ContractController;

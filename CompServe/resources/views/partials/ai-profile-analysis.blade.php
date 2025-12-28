@@ -1,29 +1,16 @@
 {{-- resources/views/partials/ai-profile-analysis.blade.php --}}
 <div
-    class="card bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 shadow-2xl border-2 border-primary/30 hover:border-primary/50 transition-all duration-300">
+    class="card bg-linear-to-br from-primary/10 via-secondary/5 to-accent/10 shadow-2xl border-2 border-primary/30 hover:border-primary/50 transition-all duration-300">
     <div class="card-body">
         <!-- Enhanced Header -->
         <div class="flex items-center justify-between mb-4">
             <h2 class="card-title text-2xl flex items-center gap-3">
                 <span class="text-3xl animate-pulse">🤖</span>
                 <span
-                    class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-bold">
+                    class="bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent font-bold">
                     AI Profile Analysis
                 </span>
             </h2>
-            <div class="badge badge-primary badge-lg gap-2 shadow-md">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                AI-Powered
-            </div>
         </div>
 
         <!-- Analysis Content -->
@@ -164,7 +151,7 @@
         const analysisError = document.getElementById('analysisError');
         const analyzeBtn = document.getElementById('analyzeBtn');
         const clearAnalysisBtn = document.getElementById(
-        'clearAnalysisBtn');
+            'clearAnalysisBtn');
 
         // Show loading
         analysisContent.classList.add('hidden');
@@ -279,7 +266,7 @@
             if (headerMatch) {
                 const sectionNumber = headerMatch[1];
                 const sectionTitle = headerMatch[2].replace(/\*\*/g,
-                '');
+                    '');
 
                 html += `
                     <div class="card bg-gradient-to-br from-base-200/80 to-base-300/30 shadow-lg border-l-4 border-primary hover:shadow-xl transition-all duration-300">
@@ -294,7 +281,7 @@
                     const content = lines.slice(1);
                     const hasBullets = content.some(line =>
                         line.startsWith('-') || line.startsWith(
-                        '•') || line.startsWith('*')
+                            '•') || line.startsWith('*')
                     );
 
                     if (hasBullets) {
