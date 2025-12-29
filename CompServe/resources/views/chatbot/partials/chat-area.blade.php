@@ -92,28 +92,35 @@
                     </div>
                     @if (Auth::user()->role === 'client')
                         <p class="leading-relaxed">
-                            I'm here to help troubleshoot your
-                            technical issues before you post a
-                            job.
-                            Let's run a quick diagnostic check
-                            to see if we can solve your problem
-                            instantly—
+                            Get AI-powered insights into this client's
                             <strong
-                                class="text-purple-600 dark:text-purple-400">saving
-                                you time and money!</strong>
+                                class="text-purple-600 dark:text-purple-400">
+                                hiring history, project completion rate, and
+                                reliability
+                            </strong>.
+                            Our intelligent analysis evaluates their job posting
+                            patterns, engagement level,
+                            and trustworthiness—
+                            <strong
+                                class="text-purple-600 dark:text-purple-400">
+                                helping you decide if this is the right
+                                opportunity for you.
+                            </strong>
                         </p>
                     @elseif(Auth::user()->role === 'freelancer')
                         <p class="leading-relaxed">
-                            I'm here to help you stay productive
-                            and tackle technical issues before
-                            you start a project.
-                            Let's run a quick diagnostic check
-                            to make sure everything runs
-                            smoothly—
+                            Get AI-powered insights into this profile's
                             <strong
-                                class="text-purple-600 dark:text-purple-400">saving
-                                you time and helping you deliver
-                                better results!</strong>
+                                class="text-purple-600 dark:text-purple-400">strengths,
+                                experience, and trustworthiness</strong>.
+                            Our intelligent analysis evaluates profile
+                            completeness, work history, ratings, and engagement
+                            to help you make informed decisions—
+                            <strong
+                                class="text-purple-600 dark:text-purple-400">
+                                whether you're hiring talent or building
+                                professional connections.
+                            </strong>
                         </p>
                     @endif
                     <div

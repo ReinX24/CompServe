@@ -46,6 +46,18 @@
             }
         }
 
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 30px rgba(102, 126, 234, 0.6);
+            }
+        }
+
         .animate-slide-in {
             animation: slide-in 0.3s ease-out;
         }
@@ -108,6 +120,35 @@
         .chat-end .chat-image>div {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
+
+        /* Action button styling */
+        .action-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            animation: slide-up 0.5s ease-out, pulse-glow 2s infinite;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(102, 126, 234, 0.4);
+        }
+
+        .action-button:active {
+            transform: translateY(0);
+        }
+
+        .action-button-container {
+            margin-top: 12px;
+            animation: slide-up 0.5s ease-out;
+        }
     </style>
 
     {{-- Chatbot Script --}}
@@ -141,7 +182,8 @@
             userInput.focus();
         };
 
-        function addMessage(text, isUser = false, isStreaming = false) {
+        function addMessage(text, isUser = false, isStreaming = false, action =
+            null) {
             const wrapper = document.createElement('div');
             wrapper.className =
                 `chat ${isUser ? 'chat-end' : 'chat-start'} animate-slide-in`;
@@ -151,6 +193,18 @@
                 minute: '2-digit'
             });
 
+            const actionButtonHtml = action ? `
+                <div class="action-button-container">
+                    <a href="${action.url}" class="action-button">
+                        <span style="font-size: 1.25rem;">${action.icon}</span>
+                        <span>${action.label}</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
+            ` : '';
+
             wrapper.innerHTML = `
                 <div class="chat-image avatar">
                     <div class="w-10 rounded-full ${isUser ? 'bg-neutral text-white' : 'bg-primary text-white'}
@@ -158,8 +212,11 @@
                         ${isUser ? '👤' : '🤖'}
                     </div>
                 </div>
-                <div class="chat-bubble ${isUser ? 'chat-bubble-neutral' : 'chat-bubble-primary'} shadow-md ${isStreaming ? 'streaming-message' : ''}">
-                    ${text}${isStreaming ? '<span class="typing-cursor"></span>' : ''}
+                <div>
+                    <div class="chat-bubble ${isUser ? 'chat-bubble-neutral' : 'chat-bubble-primary'} shadow-md ${isStreaming ? 'streaming-message' : ''}">
+                        ${text}${isStreaming ? '<span class="typing-cursor"></span>' : ''}
+                    </div>
+                    ${actionButtonHtml}
                 </div>
                 <div class="chat-footer opacity-50 text-xs mt-1">
                     ${timestamp}
@@ -183,10 +240,27 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
-        function finalizeStreamingMessage(wrapper, text) {
+        function finalizeStreamingMessage(wrapper, text, action = null) {
             const bubble = wrapper.querySelector('.chat-bubble');
             bubble.innerHTML = text;
             bubble.classList.remove('streaming-message');
+
+            // Add action button if provided
+            if (action) {
+                const actionContainer = document.createElement('div');
+                actionContainer.className = 'action-button-container';
+                actionContainer.innerHTML = `
+                    <a href="${action.url}" class="action-button">
+                        <span style="font-size: 1.25rem;">${action.icon}</span>
+                        <span>${action.label}</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                `;
+                wrapper.querySelector('.chat-bubble').parentElement.appendChild(
+                    actionContainer);
+            }
         }
 
         function showTypingIndicator() {
@@ -238,8 +312,6 @@
             userInput.value = '';
             charCount.textContent = '0';
 
-            showTypingIndicator();
-
             try {
                 const response = await fetch(
                     '{{ route('chatbot.chat') }}', {
@@ -256,69 +328,108 @@
                         })
                     });
 
-                removeTypingIndicator();
-
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
 
-                const reader = response.body.getReader();
-                const decoder = new TextDecoder();
-                let fullText = '';
-                let messageWrapper = null;
+                // Check if response is JSON (direct action) or stream
+                const contentType = response.headers.get(
+                'content-type');
 
-                while (true) {
-                    const {
-                        done,
-                        value
-                    } = await reader.read();
-                    if (done) break;
+                if (contentType && contentType.includes(
+                        'application/json')) {
+                    // Handle direct action response (non-streaming)
+                    const data = await response.json();
 
-                    const chunk = decoder.decode(value);
-                    const lines = chunk.split('\n');
+                    if (data.success) {
+                        addMessage(data.message, false, false, data
+                            .action);
+                        conversationHistory = data.conversation_history;
 
-                    for (const line of lines) {
-                        if (line.startsWith('data: ')) {
-                            const data = JSON.parse(line.slice(6));
+                        if (data.is_complete) {
+                            actionButtons.classList.remove('hidden');
+                            userInput.disabled = true;
+                            sendBtn.disabled = true;
+                        }
+                    } else {
+                        addMessage(data.message ||
+                            'An error occurred. Please try again.');
+                    }
+                } else {
+                    // Handle streaming response
+                    showTypingIndicator();
 
-                            if (!data.done) {
-                                fullText += data.chunk;
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder();
+                    let fullText = '';
+                    let messageWrapper = null;
 
-                                if (!messageWrapper) {
-                                    messageWrapper = addMessage(
-                                        fullText, false, true);
+                    while (true) {
+                        const {
+                            done,
+                            value
+                        } = await reader.read();
+                        if (done) break;
+
+                        const chunk = decoder.decode(value);
+                        const lines = chunk.split('\n');
+
+                        for (const line of lines) {
+                            if (line.startsWith('data: ')) {
+                                const data = JSON.parse(line.slice(6));
+
+                                if (data.error) {
+                                    removeTypingIndicator();
+                                    addMessage(data.message ||
+                                        'An error occurred while generating response.'
+                                        );
+                                    break;
+                                }
+
+                                if (!data.done) {
+                                    fullText += data.chunk;
+
+                                    if (!messageWrapper) {
+                                        removeTypingIndicator();
+                                        messageWrapper = addMessage(
+                                            fullText, false, true);
+                                    } else {
+                                        updateStreamingMessage(
+                                            messageWrapper, fullText
+                                            );
+                                    }
                                 } else {
-                                    updateStreamingMessage(
-                                        messageWrapper, fullText);
-                                }
-                            } else {
-                                // Finalize message
-                                if (messageWrapper) {
-                                    finalizeStreamingMessage(
-                                        messageWrapper, data
-                                        .full_text);
-                                }
+                                    // Finalize message
+                                    if (messageWrapper) {
+                                        finalizeStreamingMessage(
+                                            messageWrapper, data
+                                            .full_text, data.action);
+                                    }
 
-                                conversationHistory = data
-                                    .conversation_history;
+                                    conversationHistory = data
+                                        .conversation_history;
 
-                                if (data.is_complete) {
-                                    actionButtons.classList.remove(
-                                        'hidden');
-                                    userInput.disabled = true;
-                                    sendBtn.disabled = true;
+                                    if (data.is_complete) {
+                                        actionButtons.classList.remove(
+                                            'hidden');
+                                        userInput.disabled = true;
+                                        sendBtn.disabled = true;
+                                    }
+
+                                    // Update response time
+                                    const responseTime = ((Date.now() -
+                                        startTime) / 1000).toFixed(
+                                        1);
+                                    responseTimes.push(parseFloat(
+                                        responseTime));
+                                    const avgTime = (responseTimes
+                                            .reduce((a, b) => a + b,
+                                            0) / responseTimes.length)
+                                        .toFixed(1);
+                                    document.getElementById(
+                                            'avg-response')
+                                        .textContent = `~${avgTime}s`;
                                 }
-
-                                // Update response time
-                                const responseTime = ((Date.now() -
-                                    startTime) / 1000).toFixed(1);
-                                responseTimes.push(parseFloat(
-                                    responseTime));
-                                const avgTime = (responseTimes.reduce((
-                                        a, b) => a + b, 0) /
-                                    responseTimes.length).toFixed(1);
-                                document.getElementById('avg-response')
-                                    .textContent = `~${avgTime}s`;
                             }
                         }
                     }
@@ -354,9 +465,11 @@
             responseTimes = [];
             document.getElementById('avg-response').textContent = '~2s';
 
-            addMessage(
-                "Hi! I'm here to help troubleshoot your technical issue. Can you describe the problem you're experiencing?"
-            );
+            const greetingMessage = chatbotMode === 'client' ?
+                "Hi! I'm here to help troubleshoot your technical issue. Can you describe the problem you're experiencing?" :
+                "Hi! I'm here to help you find the perfect gigs and contracts that match your skills. What kind of work are you looking for?";
+
+            addMessage(greetingMessage);
             userInput.focus();
         });
 

@@ -106,27 +106,58 @@
         </h3>
 
         <div class="space-y-2">
-            <button
-                class="btn btn-sm w-full justify-start rounded-xl bg-gray-50 dark:bg-base-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 border-2 border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-600 transition-all gap-2"
-                onclick="setQuickMessage('My computer won\'t turn on')">
-                <span class="text-lg">💻</span>
-                <span class="text-left flex-1">Computer won't
-                    start</span>
-            </button>
-            <button
-                class="btn btn-sm w-full justify-start rounded-xl bg-gray-50 dark:bg-base-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 border-2 border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-600 transition-all gap-2"
-                onclick="setQuickMessage('My Wi-Fi is not working')">
-                <span class="text-lg">📶</span>
-                <span class="text-left flex-1">Wi-Fi
-                    issues</span>
-            </button>
-            <button
-                class="btn btn-sm w-full justify-start rounded-xl bg-gray-50 dark:bg-base-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 border-2 border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-600 transition-all gap-2"
-                onclick="setQuickMessage('My printer is not responding')">
-                <span class="text-lg">🖨️</span>
-                <span class="text-left flex-1">Printer
-                    problems</span>
-            </button>
+            @if (Auth::user()->role === 'client')
+                <button
+                    class="btn btn-sm w-full justify-start rounded-xl bg-gray-50 dark:bg-base-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 border-2 border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-600 transition-all gap-2"
+                    onclick="setQuickMessage('How to improve my profile')">
+                    <span class="text-lg">✏️</span>
+                    <span class="text-left flex-1">How to improve my
+                        profile</span>
+                </button>
+                <button
+                    class="btn btn-sm w-full justify-start rounded-xl bg-gray-50 dark:bg-base-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 border-2 border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-600 transition-all gap-2"
+                    onclick="setQuickMessage('My Wi-Fi is not working')">
+                    <span class="text-lg">📶</span>
+                    <span class="text-left flex-1">Wi-Fi
+                        issues</span>
+                </button>
+                <button
+                    class="btn btn-sm w-full justify-start rounded-xl bg-gray-50 dark:bg-base-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 border-2 border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-600 transition-all gap-2"
+                    onclick="setQuickMessage('My printer is not responding')">
+                    <span class="text-lg">🖨️</span>
+                    <span class="text-left flex-1">Printer
+                        problems</span>
+                </button>
+            @elseif (Auth::user()->role === 'freelancer')
+                <button
+                    class="btn btn-sm w-full justify-start rounded-xl bg-gray-50 dark:bg-base-300 hover:bg-green-50 dark:hover:bg-green-900/30 border-2 border-gray-200 dark:border-gray-600 hover:border-green-300 dark:hover:border-green-600 transition-all gap-2"
+                    onclick="setQuickMessage('Review my profile and suggest improvements')">
+                    <span class="text-lg">🧠</span>
+                    <span class="text-left flex-1">Improve my profile</span>
+                </button>
+
+                <button
+                    class="btn btn-sm w-full justify-start rounded-xl bg-gray-50 dark:bg-base-300 hover:bg-green-50 dark:hover:bg-green-900/30 border-2 border-gray-200 dark:border-gray-600 hover:border-green-300 dark:hover:border-green-600 transition-all gap-2"
+                    onclick="setQuickMessage('How can I get more clients on this platform?')">
+                    <span class="text-lg">🚀</span>
+                    <span class="text-left flex-1">Get more clients</span>
+                </button>
+
+                <button
+                    class="btn btn-sm w-full justify-start rounded-xl bg-gray-50 dark:bg-base-300 hover:bg-green-50 dark:hover:bg-green-900/30 border-2 border-gray-200 dark:border-gray-600 hover:border-green-300 dark:hover:border-green-600 transition-all gap-2"
+                    onclick="setQuickMessage('Analyze my skills and suggest better positioning')">
+                    <span class="text-lg">🎯</span>
+                    <span class="text-left flex-1">Skill positioning</span>
+                </button>
+
+                <button
+                    class="btn btn-sm w-full justify-start rounded-xl bg-gray-50 dark:bg-base-300 hover:bg-green-50 dark:hover:bg-green-900/30 border-2 border-gray-200 dark:border-gray-600 hover:border-green-300 dark:hover:border-green-600 transition-all gap-2"
+                    onclick="setQuickMessage('How can I increase my ratings and trust score?')">
+                    <span class="text-lg">⭐</span>
+                    <span class="text-left flex-1">Improve ratings &
+                        trust</span>
+                </button>
+            @endif
         </div>
     </div>
 
