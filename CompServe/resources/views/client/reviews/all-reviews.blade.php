@@ -1,12 +1,4 @@
 <x-layouts.app>
-    <div class="breadcrumbs text-sm mb-4">
-        <ul class="text-base-content/70">
-            <li><a href="{{ route('dashboard') }}"
-                    class="hover:text-primary">Dashboard</a></li>
-            <li class="text-primary font-semibold">All Reviews</li>
-        </ul>
-    </div>
-
     <x-client.page-header-with-action title="⭐ Reviews"
         description="All your reviews from completed jobs." />
 

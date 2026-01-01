@@ -75,6 +75,7 @@
                             <div class="flex-1">
                                 <p
                                     class="text-sm font-medium text-base-content/70 mb-2">
+                                    Posted
                                     {{ __('Posted Gigs / Contracts') }}
                                 </p>
                                 <p

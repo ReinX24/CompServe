@@ -109,10 +109,9 @@
             @if (Auth::user()->role === 'client')
                 <button
                     class="btn btn-sm w-full justify-start rounded-xl bg-gray-50 dark:bg-base-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 border-2 border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-600 transition-all gap-2"
-                    onclick="setQuickMessage('How to improve my profile')">
+                    onclick="setQuickMessage('I want to post a gig')">
                     <span class="text-lg">✏️</span>
-                    <span class="text-left flex-1">How to improve my
-                        profile</span>
+                    <span class="text-left flex-1">Post a gig</span>
                 </button>
                 <button
                     class="btn btn-sm w-full justify-start rounded-xl bg-gray-50 dark:bg-base-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 border-2 border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-600 transition-all gap-2"

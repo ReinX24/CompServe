@@ -11,19 +11,6 @@
                     AI Summary
                 </span>
             </h2>
-            {{-- <div class="badge badge-primary badge-lg gap-2 shadow-md">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                Powered by Gemini
-            </div> --}}
         </div>
 
         <!-- Summary Content with Enhanced Styling -->
@@ -147,9 +134,16 @@
                 </svg>
                 <div>
                     <p class="text-xs font-semibold text-info mb-1">Pro Tip</p>
-                    <p class="text-xs text-base-content/70">The AI summary
-                        provides a quick overview to help you decide if this job
-                        matches your skills!</p>
+                    @if (Auth::user()->role === 'freelancer')
+                        <p class="text-xs text-base-content/70">The AI summary
+                            provides a quick overview to help you decide if this
+                            job
+                            matches your skills!</p>
+                    @elseif(Auth::user()->role === 'client')
+                        <p class="text-xs text-base-content/70">The AI summary
+                            provides a quick overview regarding your posted gig
+                            or contract!</p>
+                    @endif
                 </div>
             </div>
         </div>

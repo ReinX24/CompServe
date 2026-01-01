@@ -334,7 +334,7 @@
 
                 // Check if response is JSON (direct action) or stream
                 const contentType = response.headers.get(
-                'content-type');
+                    'content-type');
 
                 if (contentType && contentType.includes(
                         'application/json')) {
@@ -382,7 +382,7 @@
                                     removeTypingIndicator();
                                     addMessage(data.message ||
                                         'An error occurred while generating response.'
-                                        );
+                                    );
                                     break;
                                 }
 
@@ -396,7 +396,7 @@
                                     } else {
                                         updateStreamingMessage(
                                             messageWrapper, fullText
-                                            );
+                                        );
                                     }
                                 } else {
                                     // Finalize message
@@ -424,7 +424,8 @@
                                         responseTime));
                                     const avgTime = (responseTimes
                                             .reduce((a, b) => a + b,
-                                            0) / responseTimes.length)
+                                                0) / responseTimes
+                                            .length)
                                         .toFixed(1);
                                     document.getElementById(
                                             'avg-response')
