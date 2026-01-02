@@ -93,7 +93,7 @@
         </div>
     </div>
 
-    <!-- Quick Start -->
+    <!-- Quick Actions -->
     <div
         class="bg-white dark:bg-base-100 rounded-2xl p-6 shadow-xl border-2 border-gray-200 dark:border-gray-700">
         <h3
@@ -102,7 +102,7 @@
                 class="w-8 h-8 bg-linear-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center text-white">
                 ⚡
             </div>
-            Quick Start
+            Quick Actions
         </h3>
 
         <div class="space-y-2">
@@ -112,6 +112,12 @@
                     onclick="setQuickMessage('I want to post a gig')">
                     <span class="text-lg">✏️</span>
                     <span class="text-left flex-1">Post a gig</span>
+                </button>
+                <button
+                    class="btn btn-sm w-full justify-start rounded-xl bg-gray-50 dark:bg-base-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 border-2 border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-600 transition-all gap-2"
+                    onclick="setQuickMessage('I want to post a contract')">
+                    <span class="text-lg">🖊️</span>
+                    <span class="text-left flex-1">Post a contract</span>
                 </button>
                 <button
                     class="btn btn-sm w-full justify-start rounded-xl bg-gray-50 dark:bg-base-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 border-2 border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-600 transition-all gap-2"
@@ -130,18 +136,16 @@
             @elseif (Auth::user()->role === 'freelancer')
                 <button
                     class="btn btn-sm w-full justify-start rounded-xl bg-gray-50 dark:bg-base-300 hover:bg-green-50 dark:hover:bg-green-900/30 border-2 border-gray-200 dark:border-gray-600 hover:border-green-300 dark:hover:border-green-600 transition-all gap-2"
+                    onclick="setQuickMessage('Show me gigs')">
+                    <span class="text-lg">🔎</span>
+                    <span class="text-left flex-1">Show me gigs</span>
+                </button>
+                <button
+                    class="btn btn-sm w-full justify-start rounded-xl bg-gray-50 dark:bg-base-300 hover:bg-green-50 dark:hover:bg-green-900/30 border-2 border-gray-200 dark:border-gray-600 hover:border-green-300 dark:hover:border-green-600 transition-all gap-2"
                     onclick="setQuickMessage('Review my profile and suggest improvements')">
                     <span class="text-lg">🧠</span>
                     <span class="text-left flex-1">Improve my profile</span>
                 </button>
-
-                <button
-                    class="btn btn-sm w-full justify-start rounded-xl bg-gray-50 dark:bg-base-300 hover:bg-green-50 dark:hover:bg-green-900/30 border-2 border-gray-200 dark:border-gray-600 hover:border-green-300 dark:hover:border-green-600 transition-all gap-2"
-                    onclick="setQuickMessage('How can I get more clients on this platform?')">
-                    <span class="text-lg">🚀</span>
-                    <span class="text-left flex-1">Get more clients</span>
-                </button>
-
                 <button
                     class="btn btn-sm w-full justify-start rounded-xl bg-gray-50 dark:bg-base-300 hover:bg-green-50 dark:hover:bg-green-900/30 border-2 border-gray-200 dark:border-gray-600 hover:border-green-300 dark:hover:border-green-600 transition-all gap-2"
                     onclick="setQuickMessage('Analyze my skills and suggest better positioning')">

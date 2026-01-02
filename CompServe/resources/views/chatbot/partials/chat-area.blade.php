@@ -176,12 +176,12 @@
             class="border-t-2 border-gray-200 dark:border-gray-700 p-6 bg-white dark:bg-base-200">
             <form id="chat-form"
                 class="space-y-3">
-                <div class="flex gap-3">
+                <div class="flex gap-2">
                     <div class="flex-1 relative">
                         <input id="user-input"
                             type="text"
                             placeholder="Describe your technical issue in detail…"
-                            class="input input-bordered w-full rounded-xl bg-gray-50 dark:bg-base-300 border-2 border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none transition pr-12"
+                            class="input input-bordered w-full rounded-xl bg-gray-50 dark:bg-base-300 border-2 border-gray-200 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none transition pr-12 h-12 min-h-12"
                             autocomplete="off"
                             maxlength="1000"
                             required>
@@ -191,20 +191,22 @@
                         </div>
                     </div>
 
-                    <button id="send-btn"
-                        type="submit"
-                        class="btn bg-linear-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white border-none rounded-xl px-6 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all gap-2">
-                        <svg class="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                        <span id="send-text">Send</span>
-                    </button>
+                    <div>
+                        <button id="send-btn"
+                            type="submit"
+                            class="btn bg-linear-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white border-none rounded-xl px-6 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all gap-2 h-12 min-h-12">
+                            <svg class="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                            <span id="send-text">Send</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div
@@ -282,7 +284,7 @@
 
                                 <a href="{{ route('freelancer.contracts.index') }}"
                                     class="btn btn-outline rounded-xl gap-2 hover:scale-105 transition-all">
-                                    My Contracts
+                                    Browse Contracts
                                 </a>
                             @endif
                         </div>

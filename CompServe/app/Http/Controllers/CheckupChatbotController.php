@@ -83,7 +83,7 @@ class CheckupChatbotController extends Controller
             $fullConversation = $this->buildConversationContext($mode, $conversationHistory, $userMessage);
 
             // Get Gemini model
-            $model = config('gemini.model', 'gemini-2.0-flash-exp');
+            $model = config('gemini.model', 'gemini-2.0-flash');
 
             // Stream response
             return $this->streamGeminiResponse($model, $fullConversation, $conversationHistory, $userMessage, $mode);
@@ -181,7 +181,7 @@ class CheckupChatbotController extends Controller
                 'action' => [
                     'type' => 'redirect',
                     'label' => 'Browse Available Gigs',
-                    'url' => route('freelancer.jobs.index'),
+                    'url' => route('freelancer.gigs.index'),
                     'icon' => '🔍'
                 ]
             ],
