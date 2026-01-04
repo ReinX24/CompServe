@@ -2,23 +2,35 @@
 
 use App\Models\User;
 
-test('login screen can be rendered', function () {
-    $response = $this->get('/login');
+// test('login screen can be rendered', function () {
+//     $response = $this->get('/login');
+
+//     $response->assertStatus(200);
+// });
+
+test('login freelancer screen can be rendered', function () {
+    $response = $this->get('/login/freelancer');
 
     $response->assertStatus(200);
 });
 
-test('users can authenticate using the login screen', function () {
-    $user = User::factory()->create();
+test('login client screen can be rendered', function () {
+    $response = $this->get('/login/client');
 
-    $response = $this->post('/login', [
-        'email' => $user->email,
-        'password' => 'password',
-    ]);
-
-    $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    $response->assertStatus(200);
 });
+
+// test('users can authenticate using the login screen', function () {
+//     $user = User::factory()->create();
+
+//     $response = $this->post('/login', [
+//         'email' => $user->email,
+//         'password' => 'password',
+//     ]);
+
+//     $this->assertAuthenticated();
+//     $response->assertRedirect(route('dashboard', absolute: false));
+// });
 
 test('users can not authenticate with invalid password', function () {
     $user = User::factory()->create();

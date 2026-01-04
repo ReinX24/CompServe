@@ -1,13 +1,13 @@
 <x-layouts.app>
     <div
-        class="min-h-screen bg-gradient-to-br from-base-200 via-base-100 to-base-200 py-8 px-4">
+        class="min-h-screen bg-linear-to-br from-base-200 via-base-100 to-base-200 py-8 px-4">
         <div class="max-w-7xl mx-auto">
             <!-- Header Section -->
             <div class="mb-8">
                 <div class="flex items-center gap-3 mb-2">
                     <span class="text-5xl">💼</span>
                     <h1
-                        class="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                        class="text-4xl font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
                         {{ __('Freelancer Dashboard') }}
                     </h1>
                 </div>
@@ -19,7 +19,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Available Gigs Card -->
                 <div
-                    class="card bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 shadow-xl hover:shadow-2xl transition-all duration-300 border-2 border-blue-200 dark:border-blue-800 group">
+                    class="card bg-linear-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 shadow-xl hover:shadow-2xl transition-all duration-300 border-2 border-blue-200 dark:border-blue-800 group">
                     <div class="card-body">
                         <div class="flex items-start justify-between">
                             <div class="flex-1">
@@ -69,7 +69,7 @@
 
                 <!-- Applied Gigs Card -->
                 <div
-                    class="card bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 shadow-xl hover:shadow-2xl transition-all duration-300 border-2 border-green-200 dark:border-green-800 group">
+                    class="card bg-linear-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 shadow-xl hover:shadow-2xl transition-all duration-300 border-2 border-green-200 dark:border-green-800 group">
                     <div class="card-body">
                         <div class="flex items-start justify-between">
                             <div class="flex-1">
@@ -119,7 +119,7 @@
 
                 <!-- In Progress Card -->
                 <div
-                    class="card bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 shadow-xl hover:shadow-2xl transition-all duration-300 border-2 border-purple-200 dark:border-purple-800 group">
+                    class="card bg-linear-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 shadow-xl hover:shadow-2xl transition-all duration-300 border-2 border-purple-200 dark:border-purple-800 group">
                     <div class="card-body">
                         <div class="flex items-start justify-between">
                             <div class="flex-1">
@@ -169,7 +169,7 @@
 
                 <!-- Completed Card -->
                 <div
-                    class="card bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 shadow-xl hover:shadow-2xl transition-all duration-300 border-2 border-orange-200 dark:border-orange-800 group">
+                    class="card bg-linear-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 shadow-xl hover:shadow-2xl transition-all duration-300 border-2 border-orange-200 dark:border-orange-800 group">
                     <div class="card-body">
                         <div class="flex items-start justify-between">
                             <div class="flex-1">
@@ -275,7 +275,7 @@
 
             <!-- Quick Action Banner -->
             <div
-                class="mt-8 card bg-gradient-to-r from-primary to-secondary shadow-xl overflow-hidden">
+                class="mt-8 card bg-linear-to-r from-primary to-secondary shadow-xl overflow-hidden">
                 <div class="card-body">
                     <div
                         class="flex flex-col md:flex-row items-center justify-between gap-4">
