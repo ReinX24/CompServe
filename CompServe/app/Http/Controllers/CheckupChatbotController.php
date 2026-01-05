@@ -331,10 +331,10 @@ class CheckupChatbotController extends Controller
         // Check for job posting recommendation (clients)
         if ($mode === self::ROLE_CLIENT) {
             $postJobPhrases = [
-                'RECOMMENDATION: Post a job listing',
-                'post a job listing for professional assistance',
-                'you should post a job listing',
-                'recommend posting a job',
+                'RECOMMENDATION: Post a gig or contract listing',
+                'post a gig or contract listing for professional assistance',
+                'you should post a gig or contract listing',
+                'recommend posting a gig or contract',
                 'hire a qualified technician',
                 'time to hire a professional',
                 'consider hiring a technician'
@@ -344,7 +344,7 @@ class CheckupChatbotController extends Controller
                 if (stripos($message, $phrase) !== false) {
                     return [
                         'type' => 'redirect',
-                        'label' => 'Post a Job Listing',
+                        'label' => 'Post a Gig or Contract Listing',
                         'url' => route('client.jobs.create'),
                         'icon' => '💼'
                     ];

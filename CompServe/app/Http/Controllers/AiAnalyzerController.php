@@ -224,14 +224,28 @@ class AiAnalyzerController extends Controller
      */
     private function getClientStats(User $user): array
     {
+        $totalJobsPosted = $user->jobListings()->count();
+        $completedJobs = $user->jobListings()
+            ->where('status', 'completed')
+            ->count();
+
+        $cancelledJobs = $user->jobListings()
+            ->where('status', 'cancelled')
+            ->count();
+
+        $totalFinishedJobs = $completedJobs + $cancelledJobs;
+        $completionRate = $totalFinishedJobs > 0
+            ? round(($completedJobs / $totalFinishedJobs) * 100, 1)
+            : 0;
+
         return [
-            'total_jobs_posted' => $user->jobListings()->count(),
+            'total_jobs_posted' => $totalJobsPosted,
             'active_jobs' => $user->jobListings()
                 ->where('status', 'open')
                 ->count(),
-            'completed_jobs' => $user->jobListings()
-                ->where('status', 'completed')
-                ->count(),
+            'completed_jobs' => $completedJobs,
+            'cancelled_jobs' => $cancelledJobs,
+            'completion_rate' => $completionRate,
         ];
     }
 
@@ -310,7 +324,9 @@ class AiAnalyzerController extends Controller
     {
         return "Total Jobs Posted: {$data['total_jobs_posted']}\n" .
             "Active Jobs: {$data['active_jobs']}\n" .
-            "Completed Jobs: {$data['completed_jobs']}\n";
+            "Completed Jobs: {$data['completed_jobs']}\n" .
+            "Cancelled Jobs: {$data['cancelled_jobs']}\n" .
+            "Completion Rate: {$data['completion_rate']}%\n";
     }
 
     /**
@@ -326,7 +342,7 @@ class AiAnalyzerController extends Controller
         if ($role === 'freelancer') {
             $instructions .= "4. Work History Insights - Use bullet points to analyze their job completion rate, ratings, and reliability\n\n";
         } else {
-            $instructions .= "4. Client Activity - Use bullet points to analyze their job posting patterns and engagement\n\n";
+            $instructions .= "4. Client Activity - Use bullet points to analyze their job posting patterns, completion rate, cancelled jobs, and engagement\n\n";
         }
 
         $instructions .= "FORMATTING RULES:\n";
@@ -334,6 +350,11 @@ class AiAnalyzerController extends Controller
         $instructions .= "- Start each section with number (1., 2., 3., etc.)\n";
         $instructions .= "- Use - for bullet points\n";
         $instructions .= "- Be professional, objective, and constructive\n";
+
+        if ($role === 'client') {
+            $instructions .= "- Mention completion rate and any concerns about cancelled jobs\n";
+        }
+
         $instructions .= "- Keep it concise but informative\n";
         $instructions .= "- Maximum " . self::MAX_PROFILE_WORDS . " words\n";
 
@@ -374,12 +395,22 @@ class AiAnalyzerController extends Controller
         } elseif ($data['role'] === 'client' && isset($data['total_jobs_posted'])) {
             $prompt .= "Jobs Posted: {$data['total_jobs_posted']}\n";
             $prompt .= "Completed Projects: {$data['completed_jobs']}\n";
+            $prompt .= "Cancelled Projects: {$data['cancelled_jobs']}\n";
+            $prompt .= "Completion Rate: {$data['completion_rate']}%\n";
         }
 
         $prompt .= "\nCRITERIA FOR TRUST SCORE:\n";
         $prompt .= "- Account age (newer = lower trust, " . self::MIN_ACCOUNT_AGE_MONTHS . "+ months = higher)\n";
         $prompt .= "- Profile completeness (higher % = higher trust)\n";
         $prompt .= "- Verified contact info and social links (increases trust)\n";
+
+        if ($data['role'] === 'client') {
+            $prompt .= "- Completion rate (higher % = higher trust, low rate significantly reduces trust)\n";
+            $prompt .= "- Cancelled jobs (high cancellation rate significantly reduces trust)\n";
+            $prompt .= "IMPORTANT: A completion rate below 70% should result in a significant trust penalty.\n";
+            $prompt .= "Multiple cancelled jobs indicate unreliability and should lower the score.\n";
+        }
+
         $prompt .= "- Job completion rate and reviews (for freelancers)\n";
         $prompt .= "- Active job postings (for clients)\n";
         $prompt .= "- Overall activity and engagement\n\n";
@@ -433,12 +464,20 @@ class AiAnalyzerController extends Controller
 
             // Rating (max 15 points)
             $score += ($data['average_rating'] / 5) * 15;
-        } elseif ($data['role'] === 'client' && isset($data['total_jobs_posted'])) {
-            // Jobs posted (max 20 points)
-            $score += min(20, $data['total_jobs_posted'] * 3);
 
-            // Completed jobs (max 15 points)
-            $score += min(15, $data['completed_jobs'] * 3);
+        } elseif ($data['role'] === 'client' && isset($data['total_jobs_posted'])) {
+            // Jobs posted (max 15 points)
+            $score += min(15, $data['total_jobs_posted'] * 2);
+
+            // Completion rate (max 25 points) - CRITICAL FACTOR FOR CLIENTS
+            if (isset($data['completion_rate'])) {
+                $completionRateScore = ($data['completion_rate'] / 100) * 25;
+                $score += $completionRateScore;
+            }
+
+            // Penalty for cancelled jobs (reduce up to 10 points)
+            $cancellationPenalty = min(10, $data['cancelled_jobs'] * 2);
+            $score -= $cancellationPenalty;
         }
 
         return (int) max(self::MIN_TRUST_SCORE, min(self::MAX_TRUST_SCORE, $score));

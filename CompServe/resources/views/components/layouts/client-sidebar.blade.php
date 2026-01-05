@@ -54,7 +54,7 @@
         href="{{ route('client.gigs.in_progress') }}"
         icon='fas-envelope-open-text'
         :active="request()->routeIs('client.gigs.in_progress')">
-        In Progress Jobs
+        In Progress Gigs
     </x-layouts.sidebar-two-level-link>
     <x-layouts.sidebar-two-level-link
         href="{{ route('client.gigs.cancelled') }}"

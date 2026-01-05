@@ -16,32 +16,59 @@ Route::prefix('client')
     ->name('client.')
     ->group(function () {
         Route::get('/dashboard', function () {
-            $postedCount = JobListing::where(
-                [['client_id', Auth::user()->id], ['status', 'open']]
-            )->count() ?? 0;
+            $user = Auth::user();
 
-            $inProgressCount = JobListing::where(
-                [['client_id', Auth::user()->id], ['status', 'in_progress']]
-            )->count() ?? 0;
+            // Gigs stats
+            $postedGigsCount = JobListing::where([
+                ['client_id', $user->id],
+                ['status', 'open'],
+                ['duration_type', 'gig'] // or whatever identifies a gig
+            ])->count() ?? 0;
 
-            $completedCount = JobListing::where(
-                [['client_id', Auth::user()->id], ['status', 'completed']]
-            )->count() ?? 0;
+            $inProgressGigsCount = JobListing::where([
+                ['client_id', $user->id],
+                ['status', 'in_progress'],
+                ['duration_type', 'gig']
+            ])->count() ?? 0;
 
-            // Amount of applications that the current client has
-            $applicationCount = JobApplication::where(
-                'client_id',
-                Auth::user()->id
-            )->count() ?? 0;
+            $completedGigsCount = JobListing::where([
+                ['client_id', $user->id],
+                ['status', 'completed'],
+                ['duration_type', 'gig']
+            ])->count() ?? 0;
+
+            // Contracts stats
+            $postedContractsCount = JobListing::where([
+                ['client_id', $user->id],
+                ['status', 'open'],
+                ['duration_type', 'contract'] // or whatever identifies a contract
+            ])->count() ?? 0;
+
+            $inProgressContractsCount = JobListing::where([
+                ['client_id', $user->id],
+                ['status', 'in_progress'],
+                ['duration_type', 'contract']
+            ])->count() ?? 0;
+
+            $completedContractsCount = JobListing::where([
+                ['client_id', $user->id],
+                ['status', 'completed'],
+                ['duration_type', 'contract']
+            ])->count() ?? 0;
+
+            // Applications
+            $applicationCount = JobApplication::where('client_id', $user->id)->count() ?? 0;
 
             return view('client.dashboard', compact(
-                'postedCount',
-                'inProgressCount',
-                'completedCount',
+                'postedGigsCount',
+                'inProgressGigsCount',
+                'completedGigsCount',
+                'postedContractsCount',
+                'inProgressContractsCount',
+                'completedContractsCount',
                 'applicationCount'
             ));
         })->name('dashboard');
-
 
         Route::prefix('jobs')->group(function () {
             Route::get('/', [ClientJobListingController::class, 'index'])->name('jobs.index');

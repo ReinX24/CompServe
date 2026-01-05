@@ -180,7 +180,8 @@
             name="freelancer_id"
             value="{{ $user->id }}">
 
-        <h3 class="font-bold text-2xl mb-4">Cancel This Job?</h3>
+        <h3 class="font-bold text-2xl mb-4">Cancel This Job? This will lower
+            your trust rating.</h3>
 
         <div class="alert alert-warning mb-6">
             <svg xmlns="http://www.w3.org/2000/svg"
@@ -199,16 +200,14 @@
         {{-- Optional Review Section --}}
         <div class="space-y-4">
             <div class="divider">Leave a Review (Optional)</div>
-
             <fieldset class="fieldset">
                 <legend class="fieldset-legend font-semibold">Your Review
                     Comments</legend>
                 <textarea name="comments"
-                    class="textarea textarea-bordered h-24"
+                    class="textarea textarea-bordered h-24 w-full"
                     placeholder="Share your experience working with this freelancer..."></textarea>
                 <div class="label">Optional</div>
             </fieldset>
-
             <div class="form-control">
                 <label class="label">
                     <span class="label-text font-semibold">Rating</span>
