@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Mail\CertificationStatusChanged;
@@ -29,51 +28,59 @@ class CertificationController extends Controller
 
     public function store(Request $request)
     {
+        // Validate all certifications
         $validated = $request->validate([
-            'type' => 'required|string|max:255',
-            'custom_certification' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'document' => 'required|file|mimes:pdf,jpg,png,jpeg|max:5120'
+            'certifications' => 'required|array|min:1',
+            'certifications.*.type' => 'required|string|max:255',
+            'certifications.*.custom_certification' => 'nullable|string|max:255',
+            'certifications.*.description' => 'nullable|string',
+            'certifications.*.document' => 'required|file|mimes:pdf,jpg,png,jpeg|max:5120'
         ]);
 
-        // Use custom certification name if "other" was selected
-        if ($validated['type'] === 'other') {
-            $validated['type'] = $validated['custom_certification'];
+        $createdCount = 0;
+
+        // Loop through each certification and create
+        foreach ($validated['certifications'] as $certData) {
+            // Use custom certification name if "other" was selected
+            $certType = $certData['type'];
+            if ($certType === 'other' && !empty($certData['custom_certification'])) {
+                $certType = $certData['custom_certification'];
+            }
+
+            // Store the document
+            $path = $certData['document']->store('certifications', 'public');
+
+            // Create certification
+            Certification::create([
+                'freelancer_id' => Auth::id(),
+                'type' => $certType,
+                'description' => $certData['description'] ?? null,
+                'document_path' => $path,
+            ]);
+
+            $createdCount++;
         }
 
-        $path = $request->file('document')->store('certifications', 'public');
-
-        Certification::create([
-            'freelancer_id' => Auth::id(),
-            'type' => $validated['type'],
-            'description' => $validated['description'],
-            'document_path' => $path,
-        ]);
-
         return redirect()->route('freelancer.certifications.index')
-            ->with('success', 'Certification submitted for verification.');
+            ->with('success', "{$createdCount} certification(s) submitted for verification.");
     }
 
     public function destroy($id)
     {
         $cert = Certification::findOrFail($id);
 
-        // Check ownership
         if ($cert->freelancer_id !== auth()->id()) {
             abort(403, 'Unauthorized action.');
         }
 
-        // Delete the uploaded file from storage
-        if ($cert->document_path && Storage::exists($cert->document_path)) {
-            Storage::delete($cert->document_path);
+        if ($cert->document_path && Storage::disk('public')->exists($cert->document_path)) {
+            Storage::disk('public')->delete($cert->document_path);
         }
 
-        // Delete the database record
         $cert->delete();
 
         return redirect()->back()->with('success', 'Certification deleted successfully!');
     }
-
 
     public function updateStatus(Request $request, $id)
     {
@@ -85,29 +92,16 @@ class CertificationController extends Controller
         $cert->status = $request->status;
         $cert->save();
 
-        // Send email to the user
-        // !Not sending an email for now
-        // Mail::to($cert->freelancer->email)
-        //     ->queue(new CertificationStatusChanged(
-        //         $cert,
-        //         $cert->status
-        //     ));
-
         return back()->with('success', 'Certification status updated to ' . $request->status);
     }
 
-    // Approve and reject methods for admin
     public function approve($id)
     {
         $cert = Certification::findOrFail($id);
         $cert->update(['status' => 'approved']);
 
-        // Send email to the user
         Mail::to($cert->freelancer->email)
-            ->queue(new CertificationStatusChanged(
-                $cert,
-                'approved'
-            ));
+            ->queue(new CertificationStatusChanged($cert, 'approved'));
 
         return back()->with('success', 'Certification approved.');
     }
@@ -117,12 +111,8 @@ class CertificationController extends Controller
         $cert = Certification::findOrFail($id);
         $cert->update(['status' => 'rejected']);
 
-        // Send email to the user
         Mail::to($cert->freelancer->email)
-            ->queue(new CertificationStatusChanged(
-                $cert,
-                'rejected'
-            ));
+            ->queue(new CertificationStatusChanged($cert, 'rejected'));
 
         return back()->with('success', 'Certification rejected.');
     }
