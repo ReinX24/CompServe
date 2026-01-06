@@ -5,6 +5,7 @@ use App\Http\Controllers\Client\ClientReviews;
 use App\Http\Controllers\Client\ClientJobListingController;
 use App\Http\Controllers\Client\ClientInformationController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\FindFreelancerController;
 use App\Http\Controllers\GigController;
 use App\Models\JobApplication;
 use App\Models\JobListing;
@@ -165,4 +166,12 @@ Route::prefix('client')
 
         // Reset password
         Route::post('/profile/change-password', [ClientInformationController::class, 'changePassword'])->name('profile.changePassword');
+
+        // Go to find freelancer page
+        Route::get(
+            '/find-freelancer',
+            [FindFreelancerController::class, 'index']
+        )
+            ->name('find-freelancer');
     });
+

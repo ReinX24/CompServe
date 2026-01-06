@@ -26,6 +26,12 @@ class User extends Authenticatable
         'password',
         'role',
         'profile_photo',
+
+        // For location
+        'latitude',
+        'longitude',
+        'location_visible',
+        'location_updated_at',
     ];
 
     /**

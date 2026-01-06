@@ -135,7 +135,9 @@
         </div>
     </div>
 
-    <x-chatbot-widget />
+    @if (Auth::user()->role === 'client' || Auth::user()->role === 'freelancer')
+        <x-chatbot-widget />
+    @endif
 </body>
 
 </html>

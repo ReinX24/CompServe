@@ -47,6 +47,14 @@
             'icon_bg' => 'bg-error/10',
             'icon_color' => 'text-error',
         ],
+        'expired' => [
+            'badge' => 'badge-neutral',
+            'text' => '⌛ Expired',
+            'border' => 'border-neutral/30',
+            'gradient' => 'from-neutral/5 to-neutral/10',
+            'icon_bg' => 'bg-neutral/10',
+            'icon_color' => 'text-neutral',
+        ],
     ];
 
     $config = $statusConfig[$cert->status] ?? $statusConfig['pending'];

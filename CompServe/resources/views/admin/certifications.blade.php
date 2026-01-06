@@ -94,6 +94,10 @@
                                                 <span
                                                     class="badge badge-error gap-1">✖
                                                     Rejected</span>
+                                            @elseif($cert->status === 'expired')
+                                                <span
+                                                    class="badge badge-warning gap-1">✖
+                                                    Expired</span>
                                             @else
                                                 <span
                                                     class="badge badge-warning gap-1">⏳
@@ -183,6 +187,7 @@
                         <option value="pending">Pending</option>
                         <option value="approved">Approved</option>
                         <option value="rejected">Rejected</option>
+                        <option value="expired">Expired</option>
                     </select>
                 </div>
 

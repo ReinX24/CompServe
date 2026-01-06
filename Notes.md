@@ -99,5 +99,5 @@ Client
 
 # TODO: 1/6/2025
 
-- Add Expired status for certifications
-- Add Search location
+- Add Expired status for certifications X
+- Add search for nearby freelancer for clients

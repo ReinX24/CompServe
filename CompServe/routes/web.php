@@ -8,6 +8,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CheckupChatbotController;
 use App\Http\Controllers\Client\ClientInformationController;
 use App\Http\Controllers\Freelancer\FreelancerInformationController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\UserSearchController;
 use Gemini\Laravel\Facades\Gemini;
 use Illuminate\Support\Facades\Auth;
@@ -99,3 +100,12 @@ Route::get('/freelancer/{user}', [FreelancerInformationController::class, 'showP
     ->name('freelancer.profile');
 
 require __DIR__ . '/chatbot.php';
+
+Route::post('/freelancer/location', [LocationController::class, 'store'])
+    ->middleware('auth');
+
+Route::post('/location/update', [LocationController::class, 'store'])
+    ->middleware('auth');
+
+Route::post('/location/disable', [LocationController::class, 'disableLocation'])
+    ->middleware('auth');

@@ -380,6 +380,66 @@
                                         </svg>
                                         Edit Information
                                     </a>
+
+                                    {{-- Share location --}}
+                                    <button id="shareLocation"
+                                        class="btn btn-primary btn-block gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="h-5 w-5"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <path stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        Share My Location
+                                    </button>
+
+                                    {{-- Disable location button --}}
+                                    @if (Auth::user()->latitude && Auth::user()->longitude)
+                                        <button id="disableLocation"
+                                            class="btn btn-outline btn-error btn-block gap-2 mt-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="h-5 w-5"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                            Disable Location
+                                        </button>
+                                    @endif
+
+                                    <p id="locationStatus"
+                                        class="text-sm text-gray-500"></p>
+                                    <div id="locationCoordinates"
+                                        class="mt-2">
+                                        <p
+                                            class="text-sm font-medium text-gray-700">
+                                            Stored Location:</p>
+                                        <p class="text-sm text-gray-600">
+                                            Latitude:
+                                            <span id="latitude"
+                                                class="font-semibold">
+                                                {{ Auth::user()->latitude ?? 'N/A' }}</span>
+                                        </p>
+                                        <p class="text-sm text-gray-600">
+                                            Longitude:
+                                            <span id="longitude"
+                                                class="font-semibold">
+                                                {{ Auth::user()->longitude ?? 'N/A' }}</span>
+                                        </p>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -756,4 +816,122 @@
             </form>
         </div>
     </div>
+
+    <script>
+        // Share Location
+        document.getElementById('shareLocation').addEventListener('click', () => {
+            const statusElement = document.getElementById('locationStatus');
+            const coordinatesDiv = document.getElementById(
+                'locationCoordinates');
+
+            if (!navigator.geolocation) {
+                alert("Geolocation is not supported.");
+                return;
+            }
+
+            statusElement.innerText = "Getting location...";
+            statusElement.classList.remove('text-green-600',
+            'text-red-600');
+
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+
+                    fetch('/freelancer/location', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                latitude: latitude,
+                                longitude: longitude
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            // Display the coordinates
+                            document.getElementById('latitude')
+                                .innerText = latitude.toFixed(6);
+                            document.getElementById('longitude')
+                                .innerText = longitude.toFixed(6);
+                            coordinatesDiv.classList.remove(
+                                'hidden');
+
+                            // Update status
+                            statusElement.innerText =
+                                "📍 Location shared successfully";
+                            statusElement.classList.add(
+                                'text-green-600');
+
+                            // Reload page to show disable button
+                            setTimeout(() => window.location
+                            .reload(), 1000);
+                        })
+                        .catch(error => {
+                            statusElement.innerText =
+                                "Error saving location";
+                            statusElement.classList.add(
+                                'text-red-600');
+                            coordinatesDiv.classList.add('hidden');
+                        });
+                },
+                error => {
+                    statusElement.innerText =
+                        "Location permission denied";
+                    statusElement.classList.add('text-red-600');
+                    coordinatesDiv.classList.add('hidden');
+                }
+            );
+        });
+
+        // Disable Location
+        const disableBtn = document.getElementById('disableLocation');
+        if (disableBtn) {
+            disableBtn.addEventListener('click', () => {
+                if (!confirm(
+                        'Are you sure you want to disable location sharing?'
+                        )) {
+                    return;
+                }
+
+                const statusElement = document.getElementById(
+                    'locationStatus');
+                statusElement.innerText = "Disabling location...";
+                statusElement.classList.remove('text-green-600',
+                    'text-red-600');
+
+                // Use your existing LocationController route
+                fetch('/location/disable', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        // Update UI
+                        document.getElementById('latitude').innerText =
+                            'N/A';
+                        document.getElementById('longitude').innerText =
+                            'N/A';
+
+                        statusElement.innerText = "❌ Location disabled";
+                        statusElement.classList.add('text-red-600');
+
+                        // Reload page to hide disable button
+                        setTimeout(() => window.location.reload(),
+                        1000);
+                    })
+                    .catch(error => {
+                        statusElement.innerText =
+                            "Error disabling location";
+                        statusElement.classList.add('text-red-600');
+                    });
+            });
+        }
+    </script>
+
 </x-layouts.app>
