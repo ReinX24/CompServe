@@ -1,12 +1,9 @@
 <?php
 
-use App\Http\Controllers\AiAnalyzerController;
 use App\Http\Controllers\CertificationController;
-use App\Http\Controllers\Client\ClientJobListingController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\Freelancer\FreelancerReviewController;
 use App\Http\Controllers\GigController;
-use App\Models\FreelancerInformation;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\JobListing;
@@ -20,42 +17,99 @@ Route::prefix('freelancer')
     ->name('freelancer.')
     ->group(function () {
         Route::get('/dashboard', function () {
-            $availableJobsCount = JobListing::where(
-                'status',
-                'open'
-            )->count();
+            $user = Auth::user();
 
-            $appliedJobsCount = JobApplication::with('job') // eager load job relationship
+            // Available Gigs
+            $availableGigsCount = JobListing::where([
+                ['status', 'open'],
+                ['duration_type', 'gig']
+            ])->count();
+
+            // Available Contracts
+            $availableContractsCount = JobListing::where([
+                ['status', 'open'],
+                ['duration_type', 'contract']
+            ])->count();
+
+            // Applied Gigs
+            $appliedGigsCount = JobApplication::with('job')
                 ->where([
-                    ['freelancer_id', Auth::user()->id],
+                    ['freelancer_id', $user->id],
                     ['status', 'pending']
-                ])->count();
+                ])
+                ->whereHas('job', function ($query) {
+                $query->where('duration_type', 'gig');
+            })
+                ->count();
 
-            $currentJobsCount = JobApplication::with('job')
-                ->where('freelancer_id', Auth::user()->id)
-                ->where('status', 'accepted')->count();
+            // Applied Contracts
+            $appliedContractsCount = JobApplication::with('job')
+                ->where([
+                    ['freelancer_id', $user->id],
+                    ['status', 'pending']
+                ])
+                ->whereHas('job', function ($query) {
+                $query->where('duration_type', 'contract');
+            })
+                ->count();
 
-            $completedJobsCount = JobApplication::with('job')
-                ->where('freelancer_id', Auth::user()->id)
-                ->where('status', 'completed')
+            // Current Gigs
+            $currentGigsCount = JobApplication::with('job')
+                ->where([
+                    ['freelancer_id', $user->id],
+                    ['status', 'accepted']
+                ])
+                ->whereHas('job', function ($query) {
+                $query->where('duration_type', 'gig');
+            })
+                ->count();
+
+            // Current Contracts
+            $currentContractsCount = JobApplication::with('job')
+                ->where([
+                    ['freelancer_id', $user->id],
+                    ['status', 'accepted']
+                ])
+                ->whereHas('job', function ($query) {
+                $query->where('duration_type', 'contract');
+            })
+                ->count();
+
+            // Completed Gigs
+            $completedGigsCount = JobApplication::with('job')
+                ->where([
+                    ['freelancer_id', $user->id],
+                    ['status', 'completed']
+                ])
+                ->whereHas('job', function ($query) {
+                $query->where('duration_type', 'gig');
+            })
+                ->count();
+
+            // Completed Contracts
+            $completedContractsCount = JobApplication::with('job')
+                ->where([
+                    ['freelancer_id', $user->id],
+                    ['status', 'completed']
+                ])
+                ->whereHas('job', function ($query) {
+                $query->where('duration_type', 'contract');
+            })
                 ->count();
 
             return view('freelancer.dashboard', compact(
-                'availableJobsCount',
-                'appliedJobsCount',
-                'currentJobsCount',
-                'completedJobsCount'
+                'availableGigsCount',
+                'availableContractsCount',
+                'appliedGigsCount',
+                'appliedContractsCount',
+                'currentGigsCount',
+                'currentContractsCount',
+                'completedGigsCount',
+                'completedContractsCount'
             ));
         })->name('dashboard');
 
         Route::prefix('jobs')->group(function () {
-            // Route::get('/', [FreelancerJobListingController::class, 'index'])->name('jobs.index');
-            // Route::get('/available', [FreelancerJobListingController::class, 'availableJobs'])->name('jobs.available');
-            // Route::get('/applied', [FreelancerJobListingController::class, 'appliedJobs'])->name('jobs.applied');
-            // Route::get('/current', [FreelancerJobListingController::class, 'currentJobs'])->name('jobs.current');
-            // Route::get('/rejected', [FreelancerJobListingController::class, 'rejectedJobs'])->name('jobs.rejected');
-            // Route::get('/finished', [FreelancerJobListingController::class, 'completedJobs'])->name('jobs.finished');
-
             Route::get('/{jobListing}/', [
                 FreelancerJobListingController::class,
                 'show'

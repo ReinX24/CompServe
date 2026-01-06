@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('type'); // e.g., NC I, NC II, TESDA, Tech Certifications
             $table->string('description')->nullable();
             $table->string('document_path')->nullable(); // uploaded files
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->enum('status', ['pending', 'approved', 'rejected', 'expired'])->default('pending');
             $table->text('admin_notes')->nullable();
             $table->timestamps();
 

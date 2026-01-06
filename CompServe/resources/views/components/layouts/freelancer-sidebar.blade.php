@@ -133,7 +133,7 @@
     </x-layouts.sidebar-two-level-link>
 </x-layouts.sidebar-two-level-link-parent>
 
-<x-layouts.sidebar-two-level-link-parent title="Certifications"
+{{-- <x-layouts.sidebar-two-level-link-parent title="Certifications"
     icon='fas-certificate'
     :active="request()->routeIs('freelancer.certifications*')">
     <x-layouts.sidebar-two-level-link
@@ -148,7 +148,13 @@
         :active="request()->routeIs('freelancer.certifications.create')">
         Create Certifications
     </x-layouts.sidebar-two-level-link>
-</x-layouts.sidebar-two-level-link-parent>
+</x-layouts.sidebar-two-level-link-parent> --}}
+
+<x-layouts.sidebar-link href="{{ route('freelancer.certifications.index') }}"
+    icon='fas-certificate'
+    :active="request()->routeIs('freelancer.certifications.index')">
+    Certifications
+</x-layouts.sidebar-link>
 
 <x-layouts.sidebar-link href="{{ route('freelancer.reviews') }}"
     icon='fas-star'

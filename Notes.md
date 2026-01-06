@@ -96,3 +96,8 @@ Client
 
 - When the job is applied but you have been rejected, do not show in applied contracts/gigs X
 - When the job is in progress, remove apply button in show button X
+
+# TODO: 1/6/2025
+
+- Add Expired status for certifications
+- Add Search location
