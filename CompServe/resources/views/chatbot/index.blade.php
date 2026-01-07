@@ -159,7 +159,9 @@
         let isProcessing = false;
         let messageCount = 1;
         let responseTimes = [];
+        let currentReader = null; // Track current streaming reader
 
+        // DOM Elements
         const chatContainer = document.getElementById('chat-container');
         const chatForm = document.getElementById('chat-form');
         const userInput = document.getElementById('user-input');
@@ -167,23 +169,49 @@
         const sendText = document.getElementById('send-text');
         const actionButtons = document.getElementById('action-buttons');
         const restartBtn = document.getElementById('restart-btn');
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')
+            ?.content;
         const charCount = document.getElementById('char-count');
         const messageCountEl = document.getElementById('message-count');
+        const messageCountHeader = document.getElementById('message-count-header');
+        const avgResponseEl = document.getElementById('avg-response');
+        const avgResponseHeader = document.getElementById('avg-response-header');
+
+        // Validate critical elements exist
+        if (!csrfToken) {
+            console.error('CSRF token not found');
+        }
 
         // Character counter
-        userInput.addEventListener('input', () => {
-            charCount.textContent = userInput.value.length;
-        });
+        if (userInput && charCount) {
+            userInput.addEventListener('input', () => {
+                charCount.textContent = userInput.value.length;
+            });
+        }
 
         // Quick message function
         window.setQuickMessage = function(message) {
-            userInput.value = message;
-            userInput.focus();
+            if (userInput) {
+                userInput.value = message;
+                userInput.focus();
+            }
         };
+
+        function updateMessageCount(count) {
+            if (messageCountEl) messageCountEl.textContent = count;
+            if (messageCountHeader) messageCountHeader.textContent = count;
+        }
+
+        function updateAvgResponse(time) {
+            const avgText = `~${time}s`;
+            if (avgResponseEl) avgResponseEl.textContent = avgText;
+            if (avgResponseHeader) avgResponseHeader.textContent = avgText;
+        }
 
         function addMessage(text, isUser = false, isStreaming = false, action =
             null) {
+            if (!chatContainer) return null;
+
             const wrapper = document.createElement('div');
             wrapper.className =
                 `chat ${isUser ? 'chat-end' : 'chat-start'} animate-slide-in`;
@@ -194,287 +222,403 @@
             });
 
             const actionButtonHtml = action ? `
-                <div class="action-button-container">
-                    <a href="${action.url}" class="action-button">
-                        <span style="font-size: 1.25rem;">${action.icon}</span>
-                        <span>${action.label}</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
-                    </a>
-                </div>
-            ` : '';
+            <div class="action-button-container">
+                <a href="${action.url}" class="action-button">
+                    <span style="font-size: 1.25rem;">${action.icon}</span>
+                    <span>${action.label}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+            </div>
+        ` : '';
 
             wrapper.innerHTML = `
-                <div class="chat-image avatar">
-                    <div class="w-10 rounded-full ${isUser ? 'bg-neutral text-white' : 'bg-primary text-white'}
-                        flex items-center justify-center shadow-lg">
-                        ${isUser ? '👤' : '🤖'}
-                    </div>
+            <div class="chat-image avatar">
+                <div class="w-10 rounded-full ${isUser ? 'bg-neutral text-white' : 'bg-primary text-white'}
+                    flex items-center justify-center shadow-lg">
+                    ${isUser ? '👤' : '🤖'}
                 </div>
-                <div>
-                    <div class="chat-bubble ${isUser ? 'chat-bubble-neutral' : 'chat-bubble-primary'} shadow-md ${isStreaming ? 'streaming-message' : ''}">
-                        ${text}${isStreaming ? '<span class="typing-cursor"></span>' : ''}
-                    </div>
-                    ${actionButtonHtml}
+            </div>
+            <div>
+                <div class="chat-bubble ${isUser ? 'chat-bubble-neutral' : 'chat-bubble-primary'} shadow-md ${isStreaming ? 'streaming-message' : ''}">
+                    ${text}${isStreaming ? '<span class="typing-cursor"></span>' : ''}
                 </div>
-                <div class="chat-footer opacity-50 text-xs mt-1">
-                    ${timestamp}
-                </div>
-            `;
+                ${actionButtonHtml}
+            </div>
+            <div class="chat-footer opacity-50 text-xs mt-1">
+                ${timestamp}
+            </div>
+        `;
 
             chatContainer.appendChild(wrapper);
             chatContainer.scrollTop = chatContainer.scrollHeight;
 
             if (!isUser) {
                 messageCount++;
-                messageCountEl.textContent = messageCount;
+                updateMessageCount(messageCount);
             }
 
             return wrapper;
         }
 
         function updateStreamingMessage(wrapper, text) {
+            if (!wrapper) return;
             const bubble = wrapper.querySelector('.chat-bubble');
-            bubble.innerHTML = text + '<span class="typing-cursor"></span>';
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+            if (bubble) {
+                bubble.innerHTML = text + '<span class="typing-cursor"></span>';
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
         }
 
         function finalizeStreamingMessage(wrapper, text, action = null) {
+            if (!wrapper) return;
+
             const bubble = wrapper.querySelector('.chat-bubble');
-            bubble.innerHTML = text;
-            bubble.classList.remove('streaming-message');
+            if (bubble) {
+                bubble.innerHTML = text;
+                bubble.classList.remove('streaming-message');
+            }
 
             // Add action button if provided
             if (action) {
                 const actionContainer = document.createElement('div');
                 actionContainer.className = 'action-button-container';
                 actionContainer.innerHTML = `
-                    <a href="${action.url}" class="action-button">
-                        <span style="font-size: 1.25rem;">${action.icon}</span>
-                        <span>${action.label}</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
-                    </a>
-                `;
-                wrapper.querySelector('.chat-bubble').parentElement.appendChild(
-                    actionContainer);
+                <a href="${action.url}" class="action-button">
+                    <span style="font-size: 1.25rem;">${action.icon}</span>
+                    <span>${action.label}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+            `;
+                const parent = bubble.parentElement;
+                if (parent) {
+                    parent.appendChild(actionContainer);
+                }
             }
         }
 
         function showTypingIndicator() {
+            if (!chatContainer) return;
+
+            // Remove existing indicator if any
+            removeTypingIndicator();
+
             const indicator = document.createElement('div');
             indicator.id = 'typing-indicator';
             indicator.className = 'chat chat-start animate-slide-in';
             indicator.innerHTML = `
-                <div class="chat-image avatar">
-                    <div class="w-10 rounded-full bg-primary text-white flex items-center justify-center shadow-lg">
-                        🤖
-                    </div>
+            <div class="chat-image avatar">
+                <div class="w-10 rounded-full bg-primary text-white flex items-center justify-center shadow-lg">
+                    🤖
                 </div>
-                <div class="chat-bubble chat-bubble-primary shadow-md">
-                    <span class="loading loading-dots loading-sm"></span>
-                </div>
-            `;
+            </div>
+            <div class="chat-bubble chat-bubble-primary shadow-md">
+                <span class="loading loading-dots loading-sm"></span>
+            </div>
+        `;
             chatContainer.appendChild(indicator);
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
         function removeTypingIndicator() {
-            document.getElementById('typing-indicator')?.remove();
+            const indicator = document.getElementById('typing-indicator');
+            if (indicator) {
+                indicator.remove();
+            }
         }
 
         function setButtonLoading(loading) {
+            if (!sendBtn || !sendText) return;
+
             if (loading) {
                 sendBtn.classList.add('loading');
                 sendText.textContent = 'Sending...';
+                sendBtn.disabled = true;
             } else {
                 sendBtn.classList.remove('loading');
                 sendText.textContent = 'Send';
+                sendBtn.disabled = false;
             }
         }
 
-        chatForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (isProcessing) return;
+        function resetInputState() {
+            isProcessing = false;
+            if (userInput) {
+                userInput.disabled = false;
+                userInput.focus();
+            }
+            setButtonLoading(false);
+        }
 
-            const message = userInput.value.trim();
-            if (!message) return;
-
-            const startTime = Date.now();
+        function disableInput() {
             isProcessing = true;
-            userInput.disabled = true;
-            sendBtn.disabled = true;
+            if (userInput) userInput.disabled = true;
+            if (sendBtn) sendBtn.disabled = true;
             setButtonLoading(true);
+        }
 
-            addMessage(message, true);
-            userInput.value = '';
-            charCount.textContent = '0';
+        // Cleanup function for streaming
+        function cleanupStreaming() {
+            if (currentReader) {
+                try {
+                    currentReader.cancel();
+                } catch (e) {
+                    console.error('Error canceling reader:', e);
+                }
+                currentReader = null;
+            }
+            removeTypingIndicator();
+        }
 
-            try {
-                const response = await fetch(
-                    '{{ route('chatbot.chat') }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': csrfToken,
-                            'Accept': 'text/event-stream'
-                        },
-                        body: JSON.stringify({
-                            message,
-                            conversation_history: conversationHistory,
-                            mode: chatbotMode
-                        })
-                    });
+        if (chatForm) {
+            chatForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
 
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                if (isProcessing) {
+                    console.log('Already processing a message');
+                    return;
                 }
 
-                // Check if response is JSON (direct action) or stream
-                const contentType = response.headers.get(
-                    'content-type');
+                if (!userInput) return;
 
-                if (contentType && contentType.includes(
-                        'application/json')) {
-                    // Handle direct action response (non-streaming)
-                    const data = await response.json();
+                const message = userInput.value.trim();
+                if (!message) return;
 
-                    if (data.success) {
-                        addMessage(data.message, false, false, data
-                            .action);
-                        conversationHistory = data.conversation_history;
+                const startTime = Date.now();
+                disableInput();
 
-                        if (data.is_complete) {
-                            actionButtons.classList.remove('hidden');
-                            userInput.disabled = true;
-                            sendBtn.disabled = true;
+                addMessage(message, true);
+                userInput.value = '';
+                if (charCount) charCount.textContent = '0';
+
+                try {
+                    const response = await fetch(
+                        '{{ route('chatbot.chat') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken,
+                                'Accept': 'text/event-stream'
+                            },
+                            body: JSON.stringify({
+                                message,
+                                conversation_history: conversationHistory,
+                                mode: chatbotMode
+                            })
+                        });
+
+                    if (!response.ok) {
+                        throw new Error(
+                            `Server error: ${response.status} ${response.statusText}`
+                        );
+                    }
+
+                    // Check if response is JSON (direct action) or stream
+                    const contentType = response.headers.get(
+                        'content-type');
+
+                    if (contentType && contentType.includes(
+                            'application/json')) {
+                        // Handle direct action response (non-streaming)
+                        const data = await response.json();
+
+                        if (data.success) {
+                            addMessage(data.message, false, false, data
+                                .action);
+                            conversationHistory = data
+                                .conversation_history;
+
+                            if (data.is_complete) {
+                                if (actionButtons) actionButtons
+                                    .classList.remove('hidden');
+                                if (userInput) userInput.disabled =
+                                    true;
+                                if (sendBtn) sendBtn.disabled = true;
+                            }
+                        } else {
+                            addMessage(data.message ||
+                                'An error occurred. Please try again.'
+                            );
                         }
                     } else {
-                        addMessage(data.message ||
-                            'An error occurred. Please try again.');
-                    }
-                } else {
-                    // Handle streaming response
-                    showTypingIndicator();
+                        // Handle streaming response
+                        showTypingIndicator();
 
-                    const reader = response.body.getReader();
-                    const decoder = new TextDecoder();
-                    let fullText = '';
-                    let messageWrapper = null;
+                        const reader = response.body.getReader();
+                        currentReader = reader;
+                        const decoder = new TextDecoder();
+                        let fullText = '';
+                        let messageWrapper = null;
 
-                    while (true) {
-                        const {
-                            done,
-                            value
-                        } = await reader.read();
-                        if (done) break;
+                        try {
+                            while (true) {
+                                const {
+                                    done,
+                                    value
+                                } = await reader.read();
+                                if (done) break;
 
-                        const chunk = decoder.decode(value);
-                        const lines = chunk.split('\n');
+                                const chunk = decoder.decode(value, {
+                                    stream: true
+                                });
+                                const lines = chunk.split('\n');
 
-                        for (const line of lines) {
-                            if (line.startsWith('data: ')) {
-                                const data = JSON.parse(line.slice(6));
+                                for (const line of lines) {
+                                    if (line.startsWith('data: ')) {
+                                        try {
+                                            const data = JSON.parse(line
+                                                .slice(6));
 
-                                if (data.error) {
-                                    removeTypingIndicator();
-                                    addMessage(data.message ||
-                                        'An error occurred while generating response.'
-                                    );
-                                    break;
-                                }
+                                            if (data.error) {
+                                                removeTypingIndicator();
+                                                addMessage(data
+                                                    .message ||
+                                                    'An error occurred while generating response.'
+                                                );
+                                                break;
+                                            }
 
-                                if (!data.done) {
-                                    fullText += data.chunk;
+                                            if (!data.done) {
+                                                fullText += data.chunk;
 
-                                    if (!messageWrapper) {
-                                        removeTypingIndicator();
-                                        messageWrapper = addMessage(
-                                            fullText, false, true);
-                                    } else {
-                                        updateStreamingMessage(
-                                            messageWrapper, fullText
-                                        );
+                                                if (!messageWrapper) {
+                                                    removeTypingIndicator
+                                                        ();
+                                                    messageWrapper =
+                                                        addMessage(
+                                                            fullText,
+                                                            false, true
+                                                        );
+                                                } else {
+                                                    updateStreamingMessage
+                                                        (messageWrapper,
+                                                            fullText);
+                                                }
+                                            } else {
+                                                // Finalize message
+                                                if (messageWrapper) {
+                                                    finalizeStreamingMessage
+                                                        (messageWrapper,
+                                                            data
+                                                            .full_text,
+                                                            data.action
+                                                        );
+                                                }
+
+                                                conversationHistory =
+                                                    data
+                                                    .conversation_history;
+
+                                                if (data.is_complete) {
+                                                    if (actionButtons)
+                                                        actionButtons
+                                                        .classList
+                                                        .remove(
+                                                            'hidden');
+                                                    if (userInput)
+                                                        userInput
+                                                        .disabled =
+                                                        true;
+                                                    if (sendBtn) sendBtn
+                                                        .disabled =
+                                                        true;
+                                                }
+
+                                                // Update response time
+                                                const responseTime = ((
+                                                        Date.now() -
+                                                        startTime) /
+                                                    1000).toFixed(1);
+                                                responseTimes.push(
+                                                    parseFloat(
+                                                        responseTime
+                                                    ));
+                                                const avgTime = (
+                                                        responseTimes
+                                                        .reduce((a,
+                                                                b) =>
+                                                            a + b,
+                                                            0) /
+                                                        responseTimes
+                                                        .length)
+                                                    .toFixed(1);
+                                                updateAvgResponse(
+                                                    avgTime);
+                                            }
+                                        } catch (parseError) {
+                                            console.error(
+                                                'Error parsing stream data:',
+                                                parseError, 'Line:',
+                                                line);
+                                        }
                                     }
-                                } else {
-                                    // Finalize message
-                                    if (messageWrapper) {
-                                        finalizeStreamingMessage(
-                                            messageWrapper, data
-                                            .full_text, data.action);
-                                    }
-
-                                    conversationHistory = data
-                                        .conversation_history;
-
-                                    if (data.is_complete) {
-                                        actionButtons.classList.remove(
-                                            'hidden');
-                                        userInput.disabled = true;
-                                        sendBtn.disabled = true;
-                                    }
-
-                                    // Update response time
-                                    const responseTime = ((Date.now() -
-                                        startTime) / 1000).toFixed(
-                                        1);
-                                    responseTimes.push(parseFloat(
-                                        responseTime));
-                                    const avgTime = (responseTimes
-                                            .reduce((a, b) => a + b,
-                                                0) / responseTimes
-                                            .length)
-                                        .toFixed(1);
-                                    document.getElementById(
-                                            'avg-response')
-                                        .textContent = `~${avgTime}s`;
                                 }
                             }
+                        } finally {
+                            currentReader = null;
                         }
                     }
-                }
 
-            } catch (err) {
-                removeTypingIndicator();
-                addMessage(
-                    'Connection error. Please try again. Error: ' +
-                    err.message);
-                console.error('Fetch error:', err);
-            } finally {
-                if (actionButtons.classList.contains('hidden')) {
-                    isProcessing = false;
+                } catch (err) {
+                    cleanupStreaming();
+                    addMessage(
+                        'Connection error. Please check your internet connection and try again.'
+                    );
+                    console.error('Fetch error:', err);
+                } finally {
+                    if (actionButtons && !actionButtons.classList
+                        .contains('hidden')) {
+                        // Conversation is complete, keep input disabled
+                        isProcessing = false;
+                        setButtonLoading(false);
+                    } else {
+                        // Normal message, re-enable input
+                        resetInputState();
+                    }
+                }
+            });
+        }
+
+        if (restartBtn) {
+            restartBtn.addEventListener('click', () => {
+                // Cleanup any ongoing streaming
+                cleanupStreaming();
+
+                // Reset state
+                conversationHistory = [];
+                if (chatContainer) chatContainer.innerHTML = '';
+                if (actionButtons) actionButtons.classList.add('hidden');
+                isProcessing = false;
+                if (userInput) {
                     userInput.disabled = false;
-                    sendBtn.disabled = false;
-                    setButtonLoading(false);
-                    userInput.focus();
+                    userInput.value = '';
                 }
-            }
-        });
+                if (sendBtn) sendBtn.disabled = false;
+                setButtonLoading(false);
+                messageCount = 1;
+                updateMessageCount(messageCount);
+                responseTimes = [];
+                updateAvgResponse('2');
 
-        restartBtn.addEventListener('click', () => {
-            conversationHistory = [];
-            chatContainer.innerHTML = '';
-            actionButtons.classList.add('hidden');
-            isProcessing = false;
-            userInput.disabled = false;
-            sendBtn.disabled = false;
-            setButtonLoading(false);
-            messageCount = 1;
-            messageCountEl.textContent = messageCount;
-            responseTimes = [];
-            document.getElementById('avg-response').textContent = '~2s';
+                // Add appropriate greeting based on mode
+                const greetingMessage = chatbotMode === 'client' ?
+                    "Hi! I'm here to help troubleshoot your technical issue. Can you describe the problem you're experiencing?" :
+                    "Hi! I'm here to help you find the perfect gigs and contracts that match your skills. What kind of work are you looking for?";
 
-            const greetingMessage = chatbotMode === 'client' ?
-                "Hi! I'm here to help troubleshoot your technical issue. Can you describe the problem you're experiencing?" :
-                "Hi! I'm here to help you find the perfect gigs and contracts that match your skills. What kind of work are you looking for?";
+                addMessage(greetingMessage);
+                if (userInput) userInput.focus();
+            });
+        }
 
-            addMessage(greetingMessage);
-            userInput.focus();
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            cleanupStreaming();
         });
 
         // Auto-focus input on load
-        userInput.focus();
+        if (userInput) userInput.focus();
     </script>
 </x-layouts.app>

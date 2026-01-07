@@ -29,7 +29,7 @@
                                 <span class="text-5xl animate-bounce">💼</span>
                             </div>
                             <div
-                                class="absolute -bottom-2 -right-2 w-6 h-6 bg-green-400 rounded-full border-3 border-white animate-pulse">
+                                class="absolute -bottom-2 -right-2 w-6 h-6 bg-green-400 rounded-full border-4 border-white animate-pulse">
                             </div>
                         </div>
                         <div>
@@ -80,8 +80,7 @@
                         class="w-10 h-10 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                         <span class="text-white text-xl">📍</span>
                     </div>
-                    <h2 class="text-xl font-bold text-gray-800">
-                        Your Location
+                    <h2 class="text-xl font-bold text-gray-800">Your Location
                     </h2>
                 </div>
 
@@ -105,8 +104,7 @@
                                 class="w-2 h-2 bg-green-500 rounded-full animate-pulse">
                             </div>
                             <p class="text-sm text-green-700 font-medium">
-                                Location enabled
-                            </p>
+                                Location enabled</p>
                         </div>
                     </div>
 
@@ -118,8 +116,7 @@
                     <div
                         class="bg-gray-50 rounded-xl p-4 mb-4 border-2 border-dashed border-gray-200">
                         <p id="locationStatus"
-                            class="text-sm text-gray-600">
-                            Location not enabled
+                            class="text-sm text-gray-600">Location not enabled
                         </p>
                     </div>
 
@@ -135,9 +132,8 @@
                 <div
                     class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
                     <div>
-                        <h1 class="text-3xl font-bold text-gray-900 mb-2">
-                            Nearby Freelancers
-                        </h1>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Nearby
+                            Freelancers</h1>
                         <div
                             class="h-1 w-24 bg-linear-to-r from-blue-500 to-purple-600 rounded-full">
                         </div>
@@ -150,13 +146,9 @@
                             placeholder="Search by name, email..."
                             class="w-full px-4 py-3 pl-12 pr-4 rounded-xl border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none transition-all duration-200 bg-white shadow-sm">
                         <span
-                            class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl">
-                            🔍
-                        </span>
+                            class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl">🔍</span>
                         <button id="clearSearch"
-                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors hidden">
-                            ✕
-                        </button>
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors hidden">✕</button>
                     </div>
                 </div>
 
@@ -170,8 +162,7 @@
             @isset($error)
                 <div
                     class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-lg">
-                    <p class="text-red-700 text-sm font-medium">
-                        {{ $error }}
+                    <p class="text-red-700 text-sm font-medium">{{ $error }}
                     </p>
                 </div>
             @endisset
@@ -183,28 +174,10 @@
                         class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <span class="text-4xl">🔍</span>
                     </div>
-                    <p class="text-gray-500 text-lg">
-                        No freelancers found nearby.
-                    </p>
-                    <p class="text-gray-400 text-sm mt-2">
-                        Try enabling your location to find freelancers in your
-                        area.
-                    </p>
-                </div>
-
-                <!-- No Search Results State (hidden by default) -->
-                <div id="noSearchResults"
-                    class="text-center py-16 hidden">
-                    <div
-                        class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-4xl">🤷</span>
-                    </div>
-                    <p class="text-gray-500 text-lg">
-                        No freelancers match your search.
-                    </p>
-                    <p class="text-gray-400 text-sm mt-2">
-                        Try adjusting your search terms.
-                    </p>
+                    <p class="text-gray-500 text-lg">No freelancers found
+                        nearby.</p>
+                    <p class="text-gray-400 text-sm mt-2">Try enabling your
+                        location to find freelancers in your area.</p>
                 </div>
             @else
                 <div id="freelancerGrid"
@@ -266,12 +239,10 @@
                         class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <span class="text-4xl">🤷</span>
                     </div>
-                    <p class="text-gray-500 text-lg">
-                        No freelancers match your search.
-                    </p>
-                    <p class="text-gray-400 text-sm mt-2">
-                        Try adjusting your search terms.
-                    </p>
+                    <p class="text-gray-500 text-lg">No freelancers match your
+                        search.</p>
+                    <p class="text-gray-400 text-sm mt-2">Try adjusting your
+                        search terms.</p>
                 </div>
             @endif
 
@@ -279,7 +250,7 @@
     </div>
 
     <script>
-        // Search Functionality
+        // Search Functionality with Debouncing
         const searchInput = document.getElementById('searchInput');
         const clearSearchBtn = document.getElementById('clearSearch');
         const searchResults = document.getElementById('searchResults');
@@ -290,6 +261,8 @@
         const emptyState = document.getElementById('emptyState');
 
         if (searchInput && freelancerCards.length > 0) {
+            let searchTimeout;
+
             searchInput.addEventListener('input', (e) => {
                 const searchTerm = e.target.value.toLowerCase().trim();
 
@@ -300,47 +273,56 @@
                     clearSearchBtn.classList.add('hidden');
                 }
 
-                let visibleCount = 0;
+                // Debounce search for performance
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    let visibleCount = 0;
 
-                freelancerCards.forEach(card => {
-                    const name = card.dataset.name;
-                    const email = card.dataset.email;
-                    const distance = card.dataset.distance;
+                    freelancerCards.forEach(card => {
+                        const name = card.dataset.name;
+                        const email = card.dataset.email;
+                        const distance = card.dataset
+                            .distance;
 
-                    // Search in name, email, and distance
-                    const matches = name.includes(searchTerm) ||
-                        email.includes(searchTerm) ||
-                        distance.includes(searchTerm);
+                        // Search in name, email, and distance
+                        const matches = name.includes(
+                                searchTerm) ||
+                            email.includes(searchTerm) ||
+                            distance.includes(searchTerm);
 
-                    if (matches || searchTerm === '') {
-                        card.style.display = 'block';
-                        visibleCount++;
+                        if (matches || searchTerm === '') {
+                            card.style.display = 'block';
+                            visibleCount++;
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+
+                    // Update results counter and show/hide no results message
+                    if (searchTerm) {
+                        searchResults.classList.remove('hidden');
+                        resultCount.textContent =
+                            `Found ${visibleCount} freelancer${visibleCount !== 1 ? 's' : ''}`;
+
+                        if (visibleCount === 0) {
+                            if (freelancerGrid) freelancerGrid
+                                .classList.add('hidden');
+                            if (noSearchResults) noSearchResults
+                                .classList.remove('hidden');
+                        } else {
+                            if (freelancerGrid) freelancerGrid
+                                .classList.remove('hidden');
+                            if (noSearchResults) noSearchResults
+                                .classList.add('hidden');
+                        }
                     } else {
-                        card.style.display = 'none';
+                        searchResults.classList.add('hidden');
+                        if (freelancerGrid) freelancerGrid.classList
+                            .remove('hidden');
+                        if (noSearchResults) noSearchResults
+                            .classList.add('hidden');
                     }
-                });
-
-                // Update results counter and show/hide no results message
-                if (searchTerm) {
-                    searchResults.classList.remove('hidden');
-                    resultCount.textContent =
-                        `Found ${visibleCount} freelancer${visibleCount !== 1 ? 's' : ''}`;
-
-                    if (visibleCount === 0) {
-                        if (freelancerGrid) freelancerGrid.classList.add(
-                            'hidden');
-                        noSearchResults.classList.remove('hidden');
-                    } else {
-                        if (freelancerGrid) freelancerGrid.classList.remove(
-                            'hidden');
-                        noSearchResults.classList.add('hidden');
-                    }
-                } else {
-                    searchResults.classList.add('hidden');
-                    if (freelancerGrid) freelancerGrid.classList.remove(
-                        'hidden');
-                    noSearchResults.classList.add('hidden');
-                }
+                }, 300); // Wait 300ms after user stops typing
             });
 
             // Clear search
@@ -356,7 +338,6 @@
 
         if (btn) {
             btn.addEventListener('click', () => {
-
                 if (!navigator.geolocation) {
                     document.getElementById('locationStatus').innerText =
                         'Geolocation is not supported by your browser';
@@ -381,21 +362,39 @@
                                         .coords.longitude
                                 })
                             })
+                            .then(res => {
+                                if (!res.ok) throw new Error(
+                                    'Failed to save location'
+                                );
+                                return res.json();
+                            })
                             .then(() => {
                                 document.getElementById(
                                         'locationStatus')
                                     .innerHTML = `
-                                    <div class="flex items-center gap-2">
-                                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                        <span class="text-green-600 font-medium">
-                                            📍 Location enabled<br>
-                                            <span class="text-sm text-gray-600">
-                                                Latitude: ${position.coords.latitude}<br>
-                                                Longitude: ${position.coords.longitude}
-                                            </span>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                    <span class="text-green-600 font-medium">
+                                        📍 Location enabled<br>
+                                        <span class="text-sm text-gray-600">
+                                            Latitude: ${position.coords.latitude}<br>
+                                            Longitude: ${position.coords.longitude}
                                         </span>
-                                    </div>
-                                `;
+                                    </span>
+                                </div>
+                            `;
+                                // Reload after successful save
+                                setTimeout(() => window.location
+                                    .reload(), 500);
+                            })
+                            .catch(error => {
+                                document.getElementById(
+                                        'locationStatus')
+                                    .innerHTML =
+                                    '<span class="text-red-600 font-medium">❌ Failed to save location. Please try again.</span>';
+                                console.error(
+                                    'Location save error:',
+                                    error);
                             });
                     },
                     error => {
@@ -423,8 +422,6 @@
                         timeout: 10000
                     }
                 );
-
-                setTimeout(() => window.location.reload(), 1000);
             });
         }
 
@@ -433,7 +430,6 @@
 
         if (disableBtn) {
             disableBtn.addEventListener('click', () => {
-
                 if (!confirm(
                         'Are you sure you want to disable location?')) {
                     return;
@@ -446,9 +442,19 @@
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         }
                     })
-                    .then(res => res.json())
+                    .then(res => {
+                        if (!res.ok) throw new Error(
+                            'Failed to disable location');
+                        return res.json();
+                    })
                     .then(() => {
                         window.location.reload();
+                    })
+                    .catch(error => {
+                        alert(
+                            'Error disabling location. Please try again.'
+                        );
+                        console.error('Disable location error:', error);
                     });
             });
         }

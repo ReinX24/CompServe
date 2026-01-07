@@ -115,9 +115,9 @@
                 </button>
                 <button
                     class="btn btn-sm w-full justify-start rounded-xl bg-gray-50 dark:bg-base-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 border-2 border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-600 transition-all gap-2"
-                    onclick="setQuickMessage('I want to post a contract')">
-                    <span class="text-lg">🖊️</span>
-                    <span class="text-left flex-1">Post a contract</span>
+                    onclick="setQuickMessage('Find a nearby freelancer')">
+                    <span class="text-lg">🔎</span>
+                    <span class="text-left flex-1">Find Freelancer Near Me</span>
                 </button>
                 <button
                     class="btn btn-sm w-full justify-start rounded-xl bg-gray-50 dark:bg-base-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 border-2 border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-600 transition-all gap-2"

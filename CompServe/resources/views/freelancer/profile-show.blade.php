@@ -831,7 +831,7 @@
 
             statusElement.innerText = "Getting location...";
             statusElement.classList.remove('text-green-600',
-            'text-red-600');
+                'text-red-600');
 
             navigator.geolocation.getCurrentPosition(
                 position => {
@@ -867,7 +867,7 @@
 
                             // Reload page to show disable button
                             setTimeout(() => window.location
-                            .reload(), 1000);
+                                .reload(), 1000);
                         })
                         .catch(error => {
                             statusElement.innerText =
@@ -892,7 +892,7 @@
             disableBtn.addEventListener('click', () => {
                 if (!confirm(
                         'Are you sure you want to disable location sharing?'
-                        )) {
+                    )) {
                     return;
                 }
 
@@ -923,7 +923,7 @@
 
                         // Reload page to hide disable button
                         setTimeout(() => window.location.reload(),
-                        1000);
+                            1000);
                     })
                     .catch(error => {
                         statusElement.innerText =

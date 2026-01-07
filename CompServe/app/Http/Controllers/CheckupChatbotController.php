@@ -21,6 +21,7 @@ class CheckupChatbotController extends Controller
     // Action types
     private const ACTION_POST_JOB = 'post_job';
     private const ACTION_SHOW_GIGS = 'show_gigs';
+    private const ACTION_FIND_FREELANCER = 'find_freelancer';
     private const ACTION_NONE = 'none';
 
     /**
@@ -117,6 +118,26 @@ class CheckupChatbotController extends Controller
 
         // Check for job posting intent (clients only)
         if ($mode === self::ROLE_CLIENT) {
+            // ADD THIS NEW BLOCK FIRST (check hiring intent before job posting)
+            $hireFreelancerPhrases = [
+                'i want to hire a technician',
+                'want to hire a technician',
+                'i want to hire a freelancer',
+                'want to hire a freelancer',
+                'i need to hire',
+                'need to hire',
+                'find a technician',
+                'find a freelancer',
+                'find a nearby technician',
+                'find a nearby freelancer'
+            ];
+
+            foreach ($hireFreelancerPhrases as $phrase) {
+                if (stripos($lowerMessage, $phrase) !== false) {
+                    return self::ACTION_FIND_FREELANCER;
+                }
+            }
+
             $postJobPhrases = [
                 'post a gig',
                 'post a contract',
@@ -130,7 +151,7 @@ class CheckupChatbotController extends Controller
                 'i want to post a contract',
                 'hire a freelancer',
                 'hire someone',
-                'looking to hire'
+                'looking to hire',
             ];
 
             foreach ($postJobPhrases as $phrase) {
@@ -174,6 +195,15 @@ class CheckupChatbotController extends Controller
                     'label' => 'Create Gig / Contract Posting',
                     'url' => route('client.jobs.create') . '?type=gig',
                     'icon' => '💼'
+                ]
+            ],
+            self::ACTION_FIND_FREELANCER => [
+                'message' => "Perfect! Let me help you find qualified freelancers in your area. Click the button below to browse available technicians.",
+                'action' => [
+                    'type' => 'redirect',
+                    'label' => 'Find a Freelancer Near Me',
+                    'url' => route('client.find-freelancer'),
+                    'icon' => '🔍'
                 ]
             ],
             self::ACTION_SHOW_GIGS => [
@@ -337,7 +367,7 @@ class CheckupChatbotController extends Controller
                 'recommend posting a gig or contract',
                 'hire a qualified technician',
                 'time to hire a professional',
-                'consider hiring a technician'
+                'consider hiring a technician',
             ];
 
             foreach ($postJobPhrases as $phrase) {

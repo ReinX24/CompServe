@@ -62,7 +62,7 @@
             : 'freelancer.jobs.show';
 @endphp
 
-<div class="group relative">
+<div class="group relative h-full">
     <!-- Glowing Effect on Hover -->
     <div
         class="absolute -inset-0.5 bg-linear-to-r {{ $config['gradient'] }} rounded-2xl opacity-0 group-hover:opacity-100 transition duration-500 blur">
@@ -70,7 +70,7 @@
 
     <!-- Main Card -->
     <div
-        class="relative bg-base-100 border-2 {{ $config['border'] }} shadow-lg hover:shadow-2xl transition-all duration-300 rounded-2xl overflow-hidden group-hover:scale-[1.02]">
+        class="relative bg-base-100 border-2 {{ $config['border'] }} shadow-lg hover:shadow-2xl transition-all duration-300 rounded-2xl overflow-hidden group-hover:scale-[1.02] h-full flex flex-col">
 
         <!-- Status Ribbon (Top Right Corner) -->
         <div class="absolute top-0 right-0 z-10">
@@ -89,7 +89,7 @@
         <div class="h-2 bg-linear-to-r {{ $config['gradient'] }}"></div>
 
         {{-- Card Body --}}
-        <div class="card-body p-6 space-y-5">
+        <div class="card-body p-6 space-y-5 flex-1 flex flex-col">
 
             {{-- Header Section --}}
             <div class="pt-8">
@@ -301,7 +301,7 @@
 
             {{-- Footer --}}
             <div
-                class="flex justify-between items-center pt-4 border-t border-base-300/50">
+                class="flex justify-between items-center pt-4 border-t border-base-300/50 mt-auto">
                 <div
                     class="flex items-center gap-2 text-xs text-base-content/50">
                     <svg xmlns="http://www.w3.org/2000/svg"
