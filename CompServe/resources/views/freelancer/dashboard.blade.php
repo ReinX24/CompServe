@@ -6,8 +6,7 @@
             <div class="mb-8">
                 <div class="flex items-center gap-3 mb-2">
                     <span class="text-5xl">💼</span>
-                    <h1
-                        class="text-4xl font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    <h1 class="text-4xl font-bold text-primary">
                         {{ __('Freelancer Dashboard') }}
                     </h1>
                 </div>
@@ -31,11 +30,11 @@
                                 <div class="flex items-start justify-between">
                                     <div class="flex-1">
                                         <p
-                                            class="text-sm font-medium text-base-content/70 mb-2">
+                                            class="text-sm font-medium text-neutral/70 mb-2">
                                             {{ __('Available Gigs') }}
                                         </p>
                                         <p
-                                            class="text-4xl font-bold text-base-content mb-3">
+                                            class="text-4xl font-bold text-neutral mb-3">
                                             {{ $availableGigsCount ?? 0 }}
                                         </p>
                                         <div
@@ -69,7 +68,7 @@
                                 </div>
                                 <div
                                     class="mt-4 pt-4 border-t border-blue-200 dark:border-blue-800">
-                                    <p class="text-xs text-base-content/60">
+                                    <p class="text-xs text-neutral/60">
                                         Short-term opportunities</p>
                                 </div>
                             </div>
@@ -84,11 +83,11 @@
                                 <div class="flex items-start justify-between">
                                     <div class="flex-1">
                                         <p
-                                            class="text-sm font-medium text-base-content/70 mb-2">
+                                            class="text-sm font-medium text-neutral/70 mb-2">
                                             {{ __('Applied Gigs') }}
                                         </p>
                                         <p
-                                            class="text-4xl font-bold text-base-content mb-3">
+                                            class="text-4xl font-bold text-neutral mb-3">
                                             {{ $appliedGigsCount ?? 0 }}
                                         </p>
                                         <div
@@ -122,7 +121,7 @@
                                 </div>
                                 <div
                                     class="mt-4 pt-4 border-t border-green-200 dark:border-green-800">
-                                    <p class="text-xs text-base-content/60">
+                                    <p class="text-xs text-neutral/60">
                                         Awaiting
                                         response</p>
                                 </div>
@@ -138,11 +137,11 @@
                                 <div class="flex items-start justify-between">
                                     <div class="flex-1">
                                         <p
-                                            class="text-sm font-medium text-base-content/70 mb-2">
+                                            class="text-sm font-medium text-neutral/70 mb-2">
                                             {{ __('In-Progress Gigs') }}
                                         </p>
                                         <p
-                                            class="text-4xl font-bold text-base-content mb-3">
+                                            class="text-4xl font-bold text-neutral mb-3">
                                             {{ $currentGigsCount ?? 0 }}
                                         </p>
                                         <div
@@ -176,7 +175,7 @@
                                 </div>
                                 <div
                                     class="mt-4 pt-4 border-t border-purple-200 dark:border-purple-800">
-                                    <p class="text-xs text-base-content/60">
+                                    <p class="text-xs text-neutral/60">
                                         Currently working on</p>
                                 </div>
                             </div>
@@ -191,11 +190,11 @@
                                 <div class="flex items-start justify-between">
                                     <div class="flex-1">
                                         <p
-                                            class="text-sm font-medium text-base-content/70 mb-2">
+                                            class="text-sm font-medium text-neutral/70 mb-2">
                                             {{ __('Completed Gigs') }}
                                         </p>
                                         <p
-                                            class="text-4xl font-bold text-base-content mb-3">
+                                            class="text-4xl font-bold text-neutral mb-3">
                                             {{ $completedGigsCount ?? 0 }}
                                         </p>
                                         <div
@@ -229,7 +228,7 @@
                                 </div>
                                 <div
                                     class="mt-4 pt-4 border-t border-orange-200 dark:border-orange-800">
-                                    <p class="text-xs text-base-content/60">
+                                    <p class="text-xs text-neutral/60">
                                         Successfully delivered</p>
                                 </div>
                             </div>
@@ -255,11 +254,11 @@
                                 <div class="flex items-start justify-between">
                                     <div class="flex-1">
                                         <p
-                                            class="text-sm font-medium text-base-content/70 mb-2">
+                                            class="text-sm font-medium text-neutral/70 mb-2">
                                             {{ __('Available Contracts') }}
                                         </p>
                                         <p
-                                            class="text-4xl font-bold text-base-content mb-3">
+                                            class="text-4xl font-bold text-neutral mb-3">
                                             {{ $availableContractsCount ?? 0 }}
                                         </p>
                                         <div
@@ -293,7 +292,7 @@
                                 </div>
                                 <div
                                     class="mt-4 pt-4 border-t border-cyan-200 dark:border-cyan-800">
-                                    <p class="text-xs text-base-content/60">
+                                    <p class="text-xs text-neutral/60">
                                         Long-term opportunities</p>
                                 </div>
                             </div>
@@ -308,11 +307,11 @@
                                 <div class="flex items-start justify-between">
                                     <div class="flex-1">
                                         <p
-                                            class="text-sm font-medium text-base-content/70 mb-2">
+                                            class="text-sm font-medium text-neutral/70 mb-2">
                                             {{ __('Applied Contracts') }}
                                         </p>
                                         <p
-                                            class="text-4xl font-bold text-base-content mb-3">
+                                            class="text-4xl font-bold text-neutral mb-3">
                                             {{ $appliedContractsCount ?? 0 }}
                                         </p>
                                         <div
@@ -346,7 +345,7 @@
                                 </div>
                                 <div
                                     class="mt-4 pt-4 border-t border-teal-200 dark:border-teal-800">
-                                    <p class="text-xs text-base-content/60">
+                                    <p class="text-xs text-neutral/60">
                                         Awaiting response</p>
                                 </div>
                             </div>
@@ -361,11 +360,11 @@
                                 <div class="flex items-start justify-between">
                                     <div class="flex-1">
                                         <p
-                                            class="text-sm font-medium text-base-content/70 mb-2">
+                                            class="text-sm font-medium text-neutral/70 mb-2">
                                             {{ __('In-Progress Contracts') }}
                                         </p>
                                         <p
-                                            class="text-4xl font-bold text-base-content mb-3">
+                                            class="text-4xl font-bold text-neutral mb-3">
                                             {{ $currentContractsCount ?? 0 }}
                                         </p>
                                         <div
@@ -399,7 +398,7 @@
                                 </div>
                                 <div
                                     class="mt-4 pt-4 border-t border-indigo-200 dark:border-indigo-800">
-                                    <p class="text-xs text-base-content/60">
+                                    <p class="text-xs text-neutral/60">
                                         Currently working on</p>
                                 </div>
                             </div>
@@ -414,11 +413,11 @@
                                 <div class="flex items-start justify-between">
                                     <div class="flex-1">
                                         <p
-                                            class="text-sm font-medium text-base-content/70 mb-2">
+                                            class="text-sm font-medium text-neutral/70 mb-2">
                                             {{ __('Completed Contracts') }}
                                         </p>
                                         <p
-                                            class="text-4xl font-bold text-base-content mb-3">
+                                            class="text-4xl font-bold text-neutral mb-3">
                                             {{ $completedContractsCount ?? 0 }}
                                         </p>
                                         <div
@@ -452,7 +451,7 @@
                                 </div>
                                 <div
                                     class="mt-4 pt-4 border-t border-amber-200 dark:border-amber-800">
-                                    <p class="text-xs text-base-content/60">
+                                    <p class="text-xs text-neutral/60">
                                         Successfully delivered</p>
                                 </div>
                             </div>
@@ -542,7 +541,7 @@
                             <span class="text-2xl">⚡</span>
                             Gigs Summary
                         </h3>
-                        <div class="space-y-3">
+                        <div class="text-neutral space-y-3">
                             <div
                                 class="flex justify-between items-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                                 <span class="font-medium">Available</span>
@@ -588,7 +587,7 @@
                             <span class="text-2xl">📋</span>
                             Contracts Summary
                         </h3>
-                        <div class="space-y-3">
+                        <div class="text-neutral space-y-3">
                             <div
                                 class="flex justify-between items-center p-3 bg-cyan-50 dark:bg-cyan-900/20 rounded-lg">
                                 <span class="font-medium">Available</span>

@@ -1,13 +1,14 @@
 <!-- Header -->
 <header
-    class="navbar bg-primary text-primary-content shadow-sm z-40 fixed top-0 left-0 right-0">
-    <div class="flex items-center justify-between h-8 px-4 w-full">
+    class="navbar bg-linear-to-r from-primary via-primary to-secondary text-primary-content shadow-lg backdrop-blur-sm z-40 fixed top-0 left-0 right-0 border-b border-primary-focus/20">
+    <div
+        class="flex items-center justify-between h-16 px-4 sm:px-6 w-full max-w-screen-2xl mx-auto">
         <!-- Left: Sidebar Toggle + Logo -->
-        <div class="flex items-center space-x-2 sm:space-x-3">
+        <div class="flex items-center space-x-3 sm:space-x-4">
             <button @click="toggleSidebar"
-                class="p-2 rounded-md hover:bg-primary-focus transition focus:outline-none">
+                class="p-2.5 rounded-lg hover:bg-primary-focus/50 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-content/30 group">
                 <svg xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5 sm:h-6 sm:w-6"
+                    class="h-5 w-5 sm:h-6 sm:w-6 transition-transform group-hover:scale-110"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -18,14 +19,20 @@
                 </svg>
             </button>
             <div class="flex items-center gap-2 sm:gap-3">
-                <a href="/">
-                    <img src="{{ asset('images/logo.png') }}"
-                        class="h-12 rounded-full shadow-md">
+                <a href="/"
+                    class="group">
+                    <div class="relative">
+                        <img src="{{ asset('images/logo.png') }}"
+                            class="h-10 w-10 sm:h-12 sm:w-12 rounded-full shadow-lg ring-2 ring-primary-content/20 group-hover:ring-primary-content/40 transition-all duration-300 group-hover:scale-105">
+                        <div
+                            class="absolute inset-0 rounded-full bg-primary-content/0 group-hover:bg-primary-content/10 transition-all duration-300">
+                        </div>
+                    </div>
                 </a>
                 <a href="/"
-                    class="hidden xs:block sm:block">
+                    class="hidden xs:block sm:block group">
                     <div
-                        class="font-semibold text-base sm:text-lg md:text-xl text-primary-content">
+                        class="font-bold text-base sm:text-lg md:text-xl text-primary-content tracking-tight group-hover:tracking-normal transition-all duration-300">
                         {{ config('app.name') }}
                     </div>
                 </a>
@@ -33,7 +40,7 @@
         </div>
 
         <!-- Right: Theme Toggle + Profile -->
-        <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-2 sm:space-x-3">
             <!-- Theme Switcher -->
             <div x-data="{
                 theme: localStorage.getItem('appearance') || 'system',
@@ -60,15 +67,15 @@
                     setAppearance(theme);
                 }">
                 <button @click="toggleTheme"
-                    class="p-2 rounded-full bg-base-200 hover:bg-base-300 transition focus:outline-none">
+                    class="p-2.5 rounded-lg bg-primary-content/10 hover:bg-primary-content/20 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-content/30 group backdrop-blur-sm">
                     <!-- Light -->
                     <template x-if="theme === 'light'">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
+                            stroke-width="2"
                             stroke="currentColor"
-                            class="w-6 h-6 text-yellow-400">
+                            class="w-5 h-5 sm:w-6 sm:h-6 text-yellow-300 group-hover:rotate-90 transition-transform duration-500">
                             <path stroke-linecap="round"
                                 stroke-linejoin="round"
                                 d="M12 3v2.25m6.364.386-1.591 1.591M21
@@ -85,9 +92,9 @@
                         <svg xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
+                            stroke-width="2"
                             stroke="currentColor"
-                            class="w-6 h-6 text-blue-400">
+                            class="w-5 h-5 sm:w-6 sm:h-6 text-blue-300 group-hover:scale-110 transition-transform duration-300">
                             <path stroke-linecap="round"
                                 stroke-linejoin="round"
                                 d="M21.752 15.002A9.72 9.72 0 0 1
@@ -104,9 +111,9 @@
                         <svg xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
-                            stroke-width="1.5"
+                            stroke-width="2"
                             stroke="currentColor"
-                            class="w-6 h-6 text-green-400">
+                            class="w-5 h-5 sm:w-6 sm:h-6 text-green-300 group-hover:scale-110 transition-transform duration-300">
                             <path stroke-linecap="round"
                                 stroke-linejoin="round"
                                 d="M9 17.25v1.007a3 3 0 0 1-.879
@@ -127,18 +134,19 @@
             <div x-data="{ open: false }"
                 class="relative">
                 <button @click="open = !open"
-                    class="flex items-center focus:outline-none">
+                    class="flex items-center gap-2 px-2 sm:px-3 py-2 rounded-lg hover:bg-primary-content/10 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-content/30 group">
                     <span
-                        class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
+                        class="relative flex h-9 w-9 shrink-0 overflow-hidden rounded-lg shadow-md ring-2 ring-primary-content/20 group-hover:ring-primary-content/40 transition-all duration-300">
                         <span
-                            class="flex h-full w-full items-center justify-center rounded-lg bg-base-200 text-primary">
+                            class="flex h-full w-full items-center justify-center rounded-lg bg-linear-to-br from-primary-content/80 to-primary-content/60 text-primary font-semibold text-sm group-hover:scale-105 transition-transform duration-300">
                             {{ Auth::user()->initials() }}
                         </span>
                     </span>
                     <span
-                        class="ml-2 hidden md:block">{{ Auth::user()->name }}</span>
+                        class="ml-1 hidden md:block font-medium text-sm">{{ Auth::user()->name }}</span>
                     <svg xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 ml-1"
+                        class="h-4 w-4 transition-transform duration-300"
+                        :class="{ 'rotate-180': open }"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -152,15 +160,28 @@
                 <!-- Dropdown Menu -->
                 <div x-show="open"
                     @click.away="open = false"
-                    x-transition
-                    class="absolute right-0 mt-2 w-48 bg-base-100 text-base-content rounded-md shadow-lg py-1 z-50 border border-base-200">
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0 scale-95 translate-y-[-10px]"
+                    x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                    x-transition:leave="transition ease-in duration-150"
+                    x-transition:leave-start="opacity-100 scale-100"
+                    x-transition:leave-end="opacity-0 scale-95"
+                    class="absolute right-0 mt-3 w-52 bg-base-100 text-base-content rounded-xl shadow-2xl py-2 z-50 border border-base-300 backdrop-blur-sm"
+                    style="display: none;">
+                    <div class="px-4 py-3 border-b border-base-200">
+                        <p class="text-sm font-semibold truncate">
+                            {{ Auth::user()->name }}</p>
+                        <p class="text-xs text-base-content/60 truncate mt-0.5">
+                            {{ Auth::user()->email }}</p>
+                    </div>
                     <form method="POST"
-                        action="{{ route('logout') }}">
+                        action="{{ route('logout') }}"
+                        class="mt-1">
                         @csrf
                         <button type="submit"
-                            class="flex items-center w-full px-4 py-2 text-sm hover:bg-base-200 transition">
+                            class="flex items-center w-full px-4 py-2.5 text-sm font-medium hover:bg-base-200 active:bg-base-300 transition-colors duration-150 group">
                             <svg xmlns="http://www.w3.org/2000/svg"
-                                class="h-5 w-5 mr-2"
+                                class="h-5 w-5 mr-3 text-base-content/70 group-hover:text-error transition-colors duration-200"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor">
@@ -172,7 +193,8 @@
                                     3H6a3 3 0 01-3-3V7a3 3 0
                                     013-3h4a3 3 0 013 3v1" />
                             </svg>
-                            Logout
+                            <span
+                                class="group-hover:text-error transition-colors duration-200">Logout</span>
                         </button>
                     </form>
                 </div>

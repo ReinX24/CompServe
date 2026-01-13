@@ -1,22 +1,29 @@
-<header {{-- class="shadow-sm z-40 fixed top-0 left-0 right-0 border-b border-gray-200 bg-base-100"> --}}
-    class="navbar bg-primary text-primary-content shadow-sm z-40 fixed top-0 left-0 right-0">
-    <div class="flex items-center justify-between h-8 px-4 w-full">
-
-        {{-- Left: Logo + App Name --}}
-        <div class="flex items-center gap-3">
-            <a href="/">
-                <img src="{{ asset('images/logo.png') }}"
-                    class="h-12 rounded-full shadow-md">
+<header
+    class="navbar bg-linear-to-r from-primary via-primary to-secondary text-primary-content shadow-lg backdrop-blur-sm z-40 fixed top-0 left-0 right-0 border-b border-primary-focus/20">
+    <div
+        class="flex items-center justify-between h-16 px-4 sm:px-6 w-full max-w-screen-2xl mx-auto">
+        <!-- Left: Logo + App Name -->
+        <div class="flex items-center gap-2 sm:gap-3">
+            <a href="/"
+                class="group">
+                <div class="relative">
+                    <img src="{{ asset('images/logo.png') }}"
+                        class="h-10 w-10 sm:h-12 sm:w-12 rounded-full shadow-lg ring-2 ring-primary-content/20 group-hover:ring-primary-content/40 transition-all duration-300 group-hover:scale-105">
+                    <div
+                        class="absolute inset-0 rounded-full bg-primary-content/0 group-hover:bg-primary-content/10 transition-all duration-300">
+                    </div>
+                </div>
             </a>
-
-            <a href="/">
-                <div class="font-semibold text-xl text-primary-content">
+            <a href="/"
+                class="group">
+                <div
+                    class="font-bold text-base sm:text-lg md:text-xl text-primary-content tracking-tight group-hover:tracking-normal transition-all duration-300">
                     {{ config('app.name') }}
                 </div>
             </a>
         </div>
 
-        <!-- Right side: Theme switcher -->
+        <!-- Right: Theme Switcher -->
         <div x-data="{
             theme: localStorage.getItem('theme') || 'light',
             themes: ['light', 'dark'],
@@ -28,16 +35,16 @@
         }"
             x-init="setAppearance(theme)">
             <button @click="toggleTheme"
-                class="p-2 rounded-full bg-base-200 hover:bg-base-300 transition"
+                class="p-2.5 rounded-lg bg-black/20 hover:bg-black/30 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white/30 group backdrop-blur-sm"
                 x-tooltip="'Switch Theme'">
                 <!-- Light -->
                 <template x-if="theme === 'light'">
                     <svg xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
-                        stroke-width="1.5"
+                        stroke-width="2"
                         stroke="currentColor"
-                        class="w-6 h-6 text-yellow-500">
+                        class="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:rotate-90 transition-transform duration-500 drop-shadow-lg">
                         <path stroke-linecap="round"
                             stroke-linejoin="round"
                             d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386
@@ -48,15 +55,14 @@
                             7.5 0Z" />
                     </svg>
                 </template>
-
                 <!-- Dark -->
                 <template x-if="theme === 'dark'">
                     <svg xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
-                        stroke-width="1.5"
+                        stroke-width="2"
                         stroke="currentColor"
-                        class="w-6 h-6 text-blue-500">
+                        class="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">
                         <path stroke-linecap="round"
                             stroke-linejoin="round"
                             d="M21.752 15.002A9.72 9.72 0
